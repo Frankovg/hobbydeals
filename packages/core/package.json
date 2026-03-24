@@ -1,0 +1,24 @@
+{
+  "name": "@hobbydeals/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./utils/*": "./src/utils/*.ts",
+    "./validations/*": "./src/validations/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@hobbydeals/eslint-config": "workspace:*",
+    "@hobbydeals/typescript-config": "workspace:*",
+    "eslint": "^9.39.4",
+    "typescript": "5.9.3"
+  }
+}

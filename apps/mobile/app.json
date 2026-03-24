@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "HobbyDeals",
+    "slug": "hobbydeals",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "hobbydeals",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#D85A30"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hobbydeals.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#D85A30"
+      },
+      "package": "com.hobbydeals.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

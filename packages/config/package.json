@@ -1,0 +1,8 @@
+{
+  "name": "@hobbydeals/config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./tailwind/theme.css": "./tailwind/theme.css"
+  }
+}

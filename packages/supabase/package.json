@@ -1,0 +1,23 @@
+{
+  "name": "@hobbydeals/supabase",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.100.0",
+    "@supabase/ssr": "^0.9.0"
+  },
+  "devDependencies": {
+    "@hobbydeals/typescript-config": "workspace:*",
+    "@types/node": "^25.5.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,102 +1,55 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+const categories = [
+  { name: "Juegos de Mesa", emoji: "🎲", color: "bg-[#7F77DD]" },
+  { name: "Gaming", emoji: "🎮", color: "bg-[#1D9E75]" },
+  { name: "Coleccionismo", emoji: "🏆", color: "bg-[#BA7517]" },
+  { name: "Airsoft & Paintball", emoji: "🎯", color: "bg-[#D85A30]" },
+  { name: "Música", emoji: "🎸", color: "bg-[#D4537E]" },
+  { name: "Modelismo & Miniaturas", emoji: "🪆", color: "bg-[#378ADD]" },
+];
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
+export default function Home(): React.JSX.Element {
   return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
-
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <main className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900">
+            <span className="text-brand">Hobby</span>Deals
+          </h1>
+          <p className="text-sm text-gray-500">Los mejores chollos de tus hobbies</p>
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
-      </footer>
-    </div>
+      </header>
+
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Chollos de hobbies, hechos por la comunidad
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Ofertas verificadas por la comunidad en juegos de mesa, gaming,
+            coleccionismo, airsoft, música y modelismo.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {categories.map((cat) => (
+            <div
+              key={cat.name}
+              className="rounded-xl border border-gray-200 bg-white p-6 text-center hover:shadow-md transition-shadow"
+            >
+              <div
+                className={`${cat.color} w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3`}
+              >
+                <span className="text-2xl">{cat.emoji}</span>
+              </div>
+              <h3 className="font-semibold text-gray-900">{cat.name}</h3>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-center text-sm text-gray-400 mt-16">
+          Entorno de desarrollo — Fase 1
+        </p>
+      </div>
+    </main>
   );
 }

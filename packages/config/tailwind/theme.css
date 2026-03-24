@@ -1,0 +1,21 @@
+@theme {
+  /* Sistema de temperatura */
+  --color-temperature-cold: #378ADD;
+  --color-temperature-cool: #5B9FE0;
+  --color-temperature-neutral: #9CA3AF;
+  --color-temperature-warm: #E8853A;
+  --color-temperature-hot: #D85A30;
+
+  /* Categorias */
+  --color-category-juegos-de-mesa: #7F77DD;
+  --color-category-gaming: #1D9E75;
+  --color-category-coleccionismo: #BA7517;
+  --color-category-airsoft-paintball: #D85A30;
+  --color-category-musica: #D4537E;
+  --color-category-modelismo-miniaturas: #378ADD;
+
+  /* Brand */
+  --color-brand: #D85A30;
+  --color-brand-light: #E8853A;
+  --color-brand-dark: #B94A25;
+}
