@@ -1,12 +1,12 @@
 -- ================================================================
 -- HobbyDeals — Seed Data (local dev)
--- Requiere: migration 00001_initial_schema.sql aplicada
--- Ejecutar con: supabase db reset
+-- Requires: migration 00001_initial_schema.sql applied
+-- Run with: supabase db reset
 -- ================================================================
 
 -- ================================================================
--- SEED DATA — USUARIOS
--- Contraseñas: Admin1234! (admin) / Test1234! (resto)
+-- SEED DATA — USERS
+-- Passwords: Admin1234! (admin) / Test1234! (rest)
 -- ================================================================
 
 INSERT INTO auth.users (
@@ -59,7 +59,7 @@ VALUES
      '{"username":"david_airsoft","display_name":"David P."}'::jsonb,
      NOW(), NOW(), '', '', '', '');
 
--- Identities (requerido por Supabase Auth v2+)
+-- Identities (required by Supabase Auth v2+)
 INSERT INTO auth.identities (provider_id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 VALUES
     ('a0000001-0000-0000-0000-000000000000','a0000001-0000-0000-0000-000000000000','{"sub":"a0000001-0000-0000-0000-000000000000","email":"admin@hobbydeals.es"}'::jsonb,'email',NOW(),NOW(),NOW()),
@@ -69,8 +69,8 @@ VALUES
     ('a0000005-0000-0000-0000-000000000000','a0000005-0000-0000-0000-000000000000','{"sub":"a0000005-0000-0000-0000-000000000000","email":"lucia@example.com"}'::jsonb,'email',NOW(),NOW(),NOW()),
     ('a0000006-0000-0000-0000-000000000000','a0000006-0000-0000-0000-000000000000','{"sub":"a0000006-0000-0000-0000-000000000000","email":"david@example.com"}'::jsonb,'email',NOW(),NOW(),NOW());
 
--- El trigger handle_new_user crea los profiles automáticamente.
--- Aquí actualizamos roles y reputación inicial:
+-- The handle_new_user trigger auto-creates profiles.
+-- Here we update roles and initial reputation:
 UPDATE public.profiles SET role = 'admin',     reputation = 1000 WHERE id = 'a0000001-0000-0000-0000-000000000000';
 UPDATE public.profiles SET reputation = 245                        WHERE id = 'a0000002-0000-0000-0000-000000000000';
 UPDATE public.profiles SET reputation = 180                        WHERE id = 'a0000003-0000-0000-0000-000000000000';
@@ -79,7 +79,7 @@ UPDATE public.profiles SET reputation = 95                         WHERE id = 'a
 UPDATE public.profiles SET reputation = 150                        WHERE id = 'a0000006-0000-0000-0000-000000000000';
 
 -- ================================================================
--- SEED DATA — CATEGORÍAS
+-- SEED DATA — CATEGORIES
 -- ================================================================
 INSERT INTO public.categories (id, name, slug, description, icon, color, sort_order) VALUES
     ('c0000001-0000-0000-0000-000000000000','Juegos de Mesa',        'juegos-de-mesa',      'Chollos en juegos de mesa, TCGs, RPGs y juegos de estrategia',             '🎲','#7F77DD',1),
@@ -90,7 +90,7 @@ INSERT INTO public.categories (id, name, slug, description, icon, color, sort_or
     ('c0000006-0000-0000-0000-000000000000','Modelismo & Miniaturas','modelismo-miniaturas','Miniaturas, pinturas, aerógrafos, kits de modelismo y accesorios',         '🪆','#378ADD',6);
 
 -- ================================================================
--- SEED DATA — TIENDAS
+-- SEED DATA — STORES
 -- ================================================================
 INSERT INTO public.stores (id, name, slug, website_url, is_verified) VALUES
     ('50000e01-0000-0000-0000-000000000000','Amazon España',  'amazon-es',     'https://amazon.es',              TRUE),
@@ -105,10 +105,10 @@ INSERT INTO public.stores (id, name, slug, website_url, is_verified) VALUES
     ('50000e10-0000-0000-0000-000000000000','Steam',          'steam',         'https://store.steampowered.com', TRUE);
 
 -- ================================================================
--- SEED DATA — CHOLLOS (5 por categoría)
+-- SEED DATA — DEALS (5 per category)
 -- ================================================================
 
--- JUEGOS DE MESA
+-- BOARD GAMES
 INSERT INTO public.deals (id,title,description,url,price,original_price,currency,status,category_id,store_id,user_id,temperature,votes_hot,votes_cold,is_featured,created_at)
 VALUES
 ('d0000001-0000-0000-0000-000000000000','Catan Base — precio mínimo histórico',
@@ -154,7 +154,7 @@ VALUES
  'Monitor 1080p con 1ms de respuesta, FreeSync Premium y compatibilidad G-Sync. Ideal para gaming competitivo.',
  'https://pccomponentes.com/EXAMPLE10',179.00,299.00,'EUR','active','c0000002-0000-0000-0000-000000000000','50000e04-0000-0000-0000-000000000000','a0000002-0000-0000-0000-000000000000',76,43,7,FALSE,NOW()-INTERVAL '8 hours');
 
--- COLECCIONISMO
+-- COLLECTIBLES
 INSERT INTO public.deals (id,title,description,url,price,original_price,currency,status,category_id,store_id,user_id,temperature,votes_hot,votes_cold,is_featured,created_at)
 VALUES
 ('d0000011-0000-0000-0000-000000000000','LEGO Creator 10295 Porsche 911 — 129€',
@@ -200,7 +200,7 @@ VALUES
  'Batería LiPo de alto rendimiento con conector Mini Tamiya. Compatible con M4, MP5 y la mayoría de AEGs.',
  'https://amazon.es/dp/EXAMPLE20',15.99,29.99,'EUR','active','c0000004-0000-0000-0000-000000000000','50000e01-0000-0000-0000-000000000000','a0000002-0000-0000-0000-000000000000',98,53,3,FALSE,NOW()-INTERVAL '5 hours');
 
--- MÚSICA
+-- MUSIC
 INSERT INTO public.deals (id,title,description,url,price,original_price,currency,status,category_id,store_id,user_id,temperature,votes_hot,votes_cold,is_featured,created_at)
 VALUES
 ('d0000021-0000-0000-0000-000000000000','Guitarra Eléctrica Squier Classic Vibe 60s — 299€',
@@ -223,7 +223,7 @@ VALUES
  'Kit de batería electrónica con 4 PDX pads de malla para mayor naturalidad. Módulo TD-1DMK con 15 kits de serie.',
  'https://mediamarkt.es/EXAMPLE25',399.00,649.00,'EUR','active','c0000005-0000-0000-0000-000000000000','50000e03-0000-0000-0000-000000000000','a0000002-0000-0000-0000-000000000000',65,38,8,FALSE,NOW()-INTERVAL '3 days');
 
--- MODELISMO & MINIATURAS
+-- MODELING & MINIATURES
 INSERT INTO public.deals (id,title,description,url,price,original_price,currency,status,category_id,store_id,user_id,temperature,votes_hot,votes_cold,is_featured,created_at)
 VALUES
 ('d0000026-0000-0000-0000-000000000000','Set Pinturas Citadel Base 21 colores + guía',
@@ -247,7 +247,7 @@ VALUES
  'https://amazon.es/dp/EXAMPLE30',59.99,89.99,'EUR','active','c0000006-0000-0000-0000-000000000000','50000e01-0000-0000-0000-000000000000','a0000002-0000-0000-0000-000000000000',145,78,5,TRUE, NOW()-INTERVAL '4 hours');
 
 -- ================================================================
--- SEED DATA — VOTOS
+-- SEED DATA — VOTES
 -- ================================================================
 INSERT INTO public.deal_votes (deal_id, user_id, vote) VALUES
     ('d0000001-0000-0000-0000-000000000000','a0000003-0000-0000-0000-000000000000','hot'),
@@ -279,7 +279,7 @@ INSERT INTO public.deal_votes (deal_id, user_id, vote) VALUES
     ('d0000026-0000-0000-0000-000000000000','a0000006-0000-0000-0000-000000000000','hot');
 
 -- ================================================================
--- SEED DATA — COMENTARIOS
+-- SEED DATA — COMMENTS
 -- ================================================================
 INSERT INTO public.comments (deal_id, user_id, content, created_at) VALUES
     ('d0000001-0000-0000-0000-000000000000','a0000003-0000-0000-0000-000000000000','Precio mínimo histórico confirmado en Keepa. Lo he pedido ya, envío en 2 días.',NOW()-INTERVAL '1 day 23 hours'),
@@ -306,7 +306,7 @@ INSERT INTO public.comments (deal_id, user_id, content, created_at) VALUES
     ('d0000026-0000-0000-0000-000000000000','a0000004-0000-0000-0000-000000000000','El canal de YouTube de Warhammer tiene tutoriales oficiales gratuitos muy buenos @maria_hobbies. Empieza por "How to Paint" básico.',NOW()-INTERVAL '5 hours');
 
 -- ================================================================
--- SEED DATA — ALERTAS
+-- SEED DATA — ALERTS
 -- ================================================================
 INSERT INTO public.alerts (user_id, keyword, category_id, max_price, is_active) VALUES
     ('a0000002-0000-0000-0000-000000000000','Switch OLED',  'c0000002-0000-0000-0000-000000000000',299.00,TRUE),
@@ -319,7 +319,7 @@ INSERT INTO public.alerts (user_id, keyword, category_id, max_price, is_active) 
     ('a0000006-0000-0000-0000-000000000000','Tokyo Marui',  'c0000004-0000-0000-0000-000000000000',150.00,TRUE);
 
 -- ================================================================
--- SEED DATA — CATEGORÍAS SEGUIDAS
+-- SEED DATA — FOLLOWED CATEGORIES
 -- ================================================================
 INSERT INTO public.user_category_follows (user_id, category_id) VALUES
     ('a0000002-0000-0000-0000-000000000000','c0000001-0000-0000-0000-000000000000'),
@@ -333,7 +333,7 @@ INSERT INTO public.user_category_follows (user_id, category_id) VALUES
     ('a0000006-0000-0000-0000-000000000000','c0000002-0000-0000-0000-000000000000');
 
 -- ================================================================
--- SEED DATA — GUARDADOS
+-- SEED DATA — SAVED DEALS
 -- ================================================================
 INSERT INTO public.saved_deals (user_id, deal_id) VALUES
     ('a0000002-0000-0000-0000-000000000000','d0000006-0000-0000-0000-000000000000'),
@@ -370,7 +370,7 @@ INSERT INTO public.tags (name, slug, category_id) VALUES
     ('euro game',          'euro-game',          'c0000001-0000-0000-0000-000000000000');
 
 -- ================================================================
--- Actualizar contadores desnormalizados
+-- Update denormalized counters
 -- ================================================================
 UPDATE public.categories SET deals_count = (
     SELECT COUNT(*) FROM public.deals

@@ -1,8 +1,8 @@
 /**
- * Placeholder — se genera automáticamente con:
+ * Placeholder — auto-generated with:
  * supabase gen types typescript --local > packages/supabase/src/types.ts
  *
- * Después de ejecutar `supabase start` y aplicar las migrations.
+ * After running `supabase start` and applying migrations.
  */
 export type Database = {
   public: {

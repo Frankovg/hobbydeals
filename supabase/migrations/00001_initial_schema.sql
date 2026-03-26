@@ -1,6 +1,6 @@
 -- ================================================================
 -- HobbyDeals — Schema + Seed (local dev)
--- Ejecutar con: supabase db reset
+-- Run with: supabase db reset
 -- ================================================================
 
 -- ================================================================
@@ -22,7 +22,7 @@ CREATE TYPE notif_type    AS ENUM ('alert_match', 'comment_reply', 'deal_hot', '
 -- TABLES
 -- ================================================================
 
--- Profiles (extiende auth.users — creado automáticamente por trigger)
+-- Profiles (extends auth.users — auto-created by trigger)
 CREATE TABLE public.profiles (
     id               UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     username         TEXT UNIQUE NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE public.profiles (
     updated_at       TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Categorías de hobbies
+-- Hobby categories
 CREATE TABLE public.categories (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name        TEXT NOT NULL,
@@ -52,20 +52,20 @@ CREATE TABLE public.categories (
     created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Tiendas / merchants
+-- Stores / merchants
 CREATE TABLE public.stores (
     id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name             TEXT NOT NULL,
     slug             TEXT UNIQUE NOT NULL,
     logo_url         TEXT,
     website_url      TEXT NOT NULL,
-    affiliate_tpl    TEXT,  -- template URL de afiliación
+    affiliate_tpl    TEXT,  -- affiliate URL template
     is_verified      BOOLEAN DEFAULT FALSE,
     deals_count      INTEGER DEFAULT 0,
     created_at       TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Chollos (pieza central)
+-- Deals (core entity)
 CREATE TABLE public.deals (
     id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title               TEXT NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE public.deals (
     updated_at          TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Votos (hot/cold — sistema de temperatura)
+-- Votes (hot/cold — temperature system)
 CREATE TABLE public.deal_votes (
     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     deal_id    UUID REFERENCES public.deals(id) ON DELETE CASCADE NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE public.deal_votes (
     UNIQUE(deal_id, user_id)
 );
 
--- Comentarios con soporte de respuestas anidadas (1 nivel)
+-- Comments with nested replies support (1 level)
 CREATE TABLE public.comments (
     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     deal_id    UUID REFERENCES public.deals(id) ON DELETE CASCADE NOT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE public.comments (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Tags (opcionalmente ligados a una categoría)
+-- Tags (optionally linked to a category)
 CREATE TABLE public.tags (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name        TEXT UNIQUE NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE public.deal_tags (
     PRIMARY KEY (deal_id, tag_id)
 );
 
--- Chollos guardados (favoritos)
+-- Saved deals (favorites)
 CREATE TABLE public.saved_deals (
     user_id    UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
     deal_id    UUID REFERENCES public.deals(id) ON DELETE CASCADE,
@@ -146,7 +146,7 @@ CREATE TABLE public.saved_deals (
     PRIMARY KEY (user_id, deal_id)
 );
 
--- Categorías seguidas por usuario (para feed personalizado)
+-- User-followed categories (for personalized feed)
 CREATE TABLE public.user_category_follows (
     user_id     UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
     category_id UUID REFERENCES public.categories(id) ON DELETE CASCADE,
@@ -154,7 +154,7 @@ CREATE TABLE public.user_category_follows (
     PRIMARY KEY (user_id, category_id)
 );
 
--- Alertas de palabras clave
+-- Keyword alerts
 CREATE TABLE public.alerts (
     id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id           UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE public.alerts (
     created_at        TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Notificaciones in-app
+-- In-app notifications
 CREATE TABLE public.notifications (
     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id    UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -179,7 +179,7 @@ CREATE TABLE public.notifications (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Reportes de contenido
+-- Content reports
 CREATE TABLE public.reports (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     reporter_id UUID REFERENCES public.profiles(id),
@@ -214,7 +214,7 @@ CREATE INDEX alerts_user_idx       ON public.alerts(user_id);
 -- FUNCTIONS + TRIGGERS
 -- ================================================================
 
--- Auto-update de updated_at
+-- Auto-update updated_at
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN NEW.updated_at = NOW(); RETURN NEW; END;
@@ -224,7 +224,7 @@ CREATE TRIGGER deals_updated_at    BEFORE UPDATE ON public.deals    FOR EACH ROW
 CREATE TRIGGER profiles_updated_at BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER comments_updated_at BEFORE UPDATE ON public.comments FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
--- Crea perfil automáticamente al registrarse un usuario
+-- Auto-create profile on user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
@@ -247,7 +247,7 @@ CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Actualiza temperatura del chollo al votar
+-- Update deal temperature on vote
 CREATE OR REPLACE FUNCTION public.update_deal_temperature()
 RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
 DECLARE
@@ -275,7 +275,7 @@ CREATE TRIGGER on_vote_change
     AFTER INSERT OR UPDATE OR DELETE ON public.deal_votes
     FOR EACH ROW EXECUTE FUNCTION public.update_deal_temperature();
 
--- Actualiza comments_count al comentar
+-- Update comments_count on comment
 CREATE OR REPLACE FUNCTION public.update_comments_count()
 RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
@@ -292,7 +292,7 @@ CREATE TRIGGER on_comment_change
     AFTER INSERT OR DELETE ON public.comments
     FOR EACH ROW EXECUTE FUNCTION public.update_comments_count();
 
--- Actualiza reputación del usuario cuando votan sus chollos
+-- Update user reputation when their deals get voted
 CREATE OR REPLACE FUNCTION public.update_user_reputation()
 RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
 DECLARE v_user UUID;
@@ -325,7 +325,7 @@ ALTER TABLE public.notifications         ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.reports               ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_category_follows ENABLE ROW LEVEL SECURITY;
 
--- Helper: comprueba rol del usuario actual
+-- Helper: check current user role
 CREATE OR REPLACE FUNCTION public.current_user_role()
 RETURNS user_role LANGUAGE sql SECURITY DEFINER STABLE AS $$
     SELECT role FROM public.profiles WHERE id = auth.uid();
@@ -357,16 +357,16 @@ CREATE POLICY "comments: crear autenticado"   ON public.comments FOR INSERT WITH
 CREATE POLICY "comments: editar propio"       ON public.comments FOR UPDATE USING (user_id = auth.uid());
 CREATE POLICY "comments: moderar"             ON public.comments FOR UPDATE USING (public.current_user_role() IN ('moderator','admin'));
 
--- Tablas privadas del usuario
+-- User private tables
 CREATE POLICY "saved: propio"                 ON public.saved_deals           FOR ALL USING (user_id = auth.uid());
 CREATE POLICY "alerts: propio"                ON public.alerts                FOR ALL USING (user_id = auth.uid());
 CREATE POLICY "notifs: propio"                ON public.notifications         FOR ALL USING (user_id = auth.uid());
 CREATE POLICY "follows: propio"               ON public.user_category_follows FOR ALL USING (user_id = auth.uid());
 
--- Reportes
+-- Reports
 CREATE POLICY "reports: crear autenticado"    ON public.reports FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 CREATE POLICY "reports: ver propio o mod"     ON public.reports FOR SELECT USING (reporter_id = auth.uid() OR public.current_user_role() IN ('moderator','admin'));
 CREATE POLICY "reports: resolver mod"         ON public.reports FOR UPDATE USING (public.current_user_role() IN ('moderator','admin'));
 
--- Tablas públicas (sin RLS): categories, stores, tags, deal_tags
+-- Public tables (no RLS): categories, stores, tags, deal_tags
 

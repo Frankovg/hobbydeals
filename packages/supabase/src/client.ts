@@ -15,15 +15,15 @@ function getSupabaseAnonKey(): string {
 }
 
 /**
- * Cliente para Next.js Client Components y navegador.
+ * Client for Next.js Client Components and browser.
  */
 export function createBrowserClient() {
   return _createBrowserClient<Database>(getSupabaseUrl(), getSupabaseAnonKey());
 }
 
 /**
- * Cliente para Next.js Server Components y API Routes.
- * Requiere cookies de Next.js — usar en RSC o Route Handlers.
+ * Client for Next.js Server Components and API Routes.
+ * Requires Next.js cookies — use in RSC or Route Handlers.
  */
 export function createServerClient(
   cookieStore: Pick<
@@ -34,7 +34,7 @@ export function createServerClient(
   return _createServerClient<Database>(getSupabaseUrl(), getSupabaseAnonKey(), {
     cookies: {
       getAll() {
-        // El caller pasará el cookieStore real de Next.js
+        // The caller will pass the real Next.js cookieStore
         return [] as { name: string; value: string }[];
       },
     },

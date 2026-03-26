@@ -1,25 +1,25 @@
-# HobbyDeals — Contexto del proyecto
+# HobbyDeals — Project Context
 
-Plataforma de chollos especializada en hobbies, inspirada en Chollometro pero
-vertical: solo ofertas de ocio y afición. Comunidad-driven con sistema de
-temperatura (votos hot/cold), alertas personalizadas y moderación editorial.
+Deals platform specialized in hobbies, inspired by Chollometro but vertical:
+only leisure and hobby offers. Community-driven with a temperature system
+(hot/cold votes), personalized alerts, and editorial moderation.
 
-## Stack de decisiones (no cambiar sin discutir)
+## Stack decisions (do not change without discussion)
 
 - **Monorepo**: Turborepo + pnpm workspaces
 - **Web**: Next.js 16 App Router + Tailwind CSS
 - **Mobile**: React Native + Expo + NativeWind v4
 - **Backend**: Supabase (Auth, Postgres, Realtime, Storage)
-- **Auth**: Supabase Auth nativo — NO Clerk (rompe RLS y triggers)
-- **Data fetching (web)**: Supabase client directo en Server Components + Server Actions para mutaciones
-- **Data fetching (mobile + client components interactivos)**: TanStack Query + `@supabase-cache-helpers/postgrest-react-query`
-- **NO GraphQL**: PostgREST de Supabase cubre selección de campos, joins y filtros — GraphQL no agrega valor con un solo backend
-- **Validación**: Zod (schemas en `@hobbydeals/core`, compartidos web+mobile)
+- **Auth**: Native Supabase Auth — NO Clerk (breaks RLS and triggers)
+- **Data fetching (web)**: Direct Supabase client in Server Components + Server Actions for mutations
+- **Data fetching (mobile + interactive client components)**: TanStack Query + `@supabase-cache-helpers/postgrest-react-query`
+- **NO GraphQL**: Supabase PostgREST covers field selection, joins, and filters — GraphQL adds no value with a single backend
+- **Validation**: Zod (schemas in `@hobbydeals/core`, shared web+mobile)
 - **Error tracking**: Sentry
-- **Imágenes de chollos**: Scraping Open Graph como default + upload manual como fallback. Supabase Storage bucket `deal-images`. Edge Function para parsear `og:image` de la URL del deal
-- **CI/CD**: GitHub Actions → Vercel (web) + Expo EAS (mobile)
+- **Deal images**: Open Graph scraping as default + manual upload as fallback. Supabase Storage bucket `deal-images`. Edge Function to parse `og:image` from the deal URL
+- **CI/CD**: GitHub Actions -> Vercel (web) + Expo EAS (mobile)
 
-## Estructura del monorepo
+## Monorepo structure
 
 ```
 hobbydeals/
@@ -27,80 +27,80 @@ hobbydeals/
 │   ├── web/          # Next.js 16 App Router
 │   └── mobile/       # React Native + Expo
 ├── packages/
-│   ├── ui/           # @hobbydeals/ui — componentes multiplataforma (NativeWind)
-│   ├── core/         # @hobbydeals/core — hooks, API queries, utils, tipos, Zod schemas
+│   ├── ui/           # @hobbydeals/ui — cross-platform components (NativeWind)
+│   ├── core/         # @hobbydeals/core — hooks, API queries, utils, types, Zod schemas
 │   ├── config/       # @hobbydeals/config — eslint, tsconfig, tailwind preset
-│   └── supabase/     # @hobbydeals/supabase — client factory + tipos generados
+│   └── supabase/     # @hobbydeals/supabase — client factory + generated types
 └── supabase/
-    ├── migrations/   # schema SQL versionado
-    ├── seed.sql      # datos de desarrollo (ver abajo)
+    ├── migrations/   # versioned SQL schema
+    ├── seed.sql      # development data (see below)
     └── config.toml
 ```
 
-## Packages compartidos
+## Shared packages
 
 ### @hobbydeals/ui
 
-Componentes con `className` Tailwind/NativeWind que funcionan en web y mobile
-sin wrappers. Componentes clave: `DealCard`, `CategoryBadge`, `VoteButton`,
-`TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`.
+Components using `className` with Tailwind/NativeWind that work on web and
+mobile without wrappers. Key components: `DealCard`, `CategoryBadge`,
+`VoteButton`, `TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`,
+`EmptyState`.
 
 ### @hobbydeals/core
 
-Toda la lógica de negocio compartida:
+All shared business logic:
 
 - Hooks: `useDeals(filters)`, `useDeal(id)`, `useVote()`, `useAuth()`, `useAlerts()`
-- Utils: `formatPrice()`, `getTemperatureLabel()`, `timeAgo()` (locale ES)
-- Schemas Zod para formularios (publicar chollo, registro, alerta)
-- Queries Supabase tipadas
+- Utils: `formatPrice()`, `getTemperatureLabel()`, `timeAgo()` (ES locale)
+- Zod schemas for forms (publish deal, registration, alert)
+- Typed Supabase queries
 
 ### @hobbydeals/supabase
 
-Factory de clientes según entorno:
+Client factory per environment:
 
 - `createBrowserClient()` — Next.js client components
-- `createServerClient()` — RSC y API routes
-- `createMobileClient()` — React Native con AsyncStorage
-- Tipos generados con `supabase gen types typescript`
+- `createServerClient()` — RSC and API routes
+- `createMobileClient()` — React Native with AsyncStorage
+- Types generated with `supabase gen types typescript`
 
 ### @hobbydeals/config
 
 - `eslint-config-base`, `eslint-config-next`, `eslint-config-react-native`
 - `tsconfig/base.json` (strict), `tsconfig/next.json`, `tsconfig/react-native.json`
-- `tailwind/preset.js` con tokens de color del sistema de temperatura
-- `tailwind/nativewind.js` para mobile
+- `tailwind/preset.js` with temperature system color tokens
+- `tailwind/nativewind.js` for mobile
 
-## Base de datos (Supabase + PostgreSQL)
+## Database (Supabase + PostgreSQL)
 
-### Tablas principales
+### Main tables
 
-| Tabla                   | Descripción                                                          |
-| ----------------------- | -------------------------------------------------------------------- |
-| `profiles`              | Extiende auth.users. Campos: username, role, reputation, notif_prefs |
-| `categories`            | 6 categorías MVP (ver abajo)                                         |
-| `stores`                | Merchants verificados con URLs de afiliación                         |
-| `deals`                 | Chollos. discount_pct es columna generada automáticamente            |
-| `deal_votes`            | Votos hot/cold. UNIQUE(deal_id, user_id)                             |
-| `comments`              | Anidados 1 nivel (parent_id). Soft delete con is_deleted             |
-| `alerts`                | Alertas por keyword + categoría + precio máximo                      |
-| `notifications`         | In-app via Supabase Realtime                                         |
-| `saved_deals`           | Favoritos del usuario                                                |
-| `reports`               | Reportes de contenido para moderación                                |
-| `user_category_follows` | Categorías seguidas para feed personalizado                          |
+| Table                   | Description                                                             |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `profiles`              | Extends auth.users. Fields: username, role, reputation, notif_prefs     |
+| `categories`            | 6 MVP categories (see below)                                            |
+| `stores`                | Verified merchants with affiliate URLs                                  |
+| `deals`                 | Deals. discount_pct is an auto-generated column                         |
+| `deal_votes`            | Hot/cold votes. UNIQUE(deal_id, user_id)                                |
+| `comments`              | Nested 1 level (parent_id). Soft delete with is_deleted                 |
+| `alerts`                | Alerts by keyword + category + max price                                |
+| `notifications`         | In-app via Supabase Realtime                                            |
+| `saved_deals`           | User favorites                                                          |
+| `reports`               | Content reports for moderation                                          |
+| `user_category_follows` | Followed categories for personalized feed                               |
 
-### Lógica en base de datos (triggers)
+### Database logic (triggers)
 
-- `handle_new_user` — crea perfil automáticamente al registrarse (sobre auth.users)
-- `update_deal_temperature` — recalcula temperatura tras cada voto: `(hot*2) - (cold*1)`
-- `update_comments_count` — mantiene contador desnormalizado en deals
-- `update_user_reputation` — recalcula reputación del autor cuando votan sus chollos
-- `update_updated_at` — actualiza timestamp en deals, profiles, comments
+- `handle_new_user` — auto-creates profile on signup (on auth.users)
+- `update_deal_temperature` — recalculates temperature after each vote: `(hot*2) - (cold*1)`
+- `update_comments_count` — maintains denormalized counter in deals
+- `update_user_reputation` — recalculates author reputation when their deals get voted
+- `update_updated_at` — updates timestamp on deals, profiles, comments
 
 ### RLS
 
-Todas las tablas de usuario tienen RLS. Helper `current_user_role()` para
-verificar admin/moderator. Las tablas públicas (categories, stores, tags) no
-tienen RLS.
+All user tables have RLS enabled. Helper `current_user_role()` to check
+admin/moderator. Public tables (categories, stores, tags) have no RLS.
 
 ### Enums
 
@@ -110,9 +110,9 @@ tienen RLS.
 `report_status`: pending | reviewed | resolved | dismissed
 `notif_type`: alert_match | comment_reply | deal_hot | deal_expired | system
 
-## Categorías MVP
+## MVP Categories
 
-| Slug                   | Nombre                 | Color   |
+| Slug                   | Name                   | Color   |
 | ---------------------- | ---------------------- | ------- |
 | `juegos-de-mesa`       | Juegos de Mesa         | #7F77DD |
 | `gaming`               | Gaming                 | #1D9E75 |
@@ -121,39 +121,39 @@ tienen RLS.
 | `musica`               | Música                 | #D4537E |
 | `modelismo-miniaturas` | Modelismo & Miniaturas | #378ADD |
 
-## Datos de desarrollo (seed.sql)
+## Development data (seed.sql)
 
-El archivo `supabase/seed.sql` contiene:
+The `supabase/seed.sql` file contains:
 
-- **6 usuarios**: admin@hobbydeals.es (Admin1234!) + 5 usuarios de prueba (Test1234!)
-- **Usuario admin**: id `a0000001-*`, role `admin`, reputación 1000
-- **30 chollos**: 5 por categoría, mezcla de `active` y `pending`
-- **Votos, comentarios, alertas, guardados y follows** de ejemplo
-- **10 tiendas** (Amazon, FNAC, Thomann, Steam, Games Workshop...)
-- Contadores desnormalizados actualizados al final del seed
+- **6 users**: admin@hobbydeals.es (Admin1234!) + 5 test users (Test1234!)
+- **Admin user**: id `a0000001-*`, role `admin`, reputation 1000
+- **30 deals**: 5 per category, mix of `active` and `pending`
+- **Votes, comments, alerts, saved deals, and follows** as examples
+- **10 stores** (Amazon, FNAC, Thomann, Steam, Games Workshop...)
+- Denormalized counters updated at the end of the seed
 
-Comandos de desarrollo:
+Development commands:
 
 ```bash
-supabase start          # Inicia Postgres + Auth + Studio local
-supabase db reset       # Aplica migrations + seed desde cero
+supabase start          # Start local Postgres + Auth + Studio
+supabase db reset       # Apply migrations + seed from scratch
 supabase gen types typescript --local > packages/supabase/src/types.ts
 ```
 
-## Rutas principales
+## Main routes
 
 ### Web (Next.js App Router)
 
 ```
 app/
 ├── (auth)/login        # Magic link + OAuth Google
-├── (auth)/registro     # Registro + selección hobbies
-├── (main)/             # Feed principal con filtros
-├── (main)/[categoria]  # Feed por categoría
-├── (main)/chollo/[id]  # Detalle con comentarios y votos
-├── (main)/buscar       # Búsqueda full-text (pg_trgm)
-├── admin/              # Panel admin — protegido role:admin|moderator
-└── perfil/             # Panel usuario — protegido auth
+├── (auth)/registro     # Registration + hobby selection
+├── (main)/             # Main feed with filters
+├── (main)/[categoria]  # Category feed
+├── (main)/chollo/[id]  # Detail with comments and votes
+├── (main)/buscar       # Full-text search (pg_trgm)
+├── admin/              # Admin panel — protected role:admin|moderator
+└── perfil/             # User panel — protected auth
 ```
 
 ### Mobile (Expo Router)
@@ -162,56 +162,57 @@ app/
 app/
 ├── (auth)/             # Onboarding + login
 └── (tabs)/
-    ├── index           # Feed principal
-    ├── categorias      # Grid de categorías
-    ├── buscar          # Búsqueda
-    └── perfil          # Panel usuario
+    ├── index           # Main feed
+    ├── categorias      # Category grid
+    ├── buscar          # Search
+    └── perfil          # User panel
 ```
 
-## Panel de administración (/admin)
+## Admin panel (/admin)
 
-- Dashboard: métricas diarias, reportes pendientes, temperatura media
-- Cola de moderación: aprobar/rechazar chollos con motivo
-- Gestión de usuarios: rol, ban, reputación
-- Tiendas verificadas y URLs de afiliación
-- Gestión de destacados y patrocinados (siempre etiquetados)
+- Dashboard: daily metrics, pending reports, average temperature
+- Moderation queue: approve/reject deals with reason
+- User management: role, ban, reputation
+- Verified stores and affiliate URLs
+- Featured and sponsored management (always labeled)
 
-## Panel de usuario (/perfil)
+## User panel (/perfil)
 
-- Overview de actividad y reputación
-- Mis chollos (activo/pendiente/expirado)
-- Guardados y alertas
-- Configuración de perfil y notificaciones
+- Activity and reputation overview
+- My deals (active/pending/expired)
+- Saved deals and alerts
+- Profile and notification settings
 
-## Roadmap MVP (12 semanas)
+## MVP Roadmap (12 weeks)
 
-1. **Sem 1–2**: Fundación monorepo + Supabase local + seed
-2. **Sem 3–4**: Sistema de diseño + Auth (web y mobile)
-3. **Sem 5–7**: Feed, votos, publicación, comentarios, búsqueda
-4. **Sem 8–9**: Panel usuario + alertas + notificaciones Realtime
-5. **Sem 10–11**: Panel administración + moderación
-6. **Sem 12**: SEO, performance, deploy Vercel + EAS
+1. **Wk 1-2**: Monorepo foundation + local Supabase + seed
+2. **Wk 3-4**: Design system + Auth (web and mobile)
+3. **Wk 5-7**: Feed, votes, publishing, comments, search
+4. **Wk 8-9**: User panel + alerts + Realtime notifications
+5. **Wk 10-11**: Admin panel + moderation
+6. **Wk 12**: SEO, performance, deploy Vercel + EAS
 
-## Patrón de data fetching
+## Data fetching pattern
 
-Queries reutilizables en `@hobbydeals/core` que reciben un cliente tipado:
+Reusable queries in `@hobbydeals/core` that receive a typed client:
 
-| Contexto | Herramienta | Ejemplo |
-|----------|-------------|---------|
-| Server Components (web) | Supabase client directo | `await getDeals(createServerClient(), filters)` |
-| Mutaciones simples (web) | Server Actions + `revalidatePath()` | Publicar chollo, moderar, editar perfil |
-| Client Components interactivos (web) | TanStack Query | Votos (optimistic updates), comentarios, búsqueda, infinite scroll |
-| Mobile (todo) | TanStack Query | RN no tiene Server Components, TanStack Query es el state manager de server state |
-| Realtime | Supabase Realtime + TanStack Query | Suscripciones a votos/temperatura via `postgres_changes` |
+| Context | Tool | Example |
+|---------|------|---------|
+| Server Components (web) | Direct Supabase client | `await getDeals(createServerClient(), filters)` |
+| Simple mutations (web) | Server Actions + `revalidatePath()` | Publish deal, moderate, edit profile |
+| Interactive Client Components (web) | TanStack Query | Votes (optimistic updates), comments, search, infinite scroll |
+| Mobile (all) | TanStack Query | RN has no Server Components, TanStack Query is the server state manager |
+| Realtime | Supabase Realtime + TanStack Query | Subscriptions to votes/temperature via `postgres_changes` |
 
-`@supabase-cache-helpers/postgrest-react-query` genera cache keys automáticas
-y sincroniza mutations con queries. Usar siempre que se combine Supabase + TanStack Query.
+`@supabase-cache-helpers/postgrest-react-query` generates automatic cache keys
+and syncs mutations with queries. Always use when combining Supabase + TanStack Query.
 
-## Convenciones de código
+## Code conventions
 
-- TypeScript estricto en todo el monorepo
-- Componentes de `@hobbydeals/ui` usan `className` (NativeWind compatible)
-- Nunca importar desde `apps/` dentro de `packages/`
-- Queries Supabase siempre tipadas, nunca `any`
-- Zod schemas definidos en `@hobbydeals/core/src/validations`, importados en ambas apps
-- Nombres de archivos: kebab-case para archivos, PascalCase para componentes
+- **Code language**: All source code, comments, JSDoc, variable names, commits, and technical documentation must be **in English**. User-facing content (HTML, UI text, labels, descriptions) can be multilingual (Spanish by default for the app)
+- Strict TypeScript across the entire monorepo
+- `@hobbydeals/ui` components use `className` (NativeWind compatible)
+- Never import from `apps/` inside `packages/`
+- Supabase queries always typed, never `any`
+- Zod schemas defined in `@hobbydeals/core/src/validations`, imported in both apps
+- File names: kebab-case for files, PascalCase for components
