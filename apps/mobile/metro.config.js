@@ -7,10 +7,10 @@ const monorepoRoot = path.resolve(projectRoot, "../..");
 
 const config = getDefaultConfig(projectRoot);
 
-// Monorepo: watchFolders para que Metro resuelva packages/
+// Monorepo: watchFolders so Metro resolves packages/
 config.watchFolders = [monorepoRoot];
 
-// Resolver para encontrar node_modules en el monorepo
+// Resolver to find node_modules across the monorepo
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(monorepoRoot, "node_modules"),
