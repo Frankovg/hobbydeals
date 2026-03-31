@@ -2,26 +2,19 @@
 @import "@hobbydeals/config/tailwind/theme.css";
 
 @theme {
-  /* Fonts (solo web — usa Geist via next/font) */
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
-
-  /* Base colors — light mode defaults */
-  --color-background: #ffffff;
-  --color-foreground: #171717;
+  /* Fonts loaded via next/font in layout.tsx */
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-body);
+  --font-mono: monospace;
 }
 
 @layer base {
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-background: #0a0a0a;
-      --color-foreground: #ededed;
-    }
-  }
-
   body {
-    color: var(--color-foreground);
-    background: var(--color-background);
-    font-family: var(--font-sans);
+    color: var(--text-primary);
+    background: var(--bg-base);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
