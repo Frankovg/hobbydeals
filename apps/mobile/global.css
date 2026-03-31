@@ -4,7 +4,9 @@
 @import "@hobbydeals/config/tailwind/theme.css";
 
 @theme {
-  /* Fonts (mobile — system fonts) */
-  --font-sans: system-ui, sans-serif;
+  /* Fonts loaded via expo-font in _layout.tsx */
+  --font-display: 'SpaceGrotesk_700Bold', system-ui, sans-serif;
+  --font-body: 'Inter_400Regular', system-ui, sans-serif;
+  --font-sans: var(--font-body);
   --font-mono: monospace;
 }

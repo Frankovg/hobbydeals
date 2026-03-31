@@ -1,10 +1,10 @@
 const categories = [
-  { name: "Juegos de Mesa", emoji: "🎲", color: "bg-[#7F77DD]" },
-  { name: "Gaming", emoji: "🎮", color: "bg-[#1D9E75]" },
-  { name: "Coleccionismo", emoji: "🏆", color: "bg-[#BA7517]" },
-  { name: "Airsoft & Paintball", emoji: "🎯", color: "bg-[#D85A30]" },
-  { name: "Música", emoji: "🎸", color: "bg-[#D4537E]" },
-  { name: "Modelismo & Miniaturas", emoji: "🪆", color: "bg-[#378ADD]" },
+  { name: "Juegos de Mesa", emoji: "🎲", color: "bg-cat-boardgames" },
+  { name: "Gaming", emoji: "🎮", color: "bg-cat-gaming" },
+  { name: "Coleccionismo", emoji: "🏆", color: "bg-cat-collectibles" },
+  { name: "Airsoft & Paintball", emoji: "🎯", color: "bg-cat-airsoft" },
+  { name: "Música", emoji: "🎸", color: "bg-cat-music" },
+  { name: "Modelismo & Miniaturas", emoji: "🪆", color: "bg-cat-modeling" },
 ];
 
 export default function Home(): React.JSX.Element {
@@ -13,7 +13,7 @@ export default function Home(): React.JSX.Element {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900">
-            <span className="text-brand">Hobby</span>Deals
+            <span className="text-brand-primary">Hobby</span>Deals
           </h1>
           <p className="text-sm text-gray-500">Los mejores chollos de tus hobbies</p>
         </div>

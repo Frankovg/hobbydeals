@@ -1,4 +1,4 @@
-type TemperatureLevel = "cold" | "cool" | "neutral" | "warm" | "hot";
+type TemperatureLevel = "cold" | "neutral" | "warm" | "hot" | "burning" | "fire";
 
 export function getTemperatureLabel(temp: number): string {
   if (temp >= 100) return "En llamas";
@@ -10,9 +10,10 @@ export function getTemperatureLabel(temp: number): string {
 }
 
 export function getTemperatureColor(temp: number): TemperatureLevel {
-  if (temp >= 50) return "hot";
-  if (temp >= 20) return "warm";
-  if (temp >= 5) return "neutral";
-  if (temp >= 0) return "cool";
+  if (temp >= 100) return "fire";
+  if (temp >= 50) return "burning";
+  if (temp >= 20) return "hot";
+  if (temp >= 5) return "warm";
+  if (temp >= 0) return "neutral";
   return "cold";
 }

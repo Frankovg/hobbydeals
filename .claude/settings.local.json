@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm view:*)",
       "Bash(pnpm run:*)",
-      "mcp__context7__resolve-library-id"
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(pnpm build:*)"
     ]
   }
 }
