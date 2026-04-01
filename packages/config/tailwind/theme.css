@@ -4,6 +4,11 @@
 
    Naming: 1:1 con variables del .pen file
    Dark mode: class-based (.dark en <html>)
+
+   Architecture:
+   1. :root / .dark  → single source of truth (HEX values)
+   2. shadcn bridge  → aliases for RNR components (var refs only)
+   3. @theme          → Tailwind utility generation (var refs only)
    ============================================ */
 
 /* -----------------------------------------
@@ -19,7 +24,9 @@
   --bg-card-hover: #F0F1F3;
   --bg-surface: #F9FAFB;
   --bg-surface-raised: #FFFFFF;
+  --bg-surface-medium: #F5F5F5;
   --bg-elevated: #EDECEA;
+  --bg-highlight: #FFFBEB;
   --bg-sidebar: #1A1A1A;
   --bg-sidebar-active: #2E2E33;
 
@@ -28,31 +35,48 @@
   --text-secondary: #6B6B6B;
   --text-tertiary: #9E9E9E;
   --text-inverse: #FFFFFF;
+  --text-disabled: #D1D5DB;
 
   /* Borders */
   --border-light: #EDEAE4;
   --border-subtle: #E5E5E5;
-  --border: #DDD9D3;
+  --border-base: #DDD9D3;
   --border-default: #D0D0D0;
   --border-strong: #D1D5DB;
 
-  /* Semantic (themed) */
+  /* Accent & Brand */
+  --accent: #C45B3C;
+  --accent-light: #FFF3ED;
+  --accent-muted: #A07A65;
+  --accent-soft: #F2E0D6;
+  --coral-primary: #FF6B6B;
+  --coral-light: #FFF0F0;
+  --brand-primary: #8AB830;
+  --brand-secondary: #C4872A;
+
+  /* Semantic */
   --success: #4CAF50;
   --error: #CC3B30;
+  --warning: #D4952A;
   --info: #4A82C4;
   --success-bg: #F0FBF0;
   --error-bg: #FDF0EF;
-  --info-bg: #F0F5FD;
   --warning-bg: #FDF8F0;
-
-  /* Accent soft */
-  --accent-soft: #F2E0D6;
-
-  /* Semantic soft */
+  --info-bg: #F0F5FD;
+  --negative: #B05454;
   --negative-soft: #F4E0E0;
+  --positive: #4A8C6F;
   --positive-soft: #DFF0E6;
 
-  /* Categories (themed) */
+  /* Temperature */
+  --temp-cold: #4A82C4;
+  --temp-warm: #C4872A;
+  --temp-hot: #CC5500;
+  --temp-burning: #D92B2B;
+  --temp-fire: #EF4444;
+  --temp-neutral: #8A9490;
+
+  /* Categories */
   --cat-boardgames: #7F77DD;
   --cat-gaming: #1D9E75;
   --cat-collectibles: #BA7517;
@@ -67,6 +91,36 @@
   --cat-airsoft-soft: #F5E0D8;
   --cat-music-soft: #F2E0E8;
   --cat-modeling-soft: #DDE8F2;
+
+  /* Category light backgrounds */
+  --cat-boardgames-light: #EEEDFA;
+  --cat-gaming-light: #E6F7F0;
+  --cat-collectibles-light: #FDF4E6;
+  --cat-airsoft-light: #FDF0EB;
+  --cat-music-light: #FCEEF3;
+  --cat-modeling-light: #EBF3FC;
+
+  /* ---- shadcn/RNR Bridge ---- */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-card);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent);
+  --primary-foreground: var(--text-inverse);
+  --secondary: var(--bg-subtle);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-subtle);
+  --muted-foreground: var(--text-secondary);
+  --shadcn-accent: var(--bg-subtle);
+  --shadcn-accent-foreground: var(--text-primary);
+  --destructive: var(--error);
+  --destructive-foreground: var(--text-inverse);
+  --border: var(--border-default);
+  --input: var(--border-subtle);
+  --ring: var(--accent);
+  --radius: 8px;
 }
 
 .dark {
@@ -78,7 +132,9 @@
   --bg-card-hover: #50505A;
   --bg-surface: #3A3A40;
   --bg-surface-raised: #52525C;
+  --bg-surface-medium: #3A3A40;
   --bg-elevated: #46464E;
+  --bg-highlight: #2E2518;
   --bg-sidebar: #060608;
   --bg-sidebar-active: #2A2A34;
 
@@ -87,31 +143,48 @@
   --text-secondary: #8C8C8C;
   --text-tertiary: #5C5C5C;
   --text-inverse: #0D0D0D;
+  --text-disabled: #5C5C5C;
 
   /* Borders */
   --border-light: #3C3C46;
   --border-subtle: #50505A;
-  --border: #64646E;
+  --border-base: #64646E;
   --border-default: #787882;
   --border-strong: #8C8C96;
 
-  /* Semantic (themed) */
+  /* Accent & Brand */
+  --accent: #E86B40;
+  --accent-light: #2E1E18;
+  --accent-muted: #A07A65;
+  --accent-soft: #3A2520;
+  --coral-primary: #FF8A8A;
+  --coral-light: #2E1A1A;
+  --brand-primary: #A0D040;
+  --brand-secondary: #D4872A;
+
+  /* Semantic */
   --success: #5EC562;
   --error: #E05048;
+  --warning: #D4952A;
   --info: #5B95D9;
   --success-bg: #0F1F0F;
   --error-bg: #200A08;
-  --info-bg: #0A1220;
   --warning-bg: #1F150A;
-
-  /* Accent soft */
-  --accent-soft: #3A2520;
-
-  /* Semantic soft */
+  --info-bg: #0A1220;
+  --negative: #C06060;
   --negative-soft: #2E1A1A;
+  --positive: #5AAC7F;
   --positive-soft: #1A2E22;
 
-  /* Categories (themed) */
+  /* Temperature */
+  --temp-cold: #5B95D9;
+  --temp-warm: #D4952A;
+  --temp-hot: #E06800;
+  --temp-burning: #E83030;
+  --temp-fire: #F05050;
+  --temp-neutral: #8A9490;
+
+  /* Categories */
   --cat-boardgames: #9B94E8;
   --cat-gaming: #28C491;
   --cat-collectibles: #D4872A;
@@ -126,14 +199,25 @@
   --cat-airsoft-soft: #2E1E18;
   --cat-music-soft: #2E1A22;
   --cat-modeling-soft: #1A222E;
+
+  /* Category light backgrounds */
+  --cat-boardgames-light: #1E1A2E;
+  --cat-gaming-light: #142E1E;
+  --cat-collectibles-light: #2E2214;
+  --cat-airsoft-light: #2E1814;
+  --cat-music-light: #2E141E;
+  --cat-modeling-light: #141E2E;
+
+  /* shadcn bridge inherits automatically via var() — no overrides needed */
 }
 
 /* -----------------------------------------
    Tailwind v4 @theme — Utility Generation
+   All values reference CSS vars above. No HEX here.
    ----------------------------------------- */
 
 @theme {
-  /* ---- Colors: Backgrounds (themed via CSS vars) ---- */
+  /* ---- Colors: Backgrounds ---- */
   --color-bg-base: var(--bg-base);
   --color-bg-page: var(--bg-page);
   --color-bg-subtle: var(--bg-subtle);
@@ -141,95 +225,98 @@
   --color-bg-card-hover: var(--bg-card-hover);
   --color-bg-surface: var(--bg-surface);
   --color-bg-surface-raised: var(--bg-surface-raised);
+  --color-bg-surface-medium: var(--bg-surface-medium);
   --color-bg-elevated: var(--bg-elevated);
+  --color-bg-highlight: var(--bg-highlight);
   --color-bg-sidebar: var(--bg-sidebar);
   --color-bg-sidebar-active: var(--bg-sidebar-active);
-  --color-bg-highlight: #FFFBEB;
-  --color-bg-surface-medium: #F5F5F5;
 
-  /* ---- Colors: Text (themed via CSS vars) ---- */
+  /* ---- Colors: Text ---- */
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
   --color-text-inverse: var(--text-inverse);
-  --color-text-on-accent: #FFFFFF;
-  --color-text-on-dark: #F5F5F5;
-  --color-text-on-primary: #FFFFFF;
-  --color-text-disabled: #D1D5DB;
+  --color-text-disabled: var(--text-disabled);
 
-  /* ---- Colors: Borders (themed via CSS vars) ---- */
+  /* ---- Colors: Borders ---- */
   --color-border-light: var(--border-light);
   --color-border-subtle: var(--border-subtle);
-  --color-border: var(--border);
+  --color-border-base: var(--border-base);
   --color-border-default: var(--border-default);
   --color-border-strong: var(--border-strong);
 
   /* ---- Colors: Accent & Brand ---- */
-  --color-accent: #C45B3C;
-  --color-accent-light: #FFF3ED;
-  --color-accent-muted: #A07A65;
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-muted: var(--accent-muted);
   --color-accent-soft: var(--accent-soft);
-  --color-primary: #FF6B6B;
-  --color-primary-hover: #FF5252;
-  --color-primary-light: #FFF0F0;
-  --color-coral-primary: #FF6B6B;
-  --color-coral-light: #FFF0F0;
-  --color-brand-primary: #8AB830;
-  --color-brand-secondary: #C4872A;
+  --color-coral-primary: var(--coral-primary);
+  --color-coral-light: var(--coral-light);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
 
-  /* ---- Colors: Semantic (themed via CSS vars) ---- */
+  /* ---- Colors: Semantic ---- */
   --color-success: var(--success);
   --color-error: var(--error);
-  --color-warning: #D4952A;
+  --color-warning: var(--warning);
   --color-info: var(--info);
   --color-success-bg: var(--success-bg);
   --color-error-bg: var(--error-bg);
   --color-warning-bg: var(--warning-bg);
   --color-info-bg: var(--info-bg);
-  --color-success-green: #22C55E;
-  --color-success-light: #F0FDF4;
-  --color-danger: #EF4444;
-  --color-danger-light: #FEF2F2;
-  --color-warning-light: #FFFBEB;
-  --color-warning-yellow: #FCD34D;
-  --color-info-indigo: #6366F1;
-  --color-info-light: #EEF2FF;
-  --color-negative: #B05454;
+  --color-negative: var(--negative);
   --color-negative-soft: var(--negative-soft);
-  --color-positive: #4A8C6F;
+  --color-positive: var(--positive);
   --color-positive-soft: var(--positive-soft);
 
-  /* ---- Colors: Temperature (4 niveles activos) ---- */
-  --color-temp-cold: #4A82C4;
-  --color-temp-warm: #C4872A;
-  --color-temp-hot: #CC5500;
-  --color-temp-burning: #D92B2B;
-  --color-temp-fire: #EF4444;
-  --color-temp-neutral: #8A9490;
+  /* ---- Colors: Temperature ---- */
+  --color-temp-cold: var(--temp-cold);
+  --color-temp-warm: var(--temp-warm);
+  --color-temp-hot: var(--temp-hot);
+  --color-temp-burning: var(--temp-burning);
+  --color-temp-fire: var(--temp-fire);
+  --color-temp-neutral: var(--temp-neutral);
 
-  /* ---- Colors: Categories (themed via CSS vars) ---- */
+  /* ---- Colors: Categories ---- */
   --color-cat-boardgames: var(--cat-boardgames);
   --color-cat-gaming: var(--cat-gaming);
   --color-cat-collectibles: var(--cat-collectibles);
   --color-cat-airsoft: var(--cat-airsoft);
   --color-cat-music: var(--cat-music);
   --color-cat-modeling: var(--cat-modeling);
-
-  /* Category light (static) */
-  --color-cat-boardgames-light: #EEEDFA;
-  --color-cat-gaming-light: #E6F7F0;
-  --color-cat-collectibles-light: #FDF4E6;
-  --color-cat-airsoft-light: #FDF0EB;
-  --color-cat-music-light: #FCEEF3;
-  --color-cat-modeling-light: #EBF3FC;
-
-  /* Category soft (themed via CSS vars) */
   --color-cat-boardgames-soft: var(--cat-boardgames-soft);
   --color-cat-gaming-soft: var(--cat-gaming-soft);
   --color-cat-collectibles-soft: var(--cat-collectibles-soft);
   --color-cat-airsoft-soft: var(--cat-airsoft-soft);
   --color-cat-music-soft: var(--cat-music-soft);
   --color-cat-modeling-soft: var(--cat-modeling-soft);
+  --color-cat-boardgames-light: var(--cat-boardgames-light);
+  --color-cat-gaming-light: var(--cat-gaming-light);
+  --color-cat-collectibles-light: var(--cat-collectibles-light);
+  --color-cat-airsoft-light: var(--cat-airsoft-light);
+  --color-cat-music-light: var(--cat-music-light);
+  --color-cat-modeling-light: var(--cat-modeling-light);
+
+  /* ---- Colors: shadcn/RNR Bridge ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-shadcn-accent: var(--shadcn-accent);
+  --color-shadcn-accent-foreground: var(--shadcn-accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
   /* ---- Typography ---- */
   --font-display: 'Space Grotesk', system-ui, sans-serif;
@@ -259,4 +346,5 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-pill: 26px;
+  --radius: var(--radius);
 }
