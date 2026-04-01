@@ -106,7 +106,7 @@ desde aquí.
 | Archivo         | Descripción                                                   |
 | --------------- | ------------------------------------------------------------- |
 | `preset.js`     | Tokens de color, tipografía y espaciado del sistema de diseño |
-| `nativewind.js` | Preset para mobile, compatible con NativeWind v4              |
+| `nativewind.js` | Preset para mobile, compatible con NativeWind v5              |
 
 ---
 

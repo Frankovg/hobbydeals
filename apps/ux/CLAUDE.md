@@ -6,7 +6,7 @@ HobbyDeals es una plataforma de chollos/ofertas vertical para hobbies. Inspirada
 ## Stack (contexto para decisiones de diseño)
 - **Monorepo**: Turborepo + pnpm
 - **Web**: Next.js 16 App Router + Tailwind CSS
-- **Mobile**: React Native + Expo + NativeWind v4
+- **Mobile**: React Native + Expo + NativeWind v5
 - **Backend**: Supabase (Auth nativo, Postgres, Realtime, Storage)
 - **UI compartida**: `@hobbydeals/ui` — componentes con className que funcionan en web y mobile
 

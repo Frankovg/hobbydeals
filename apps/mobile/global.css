@@ -1,5 +1,8 @@
-@import "tailwindcss";
-@import "uniwind";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
 
 @import "@hobbydeals/config/tailwind/theme.css";
 

@@ -13,7 +13,7 @@ equipo con un solo comando.
 - Inicializar Turborepo + pnpm workspaces con los 4 packages
 - Setup Supabase local con `supabase start` (Docker)
 - Aplicar schema SQL + seed: admin + 5 usuarios + 30 chollos de prueba
-- Configurar NativeWind v4 como puente de estilos web/mobile
+- Configurar NativeWind v5 como puente de estilos web/mobile
 - Setup CI: GitHub Actions con lint + type-check + build en cada PR
 - Generar tipos TypeScript desde Supabase local
 

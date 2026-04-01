@@ -8,7 +8,7 @@ only leisure and hobby offers. Community-driven with a temperature system
 
 - **Monorepo**: Turborepo + pnpm workspaces
 - **Web**: Next.js 16 App Router + Tailwind CSS
-- **Mobile**: React Native + Expo + Uniwind 1.6.1 (Tailwind v4 bindings, replaces NativeWind)
+- **Mobile**: React Native + Expo + NativeWind v5 (Tailwind v4 bindings)
 - **Backend**: Supabase (Auth, Postgres, Realtime, Storage)
 - **Auth**: Native Supabase Auth — NO Clerk (breaks RLS and triggers)
 - **Data fetching (web)**: Direct Supabase client in Server Components + Server Actions for mutations

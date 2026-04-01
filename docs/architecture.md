@@ -19,7 +19,7 @@ hobbydeals/
 │   │   ├── lib/                    # supabase SSR, metadata helpers
 │   │   └── middleware.ts           # auth guard + route protection
 │   │
-│   └── mobile/                     # React Native + Expo + NativeWind
+│   └── mobile/                     # React Native + Expo + NativeWind v5
 │       ├── app/
 │       │   ├── (auth)/             # onboarding, login, registro
 │       │   ├── (tabs)/             # feed, categorías, buscar, perfil
@@ -69,7 +69,7 @@ y `@hobbydeals/supabase`.
 ### `apps/mobile` — React Native + Expo
 
 Aplicación móvil para iOS y Android. Usa Expo Router para navegación basada en
-archivos, NativeWind para estilos compatibles con Tailwind, y los mismos paquetes
+archivos, NativeWind v5 para estilos compatibles con Tailwind CSS v4, y los mismos paquetes
 compartidos que la web.
 
 ## Paquetes
@@ -80,7 +80,7 @@ Ver [packages.md](./packages.md) para la documentación detallada de cada paquet
 
 - **Turborepo** gestiona el pipeline: `turbo dev` arranca web, mobile y Supabase local
   en paralelo; `turbo build` recompila solo lo que ha cambiado.
-- **NativeWind v4** es el puente de estilos: los componentes de `@hobbydeals/ui`
+- **NativeWind v5** es el puente de estilos: los componentes de `@hobbydeals/ui`
   usan `className` de Tailwind y funcionan en ambas plataformas sin wrappers.
 - **Supabase Auth nativo** — no Clerk. La RLS depende de `auth.uid()` y los
   triggers sobre `auth.users`. Sustituirlo rompería la seguridad a nivel de base

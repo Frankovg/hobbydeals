@@ -16,10 +16,10 @@ temperatura, alertas personalizadas y moderación editorial.
 
 - **Monorepo**: Turborepo + pnpm workspaces
 - **Web**: Next.js 14 App Router + Tailwind
-- **Mobile**: React Native + Expo + NativeWind v4
+- **Mobile**: React Native + Expo + NativeWind v5
 - **Backend**: Supabase (Auth, Postgres, Realtime, Storage)
 - **Auth**: Supabase Auth nativo — la RLS depende de `auth.uid()`
-- **Estilos compartidos**: NativeWind v4 — mismo `className` en web y mobile
+- **Estilos compartidos**: NativeWind v5 — mismo `className` en web y mobile
 - **Validación**: Zod en `@hobbydeals/core`, compartido entre apps
 
 Ver `CLAUDE.md` en la raíz para el contexto completo de desarrollo.

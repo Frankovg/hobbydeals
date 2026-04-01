@@ -1,5 +1,5 @@
 const { getDefaultConfig } = require("expo/metro-config");
-const { withUniwindConfig } = require("uniwind/metro");
+const { withNativeWind } = require("nativewind/metro");
 const path = require("path");
 
 const projectRoot = __dirname;
@@ -16,8 +16,7 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, "node_modules"),
 ];
 
-// withUniwindConfig MUST be the outermost wrapper
-module.exports = withUniwindConfig(config, {
-  cssEntryFile: "./global.css",
-  dtsFile: "./uniwind-types.d.ts",
+// withNativeWind MUST be the outermost wrapper
+module.exports = withNativeWind(config, {
+  input: "./global.css",
 });
