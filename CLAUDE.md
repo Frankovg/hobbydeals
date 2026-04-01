@@ -17,6 +17,7 @@ only leisure and hobby offers. Community-driven with a temperature system
 - **Validation**: Zod (schemas in `@hobbydeals/core`, shared web+mobile)
 - **Error tracking**: Sentry
 - **Deal images**: Open Graph scraping as default + manual upload as fallback. Supabase Storage bucket `deal-images`. Edge Function to parse `og:image` from the deal URL
+- **UX/Design**: Pencil (.pen files) — design source of truth lives in `apps/ux/`
 - **CI/CD**: GitHub Actions -> Vercel (web) + Expo EAS (mobile)
 
 ## Monorepo structure
@@ -25,7 +26,8 @@ only leisure and hobby offers. Community-driven with a temperature system
 hobbydeals/
 ├── apps/
 │   ├── web/          # Next.js 16 App Router
-│   └── mobile/       # React Native + Expo
+│   ├── mobile/       # React Native + Expo
+│   └── ux/           # Pencil design files — UX source of truth
 ├── packages/
 │   ├── ui/           # @hobbydeals/ui — cross-platform components (NativeWind)
 │   ├── core/         # @hobbydeals/core — hooks, API queries, utils, types, Zod schemas
@@ -70,6 +72,18 @@ Client factory per environment:
 - `tsconfig/base.json` (strict), `tsconfig/next.json`, `tsconfig/react-native.json`
 - `tailwind/preset.js` with temperature system color tokens
 - `tailwind/nativewind.js` for mobile
+
+## UX / Design (apps/ux/)
+
+Pencil project with the UX source of truth for web and mobile. Contains:
+
+- `hobbydeals-ux.pen` — main design file (read/write only via Pencil MCP tools, NOT Read/Grep)
+- `images/` — exported assets and references
+- `CLAUDE.md` — design guidelines, component specs, temperature system visuals, and brand manual
+
+**Important**: `.pen` files are encrypted. Always use `pencil` MCP tools (`batch_get`, `batch_design`, `get_editor_state`, etc.) to interact with them. Never use `Read` or `Grep` on `.pen` files.
+
+When implementing UI components, refer to the Pencil designs as the visual spec. The `apps/ux/CLAUDE.md` has the full design system documentation (colors, typography, spacing, component inventory).
 
 ## Database (Supabase + PostgreSQL)
 
