@@ -4,8 +4,12 @@ import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["nativewind", "react-native-css", "react-native-web"],
   turbopack: {
     root: path.join(__dirname, "../.."),
+    resolveAlias: {
+      "react-native": "react-native-web",
+    },
   },
   experimental: {
     serverActions: {
