@@ -17,21 +17,21 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="categorias"
+        name="categories"
         options={{
           title: "Categorías",
           tabBarLabel: "Categorías",
         }}
       />
       <Tabs.Screen
-        name="buscar"
+        name="search"
         options={{
           title: "Buscar",
           tabBarLabel: "Buscar",
         }}
       />
       <Tabs.Screen
-        name="perfil"
+        name="profile"
         options={{
           title: "Perfil",
           tabBarLabel: "Perfil",
