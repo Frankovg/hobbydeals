@@ -16,6 +16,14 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, "node_modules"),
 ];
 
+// Force shared native packages to resolve from the mobile app's node_modules
+// to avoid duplicate module instances in a pnpm monorepo
+config.resolver.extraNodeModules = {
+  "react-native": path.resolve(projectRoot, "node_modules/react-native"),
+  react: path.resolve(projectRoot, "node_modules/react"),
+  "react-dom": path.resolve(projectRoot, "node_modules/react-dom"),
+};
+
 // withNativeWind MUST be the outermost wrapper
 module.exports = withNativeWind(config, {
   input: "./global.css",

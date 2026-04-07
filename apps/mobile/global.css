@@ -5,6 +5,7 @@
 @import "nativewind/theme";
 
 @import "@hobbydeals/config/tailwind/theme.css";
+@source "../../packages/ui/src/**/*.{ts,tsx}";
 
 @theme {
   /* Fonts loaded via expo-font in _layout.tsx */
