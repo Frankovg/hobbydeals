@@ -7573,6 +7573,7 @@
                           "id": "HGCHW",
                           "name": "btnRow",
                           "width": "fill_container",
+                          "fill": "$--bg-card",
                           "layout": "vertical",
                           "gap": 12,
                           "alignItems": "center",
