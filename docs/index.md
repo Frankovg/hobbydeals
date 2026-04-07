@@ -1,25 +1,25 @@
-# HobbyDeals — Documentación
+# HobbyDeals — Documentation
 
-Plataforma de chollos vertical para hobbies. Comunidad-driven con sistema de
-temperatura, alertas personalizadas y moderación editorial.
+Vertical deals platform for hobbies. Community-driven with a temperature system
+(hot/cold votes), personalized alerts, and editorial moderation.
 
-## Documentos
+## Documents
 
-| Documento                            | Descripción                                                |
-| ------------------------------------ | ---------------------------------------------------------- |
-| [architecture.md](./architecture.md) | Estructura del monorepo, apps y decisiones de arquitectura |
-| [packages.md](./packages.md)         | Paquetes compartidos: ui, core, config, supabase           |
-| [roadmap.md](./roadmap.md)           | Fases del MVP (12 semanas) y backlog post-MVP              |
-| [panels.md](./panels.md)             | Panel de administración y panel de usuario                 |
+| Document                             | Description                                              |
+| ------------------------------------ | -------------------------------------------------------- |
+| [architecture.md](./architecture.md) | Monorepo structure, apps, and architecture decisions     |
+| [packages.md](./packages.md)         | Shared packages: ui, core, config, supabase              |
+| [roadmap.md](./roadmap.md)           | MVP phases (12 weeks) and post-MVP backlog               |
+| [panels.md](./panels.md)             | Admin panel and user panel                               |
 
-## Contexto rápido
+## Quick context
 
 - **Monorepo**: Turborepo + pnpm workspaces
-- **Web**: Next.js 14 App Router + Tailwind
+- **Web**: Next.js 16 App Router + Tailwind CSS
 - **Mobile**: React Native + Expo + NativeWind v5
 - **Backend**: Supabase (Auth, Postgres, Realtime, Storage)
-- **Auth**: Supabase Auth nativo — la RLS depende de `auth.uid()`
-- **Estilos compartidos**: NativeWind v5 — mismo `className` en web y mobile
-- **Validación**: Zod en `@hobbydeals/core`, compartido entre apps
+- **Auth**: Native Supabase Auth — RLS depends on `auth.uid()`
+- **Shared styles**: design tokens (theme.css) — NativeWind v5 mobile only, Tailwind CSS on web
+- **Validation**: Zod in `@hobbydeals/core`, shared across apps
 
-Ver `CLAUDE.md` en la raíz para el contexto completo de desarrollo.
+See root `CLAUDE.md` for the full development context.

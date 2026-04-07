@@ -8,17 +8,18 @@ HobbyDeals es una plataforma de chollos/ofertas vertical para hobbies. Inspirada
 - **Web**: Next.js 16 App Router + Tailwind CSS
 - **Mobile**: React Native + Expo + NativeWind v5
 - **Backend**: Supabase (Auth nativo, Postgres, Realtime, Storage)
-- **UI compartida**: `@hobbydeals/ui` — componentes con className que funcionan en web y mobile
+- **UI web**: `@hobbydeals/ui` — componentes HTML + Tailwind CSS (web-only). Mobile tiene componentes separados en `apps/mobile/`
+- **Tokens compartidos**: `packages/config/tailwind/theme.css` — colores, tipografía, spacing, temperatura, categorías
 
 ## Categorías MVP
 | Slug | Nombre | Color | Icono |
 |------|--------|-------|-------|
-| juegos-de-mesa | Juegos de Mesa | #7F77DD | dice-5 |
+| board-games | Juegos de Mesa | #7F77DD | dice-5 |
 | gaming | Gaming | #1D9E75 | gamepad-2 |
-| coleccionismo | Coleccionismo | #BA7517 | bookmark |
+| collectibles | Coleccionismo | #BA7517 | bookmark |
 | airsoft-paintball | Airsoft & Paintball | #D85A30 | crosshair |
-| musica | Música | #D4537E | music |
-| modelismo-miniaturas | Modelismo & Miniaturas | #378ADD | puzzle |
+| music | Música | #D4537E | music |
+| modeling-miniatures | Modelismo & Miniaturas | #378ADD | puzzle |
 
 ## Principios de Diseño
 - **Moderno y simple** — UI limpia, sin ruido visual

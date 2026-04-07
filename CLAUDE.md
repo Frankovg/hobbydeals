@@ -29,7 +29,7 @@ hobbydeals/
 │   ├── mobile/       # React Native + Expo
 │   └── ux/           # Pencil design files — UX source of truth
 ├── packages/
-│   ├── ui/           # @hobbydeals/ui — cross-platform components (NativeWind)
+│   ├── ui/           # @hobbydeals/ui — web-only components (HTML + Tailwind CSS)
 │   ├── core/         # @hobbydeals/core — hooks, API queries, utils, types, Zod schemas
 │   ├── config/       # @hobbydeals/config — eslint, tsconfig, tailwind preset
 │   └── supabase/     # @hobbydeals/supabase — client factory + generated types
@@ -43,10 +43,11 @@ hobbydeals/
 
 ### @hobbydeals/ui
 
-Components using `className` with Tailwind/NativeWind that work on web and
-mobile without wrappers. Key components: `DealCard`, `CategoryBadge`,
-`VoteButton`, `TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`,
-`EmptyState`.
+Web-only components using `className` with Tailwind CSS (HTML elements, Next.js compatible).
+Mobile has its own components in `apps/mobile/` using React Native + NativeWind v5.
+Both platforms share design tokens via `packages/config/tailwind/theme.css`.
+Key web components: `DealCard`, `CategoryBadge`, `VoteButton`, `TemperatureIndicator`,
+`PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`.
 
 ### @hobbydeals/core
 
@@ -70,8 +71,7 @@ Client factory per environment:
 
 - `eslint-config-base`, `eslint-config-next`, `eslint-config-react-native`
 - `tsconfig/base.json` (strict), `tsconfig/next.json`, `tsconfig/react-native.json`
-- `tailwind/preset.js` with temperature system color tokens
-- `tailwind/nativewind.js` for mobile
+- `tailwind/theme.css` — shared design tokens (colors, spacing, typography, temperature, categories)
 
 ## UX / Design (apps/ux/)
 
@@ -128,12 +128,12 @@ admin/moderator. Public tables (categories, stores, tags) have no RLS.
 
 | Slug                   | Name                   | Color   |
 | ---------------------- | ---------------------- | ------- |
-| `juegos-de-mesa`       | Juegos de Mesa         | #7F77DD |
+| `board-games`          | Juegos de Mesa         | #7F77DD |
 | `gaming`               | Gaming                 | #1D9E75 |
-| `coleccionismo`        | Coleccionismo          | #BA7517 |
+| `collectibles`         | Coleccionismo          | #BA7517 |
 | `airsoft-paintball`    | Airsoft & Paintball    | #D85A30 |
-| `musica`               | Música                 | #D4537E |
-| `modelismo-miniaturas` | Modelismo & Miniaturas | #378ADD |
+| `music`                | Música                 | #D4537E |
+| `modeling-miniatures`  | Modelismo & Miniaturas | #378ADD |
 
 ## Development data (seed.sql)
 
@@ -161,13 +161,13 @@ supabase gen types typescript --local > packages/supabase/src/types.ts
 ```
 app/
 ├── (auth)/login        # Magic link + OAuth Google
-├── (auth)/registro     # Registration + hobby selection
+├── (auth)/register     # Registration + hobby selection
 ├── (main)/             # Main feed with filters
-├── (main)/[categoria]  # Category feed
-├── (main)/chollo/[id]  # Detail with comments and votes
-├── (main)/buscar       # Full-text search (pg_trgm)
+├── (main)/[category]   # Category feed
+├── (main)/deal/[id]    # Detail with comments and votes
+├── (main)/search       # Full-text search (pg_trgm)
 ├── admin/              # Admin panel — protected role:admin|moderator
-└── perfil/             # User panel — protected auth
+└── profile/            # User panel — protected auth
 ```
 
 ### Mobile (Expo Router)
@@ -177,9 +177,9 @@ app/
 ├── (auth)/             # Onboarding + login
 └── (tabs)/
     ├── index           # Main feed
-    ├── categorias      # Category grid
-    ├── buscar          # Search
-    └── perfil          # User panel
+    ├── categories      # Category grid
+    ├── search          # Search
+    └── profile         # User panel
 ```
 
 ## Admin panel (/admin)
@@ -190,7 +190,7 @@ app/
 - Verified stores and affiliate URLs
 - Featured and sponsored management (always labeled)
 
-## User panel (/perfil)
+## User panel (/profile)
 
 - Activity and reputation overview
 - My deals (active/pending/expired)
@@ -225,7 +225,7 @@ and syncs mutations with queries. Always use when combining Supabase + TanStack 
 
 - **Code language**: All source code, comments, JSDoc, variable names, commits, and technical documentation must be **in English**. User-facing content (HTML, UI text, labels, descriptions) can be multilingual (Spanish by default for the app)
 - Strict TypeScript across the entire monorepo
-- `@hobbydeals/ui` components use `className` (NativeWind compatible)
+- `@hobbydeals/ui` is web-only (HTML + Tailwind CSS). Mobile components live in `apps/mobile/`
 - Never import from `apps/` inside `packages/`
 - Supabase queries always typed, never `any`
 - Zod schemas defined in `@hobbydeals/core/src/validations`, imported in both apps

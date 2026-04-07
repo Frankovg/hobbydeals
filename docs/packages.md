@@ -1,135 +1,135 @@
-# Paquetes compartidos
+# Shared Packages
 
-Todos los paquetes viven en `packages/` y son consumidos por `apps/web` y
-`apps/mobile`. Ningún paquete importa desde `apps/`.
+All packages live in `packages/` and are consumed by `apps/web` and
+`apps/mobile`. No package imports from `apps/`.
 
 ---
 
 ## `@hobbydeals/ui`
 
-Librería de componentes multiplataforma. Usa `className` de Tailwind/NativeWind,
-lo que permite que el mismo componente funcione en Next.js y React Native sin
-wrappers ni estilos duplicados.
+Web-only component library. Uses `className` with Tailwind CSS on standard HTML
+elements (Next.js). Mobile has separate components in `apps/mobile/` using
+React Native + NativeWind v5. Both platforms share design tokens via
+`packages/config/tailwind/theme.css`.
 
-### Componentes
+### Components
 
-| Componente             | Descripción                                                         |
+| Component              | Description                                                         |
 | ---------------------- | ------------------------------------------------------------------- |
-| `DealCard`             | Tarjeta de chollo con temperatura visual, precio, descuento y votos |
-| `CategoryBadge`        | Badge con icono y color por hobby                                   |
-| `VoteButton`           | Botón hot/cold con animación y estado optimista                     |
-| `TemperatureIndicator` | Escala visual de calor del chollo (frío → caliente)                 |
-| `PriceDisplay`         | Precio actual + precio original tachado + % descuento               |
-| `UserAvatar`           | Avatar con imagen o fallback de iniciales                           |
-| `SearchBar`            | Barra de búsqueda adaptada a web y mobile                           |
-| `EmptyState`           | Estado vacío ilustrado con mensaje y acción opcional                |
-| `Toast` / `Alert`      | Notificaciones temporales y mensajes de error                       |
+| `DealCard`             | Deal card with visual temperature, price, discount, and votes       |
+| `CategoryBadge`        | Badge with icon and hobby color                                     |
+| `VoteButton`           | Hot/cold button with animation and optimistic state                 |
+| `TemperatureIndicator` | Visual heat scale for the deal (cold → hot)                         |
+| `PriceDisplay`         | Current price + original strikethrough + % discount                 |
+| `UserAvatar`           | Avatar with image or initials fallback                              |
+| `SearchBar`            | Web search bar                                                      |
+| `EmptyState`           | Illustrated empty state with message and optional action            |
+| `Toast` / `Alert`      | Temporary notifications and error messages                          |
 
-### Tema (`src/theme/`)
+### Theme (`src/theme/`)
 
-Define los tokens del sistema de diseño: colores de temperatura (frío → azul,
-caliente → rojo), paleta por categoría, tipografía y espaciado. Exporta el
-preset de Tailwind que extiende `@hobbydeals/config/tailwind/preset.js`.
+Defines design system tokens: temperature colors (cold → blue, hot → red),
+category palette, typography, and spacing. Exports the Tailwind preset that
+extends `@hobbydeals/config/tailwind/preset.js`.
 
 ---
 
 ## `@hobbydeals/core`
 
-Lógica de negocio compartida entre web y mobile: hooks de datos, utilidades,
-tipos TypeScript y schemas de validación.
+Shared business logic between web and mobile: data hooks, utilities,
+TypeScript types, and validation schemas.
 
 ### Hooks (`src/hooks/`)
 
-| Hook                | Descripción                                                                     |
-| ------------------- | ------------------------------------------------------------------------------- |
-| `useDeals(filters)` | Feed paginado con infinite scroll y filtros por categoría, temperatura y precio |
-| `useDeal(id)`       | Detalle de un chollo con suscripción Realtime para temperatura en vivo          |
-| `useVote()`         | Votar hot/cold con optimistic update y rollback en error                        |
-| `useAuth()`         | Sesión activa, perfil completo y helpers de rol                                 |
-| `useAlerts()`       | CRUD de alertas por keyword, categoría y precio máximo                          |
+| Hook                | Description                                                                    |
+| ------------------- | ------------------------------------------------------------------------------ |
+| `useDeals(filters)` | Paginated feed with infinite scroll and filters by category, temperature, price |
+| `useDeal(id)`       | Deal detail with Realtime subscription for live temperature                    |
+| `useVote()`         | Vote hot/cold with optimistic update and error rollback                        |
+| `useAuth()`         | Active session, full profile, and role helpers                                 |
+| `useAlerts()`       | CRUD for alerts by keyword, category, and max price                            |
 
-### Utilidades (`src/utils/`)
+### Utilities (`src/utils/`)
 
-| Función                         | Descripción                                                              |
+| Function                        | Description                                                              |
 | ------------------------------- | ------------------------------------------------------------------------ |
-| `formatPrice(amount, currency)` | Formatea precios con i18n (locale ES por defecto)                        |
-| `getTemperatureLabel(n)`        | Devuelve etiqueta según temperatura: frío / tibio / caliente / en llamas |
-| `timeAgo(date)`                 | Fecha relativa en español: "hace 3 horas", "ayer"...                     |
+| `formatPrice(amount, currency)` | Formats prices with i18n (ES locale by default)                          |
+| `getTemperatureLabel(n)`        | Returns label by temperature: cold / warm / hot / burning                |
+| `timeAgo(date)`                 | Relative date in Spanish: "hace 3 horas", "ayer"...                      |
 
-### Validaciones (`src/validations/`)
+### Validations (`src/validations/`)
 
-Schemas Zod definidos una vez y usados en ambas apps:
+Zod schemas defined once and used in both apps:
 
-- `dealSchema` — publicar o editar un chollo
-- `registerSchema` — registro de usuario
-- `alertSchema` — crear o modificar una alerta
-- `profileSchema` — editar perfil
+- `dealSchema` — publish or edit a deal
+- `registerSchema` — user registration
+- `alertSchema` — create or modify an alert
+- `profileSchema` — edit profile
 
-### Tipos (`src/types/`)
+### Types (`src/types/`)
 
-Tipos TypeScript globales del dominio: `Deal`, `Profile`, `Category`, `Vote`,
-`Alert`, `Comment`, `Notification`. Se complementan con los tipos generados
-automáticamente en `@hobbydeals/supabase`.
+Global domain TypeScript types: `Deal`, `Profile`, `Category`, `Vote`,
+`Alert`, `Comment`, `Notification`. Complemented by auto-generated types
+in `@hobbydeals/supabase`.
 
 ### API (`src/api/`)
 
-Queries Supabase tipadas y reutilizables, sin lógica de UI. Cada función recibe
-el cliente de Supabase como parámetro para ser compatible con SSR (server client)
-y client-side (browser client).
+Typed and reusable Supabase queries, no UI logic. Each function receives
+the Supabase client as a parameter to be compatible with SSR (server client)
+and client-side (browser client).
 
 ---
 
 ## `@hobbydeals/config`
 
-Configuraciones de toolchain compartidas. Ninguna app o paquete define sus
-propias reglas de ESLint, TypeScript o Tailwind desde cero — siempre extienden
-desde aquí.
+Shared toolchain configurations. No app or package defines its own ESLint,
+TypeScript, or Tailwind rules from scratch — they always extend from here.
 
 ### ESLint (`eslint/`)
 
-| Config                       | Extiende                                  |
+| Config                       | Extends                                   |
 | ---------------------------- | ----------------------------------------- |
-| `eslint-config-base`         | Reglas comunes a todo el monorepo         |
-| `eslint-config-next`         | Base + reglas específicas de Next.js      |
-| `eslint-config-react-native` | Base + reglas específicas de React Native |
+| `eslint-config-base`         | Common rules for the entire monorepo      |
+| `eslint-config-next`         | Base + Next.js specific rules             |
+| `eslint-config-react-native` | Base + React Native specific rules        |
 
 ### TypeScript (`typescript/`)
 
-| Config              | Descripción                                                      |
+| Config              | Description                                                      |
 | ------------------- | ---------------------------------------------------------------- |
-| `base.json`         | TypeScript estricto (`strict: true`, `noUncheckedIndexedAccess`) |
-| `next.json`         | Extiende base con paths y plugins de Next.js                     |
-| `react-native.json` | Extiende base con tipos de React Native y Expo                   |
+| `base.json`         | Strict TypeScript (`strict: true`, `noUncheckedIndexedAccess`)   |
+| `next.json`         | Extends base with Next.js paths and plugins                      |
+| `react-native.json` | Extends base with React Native and Expo types                    |
 
 ### Tailwind (`tailwind/`)
 
-| Archivo         | Descripción                                                   |
-| --------------- | ------------------------------------------------------------- |
-| `preset.js`     | Tokens de color, tipografía y espaciado del sistema de diseño |
-| `nativewind.js` | Preset para mobile, compatible con NativeWind v5              |
+| File            | Description                                                                         |
+| --------------- | ----------------------------------------------------------------------------------- |
+| `preset.js`     | Design system color, typography, and spacing tokens                                 |
+| `theme.css`     | Shared design tokens (colors, typography, spacing, temperature, categories)         |
 
 ---
 
 ## `@hobbydeals/supabase`
 
-Factoría de clientes Supabase y tipos generados. Centraliza la configuración de
-conexión para que cada app use el cliente correcto según el contexto.
+Supabase client factory and generated types. Centralizes connection
+configuration so each app uses the correct client for its context.
 
-### Clientes (`src/client.ts`)
+### Clients (`src/client.ts`)
 
-| Función                 | Uso                                          |
+| Function                | Usage                                        |
 | ----------------------- | -------------------------------------------- |
 | `createBrowserClient()` | Next.js client components (`"use client"`)   |
-| `createServerClient()`  | React Server Components y API routes         |
-| `createMobileClient()`  | React Native con `AsyncStorage` como storage |
+| `createServerClient()`  | React Server Components and API routes       |
+| `createMobileClient()`  | React Native with `AsyncStorage` as storage  |
 
-### Tipos (`src/types.ts`)
+### Types (`src/types.ts`)
 
-Generados automáticamente con:
+Auto-generated with:
 
 ```bash
 supabase gen types typescript --local > packages/supabase/src/types.ts
 ```
 
-Exporta `Database`, `Tables<T>` y `Enums<T>` para acceso tipado a toda la base
-de datos. Regenerar tras cada migración.
+Exports `Database`, `Tables<T>`, and `Enums<T>` for typed access to the entire
+database. Regenerate after each migration.
