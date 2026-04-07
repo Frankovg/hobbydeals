@@ -7,8 +7,7 @@
 
    Architecture:
    1. :root / .dark  → single source of truth (HEX values)
-   2. shadcn bridge  → aliases for RNR components (var refs only)
-   3. @theme          → Tailwind utility generation (var refs only)
+   2. @theme          → Tailwind utility generation (var refs only)
    ============================================ */
 
 /* -----------------------------------------
@@ -100,27 +99,6 @@
   --cat-music-light: #FCEEF3;
   --cat-modeling-light: #EBF3FC;
 
-  /* ---- shadcn/RNR Bridge ---- */
-  --background: var(--bg-base);
-  --foreground: var(--text-primary);
-  --card: var(--bg-card);
-  --card-foreground: var(--text-primary);
-  --popover: var(--bg-card);
-  --popover-foreground: var(--text-primary);
-  --primary: var(--accent);
-  --primary-foreground: var(--text-inverse);
-  --secondary: var(--bg-subtle);
-  --secondary-foreground: var(--text-primary);
-  --muted: var(--bg-subtle);
-  --muted-foreground: var(--text-secondary);
-  --shadcn-accent: var(--bg-subtle);
-  --shadcn-accent-foreground: var(--text-primary);
-  --destructive: var(--error);
-  --destructive-foreground: var(--text-inverse);
-  --border: var(--border-default);
-  --input: var(--border-subtle);
-  --ring: var(--accent);
-  --radius: 8px;
 }
 
 .dark {
@@ -208,7 +186,6 @@
   --cat-music-light: #2E141E;
   --cat-modeling-light: #141E2E;
 
-  /* shadcn bridge inherits automatically via var() — no overrides needed */
 }
 
 /* -----------------------------------------
@@ -297,27 +274,6 @@
   --color-cat-music-light: var(--cat-music-light);
   --color-cat-modeling-light: var(--cat-modeling-light);
 
-  /* ---- Colors: shadcn/RNR Bridge ---- */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-shadcn-accent: var(--shadcn-accent);
-  --color-shadcn-accent-foreground: var(--shadcn-accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
   /* ---- Typography ---- */
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
@@ -346,5 +302,4 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-pill: 26px;
-  --radius: var(--radius);
 }
