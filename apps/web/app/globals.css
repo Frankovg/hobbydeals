@@ -1,9 +1,5 @@
-@layer theme, base;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css";
+@import "tailwindcss";
 @import "@hobbydeals/config/tailwind/theme.css";
-@source "../../../packages/ui/src/**/*.{ts,tsx}";
 
 @theme {
   /* Fonts loaded via next/font in layout.tsx */

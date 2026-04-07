@@ -1,5 +1,7 @@
 import { Inter, Space_Grotesk } from "next/font/google";
 
+import { Providers } from "./providers";
+
 import type { Metadata } from "next";
 
 import "./globals.css";
@@ -28,9 +30,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="es" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="es" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className="antialiased">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

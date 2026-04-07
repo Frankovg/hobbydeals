@@ -12,7 +12,6 @@
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
-    "nativewind-env.d.ts",
     "next.config.ts",
     ".next/types/**/*.ts"
   ],
