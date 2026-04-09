@@ -1,6 +1,6 @@
 # Shared Packages
 
-All packages live in `packages/` and are consumed by `apps/web` and
+All packages live in `packages/` and are consumed by `apps/web` and/or
 `apps/mobile`. No package imports from `apps/`.
 
 ---
@@ -8,9 +8,8 @@ All packages live in `packages/` and are consumed by `apps/web` and
 ## `@hobbydeals/ui`
 
 Web-only component library. Uses `className` with Tailwind CSS on standard HTML
-elements (Next.js). Mobile has separate components in `apps/mobile/` using
-React Native + NativeWind v5. Both platforms share design tokens via
-`packages/config/tailwind/theme.css`.
+elements (Next.js compatible). Mobile has its own package `@hobbydeals/ui-native`.
+Both platforms share design tokens via `packages/config/tailwind/theme.css`.
 
 ### Components
 
@@ -31,6 +30,45 @@ React Native + NativeWind v5. Both platforms share design tokens via
 Defines design system tokens: temperature colors (cold → blue, hot → red),
 category palette, typography, and spacing. Exports the Tailwind preset that
 extends `@hobbydeals/config/tailwind/preset.js`.
+
+### Testing
+
+- **Unit/integration**: Jest + `@testing-library/react`. Tests co-locate with components (`*.test.tsx`).
+- **Visual**: Storybook (`@storybook/react` + `@storybook/nextjs`) + Chromatic for visual regression. Stories co-locate with components (`*.stories.tsx`).
+
+```
+src/deal-card/
+├── deal-card.tsx
+├── deal-card.test.tsx
+└── deal-card.stories.tsx
+```
+
+---
+
+## `@hobbydeals/ui-native`
+
+Mobile-only component library. Uses React Native primitives (`View`, `Text`,
+`Pressable`) with NativeWind v5 for styling. Consumed by `apps/mobile/`.
+Shares design tokens with `@hobbydeals/ui` via `packages/config/tailwind/theme.css`.
+
+### Components
+
+| Component              | Description                                                         |
+| ---------------------- | ------------------------------------------------------------------- |
+| `DealCard`             | Deal card with visual temperature, price, discount, and votes       |
+| `CategoryBadge`        | Badge with icon and hobby color                                     |
+| `VoteButton`           | Hot/cold button with animation and optimistic state                 |
+| `TemperatureIndicator` | Visual heat scale for the deal (cold → hot)                         |
+| `PriceDisplay`         | Current price + original strikethrough + % discount                 |
+| `UserAvatar`           | Avatar with image or initials fallback                              |
+| `SearchBar`            | Mobile search bar                                                   |
+| `EmptyState`           | Illustrated empty state with message and optional action            |
+| `Toast` / `Alert`      | Temporary notifications and error messages                          |
+
+### Testing
+
+- **Unit/integration**: Jest (`jest-expo` preset) + `@testing-library/react-native`. Tests co-locate with components (`*.test.tsx`).
+- **Visual**: Storybook (`@storybook/react-native` for on-device development) + `@storybook/addon-react-native-web` for Chromatic (renders RN components in browser via `react-native-web`). Stories co-locate with components (`*.stories.tsx`).
 
 ---
 

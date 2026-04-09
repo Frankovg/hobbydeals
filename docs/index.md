@@ -11,6 +11,7 @@ Vertical deals platform for hobbies. Community-driven with a temperature system
 | [packages.md](./packages.md)         | Shared packages: ui, core, config, supabase              |
 | [roadmap.md](./roadmap.md)           | MVP phases (12 weeks) and post-MVP backlog               |
 | [panels.md](./panels.md)             | Admin panel and user panel                               |
+| [testing.md](./testing.md)           | Testing strategy: unit, visual, E2E per platform         |
 
 ## Quick context
 

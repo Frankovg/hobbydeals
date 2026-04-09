@@ -24,12 +24,17 @@ hobbydeals/
 │       │   ├── (auth)/             # onboarding, login, registration
 │       │   ├── (tabs)/             # feed, categories, search, profile
 │       │   └── deal/[id]/          # detail with deep link
-│       ├── components/             # native-specific components
+│       ├── e2e/                    # Maestro E2E flows (YAML)
 │       └── app.json                # Expo + EAS config
 │
 ├── packages/
 │   ├── ui/                         # @hobbydeals/ui (web-only)
-│   │   └── src/components/         # DealCard, CategoryBadge, VoteButton... (HTML + Tailwind)
+│   │   ├── src/components/         # DealCard, CategoryBadge, VoteButton... (HTML + Tailwind)
+│   │   └── .storybook/             # Storybook config (web)
+│   │
+│   ├── ui-native/                  # @hobbydeals/ui-native (mobile-only)
+│   │   ├── src/components/         # DealCard, CategoryBadge, VoteButton... (RN + NativeWind)
+│   │   └── .storybook/             # Storybook config (RN + react-native-web)
 │   │
 │   ├── core/                       # @hobbydeals/core
 │   │   ├── src/api/                # typed Supabase queries
@@ -63,14 +68,14 @@ hobbydeals/
 
 Main web application with App Router. Server-side rendering for SEO and
 performance. Consumes shared packages `@hobbydeals/ui`, `@hobbydeals/core`,
-and `@hobbydeals/supabase`.
+and `@hobbydeals/supabase`. E2E tests with Playwright in `apps/web/e2e/`.
 
 ### `apps/mobile` — React Native + Expo
 
 Mobile application for iOS and Android. Uses Expo Router for file-based
 navigation, NativeWind v5 for Tailwind CSS v4 compatible styles, and the same
-shared logic packages as web (core, supabase). UI components are native-specific
-and live in `apps/mobile/`.
+shared logic packages as web (core, supabase). UI components come from
+`@hobbydeals/ui-native`. E2E tests with Maestro in `apps/mobile/e2e/`.
 
 ## Packages
 
@@ -80,10 +85,14 @@ See [packages.md](./packages.md) for detailed documentation of each package.
 
 - **Turborepo** manages the pipeline: `turbo dev` starts web, mobile, and local
   Supabase in parallel; `turbo build` recompiles only what has changed.
-- **Per-platform styling**: web uses Tailwind CSS directly, mobile uses
-  NativeWind v5. Both share design tokens via `packages/config/tailwind/theme.css`.
-  Components are separate: `@hobbydeals/ui` is web-only, mobile has its own in `apps/mobile/`.
+- **Per-platform UI packages**: web uses `@hobbydeals/ui` (HTML + Tailwind CSS),
+  mobile uses `@hobbydeals/ui-native` (RN + NativeWind v5). Both share design tokens
+  via `packages/config/tailwind/theme.css`. Never mix web and native components in the same package.
 - **Native Supabase Auth** — no Clerk. RLS depends on `auth.uid()` and triggers
   on `auth.users`. Replacing it would break database-level security.
 - Packages in `packages/` never import from `apps/`. The dependency flow is
   always `apps → packages`, never the reverse.
+- **Testing pyramid**: Jest + Testing Library for unit/integration in both UI
+  packages and core. Storybook + Chromatic for visual regression in both UI
+  packages. Playwright for web E2E (`apps/web/e2e/`). Maestro for mobile E2E
+  (`apps/mobile/e2e/`).
