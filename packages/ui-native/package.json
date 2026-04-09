@@ -1,0 +1,27 @@
+{
+  "name": "@hobbydeals/ui-native",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.tsx"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-native": ">=0.76.0",
+    "nativewind": ">=5.0.0-preview"
+  },
+  "devDependencies": {
+    "@hobbydeals/eslint-config": "workspace:*",
+    "@hobbydeals/typescript-config": "workspace:*",
+    "@types/react": "19.2.14",
+    "eslint": "^9.39.4",
+    "nativewind": "^5.0.0-preview",
+    "react": "^19.2.0",
+    "react-native": "0.83.4",
+    "typescript": "5.9.3"
+  }
+}
