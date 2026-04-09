@@ -25,11 +25,12 @@ Both platforms share design tokens via `packages/config/tailwind/theme.css`.
 | `EmptyState`           | Illustrated empty state with message and optional action            |
 | `Toast` / `Alert`      | Temporary notifications and error messages                          |
 
-### Theme (`src/theme/`)
+### Theme
 
-Defines design system tokens: temperature colors (cold → blue, hot → red),
-category palette, typography, and spacing. Exports the Tailwind preset that
-extends `@hobbydeals/config/tailwind/preset.js`.
+Design tokens (temperature colors, category palette, typography, spacing) are
+defined in `@hobbydeals/config/tailwind/theme.css` and imported via CSS.
+Both `@hobbydeals/ui` (web) and `@hobbydeals/ui-native` (mobile) share the
+same token file — no JS preset needed (Tailwind v4 CSS-first approach).
 
 ### Testing
 
@@ -141,10 +142,9 @@ TypeScript, or Tailwind rules from scratch — they always extend from here.
 
 ### Tailwind (`tailwind/`)
 
-| File            | Description                                                                         |
-| --------------- | ----------------------------------------------------------------------------------- |
-| `preset.js`     | Design system color, typography, and spacing tokens                                 |
-| `theme.css`     | Shared design tokens (colors, typography, spacing, temperature, categories)         |
+| File        | Description                                                                     |
+| ----------- | ------------------------------------------------------------------------------- |
+| `theme.css` | Shared design tokens (CSS vars + Tailwind v4 `@theme`). Single source of truth for both web (Tailwind CSS) and mobile (NativeWind v5). Each app imports it via `@import "@hobbydeals/config/tailwind/theme.css"` and overrides fonts locally |
 
 ---
 
