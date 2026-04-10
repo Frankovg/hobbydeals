@@ -4,6 +4,13 @@ Deals platform specialized in hobbies, inspired by Chollometro but vertical:
 only leisure and hobby offers. Community-driven with a temperature system
 (hot/cold votes), personalized alerts, and editorial moderation.
 
+## Project documentation
+
+The `docs/` directory is the source of truth for architecture, packages, testing,
+roadmap, panels, and brand identity. Always read and follow `docs/` before
+implementing. If your changes conflict with what's documented there, flag it
+before proceeding.
+
 ## Stack decisions (do not change without discussion)
 
 - **Monorepo**: Turborepo + pnpm workspaces
