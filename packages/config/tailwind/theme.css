@@ -76,10 +76,10 @@
   --radius: 8px;
 
   /* Semantic */
-  --success: #4caf50;
-  --error: #cc3b30;
+  --success: #5ec562;
+  --error: #e05048;
   --warning: #d4952a;
-  --info: #4a82c4;
+  --info: #5b95d9;
   --success-bg: #f0fbf0;
   --error-bg: #fdf0ef;
   --warning-bg: #fdf8f0;
@@ -197,20 +197,20 @@
   --positive-soft: #1a2e22;
 
   /* Temperature */
-  --temp-cold: #5b95d9;
-  --temp-warm: #d4952a;
-  --temp-hot: #e06800;
-  --temp-burning: #e83030;
+  --temp-cold: #4a82c4;
+  --temp-warm: #c4872a;
+  --temp-hot: #cc5500;
+  --temp-burning: #d92b2b;
   --temp-fire: #f05050;
   --temp-neutral: #8a9490;
 
   /* Categories */
-  --cat-boardgames: #9b94e8;
-  --cat-gaming: #28c491;
-  --cat-collectibles: #d4872a;
-  --cat-airsoft: #e86b40;
-  --cat-music: #e06490;
-  --cat-modeling: #4a96ee;
+  --cat-boardgames: #7f77dd;
+  --cat-gaming: #1d9e75;
+  --cat-collectibles: #ba7517;
+  --cat-airsoft: #d85a30;
+  --cat-music: #d4537e;
+  --cat-modeling: #378add;
 
   /* Category soft backgrounds */
   --cat-boardgames-soft: #221e2e;
