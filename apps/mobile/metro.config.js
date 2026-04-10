@@ -27,4 +27,5 @@ config.resolver.extraNodeModules = {
 // withNativeWind MUST be the outermost wrapper
 module.exports = withNativeWind(config, {
   input: "./global.css",
+  inlineRem: 16,
 });
