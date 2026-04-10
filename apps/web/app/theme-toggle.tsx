@@ -1,10 +1,10 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import { Button } from "@hobbydeals/ui/button";
 import { useTheme } from "next-themes";
+import { useSyncExternalStore } from "react";
 
-const emptySubscribe = () => () => {};
+const emptySubscribe = () => () => { };
 
 export function ThemeToggle() {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
