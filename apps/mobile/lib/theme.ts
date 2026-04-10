@@ -1,9 +1,9 @@
+// AUTO-GENERATED — do not edit manually.
+// Source of truth: packages/config/tailwind/theme.css
+// Regenerate:      node packages/config/scripts/generate-mobile-theme.js
+
 import { DarkTheme, DefaultTheme, type Theme } from "@react-navigation/native";
 
-/**
- * Theme constants mirroring CSS variables from @hobbydeals/config/tailwind/theme.css.
- * Keep in sync with theme.css :root and .dark selectors.
- */
 export const THEME = {
   light: {
     background: "#f5f4f0",
