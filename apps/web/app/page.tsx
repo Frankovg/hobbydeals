@@ -2,14 +2,14 @@ import { Button } from "@hobbydeals/ui/button";
 
 import { ThemeToggle } from "./theme-toggle";
 
-const categories = [
-  { name: "Juegos de Mesa", emoji: "🎲", color: "bg-cat-boardgames" },
-  { name: "Gaming", emoji: "🎮", color: "bg-cat-gaming" },
-  { name: "Coleccionismo", emoji: "🏆", color: "bg-cat-collectibles" },
-  { name: "Airsoft & Paintball", emoji: "🎯", color: "bg-cat-airsoft" },
-  { name: "Música", emoji: "🎸", color: "bg-cat-music" },
-  { name: "Modelismo & Miniaturas", emoji: "🪆", color: "bg-cat-modeling" },
-];
+// const categories = [
+//   { name: "Juegos de Mesa", emoji: "🎲", color: "bg-cat-boardgames" },
+//   { name: "Gaming", emoji: "🎮", color: "bg-cat-gaming" },
+//   { name: "Coleccionismo", emoji: "🏆", color: "bg-cat-collectibles" },
+//   { name: "Airsoft & Paintball", emoji: "🎯", color: "bg-cat-airsoft" },
+//   { name: "Música", emoji: "🎸", color: "bg-cat-music" },
+//   { name: "Modelismo & Miniaturas", emoji: "🪆", color: "bg-cat-modeling" },
+// ];
 
 export default function Home(): React.JSX.Element {
   return (
