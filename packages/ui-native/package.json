@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx",
+    "./*": "./src/*/index.ts",
     "./lib/*": "./src/lib/*.ts",
     "./lib/icons": "./src/lib/icons.tsx"
   },
@@ -23,7 +23,7 @@
     "@rn-primitives/portal": ">=1.0.0",
     "@rn-primitives/slot": ">=1.0.0",
     "@rn-primitives/types": ">=1.0.0",
-    "lucide-react-native": ">=0.400.0",
+    "lucide-react-native": ">=1.0.0",
     "react-native-svg": ">=15.0.0"
   },
   "devDependencies": {

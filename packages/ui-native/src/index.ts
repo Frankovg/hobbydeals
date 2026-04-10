@@ -3,3 +3,7 @@
 
 export { cn } from "./lib/utils";
 export { iconWithClassName } from "./lib/icons";
+export { Text, TextClassContext, textVariants } from "./text/text";
+export type { TextVariantProps } from "./text/text";
+export { Button, buttonTextVariants, buttonVariants } from "./button/button";
+export type { ButtonProps } from "./button/button";
