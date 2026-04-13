@@ -226,7 +226,7 @@ Category colors remain unchanged from product spec, but must be verified for con
 | Juegos de Mesa | `#7F77DD` | `#9B94E8` (lightened +15%) |
 | Gaming | `#1D9E75` | `#28C491` (lightened +15%) |
 | Coleccionismo | `#BA7517` | `#D4872A` (lightened +10%) |
-| Airsoft & Paintball | `#D85A30` | `#E86B40` (lightened +5%) |
+| Airsoft | `#D85A30` | `#E86B40` (lightened +5%) |
 | Música | `#D4537E` | `#E06490` (lightened +5%) |
 | Modelismo | `#378ADD` | `#4A96EE` (lightened +5%) |
 
@@ -395,7 +395,7 @@ Icons do not use fill in the outlined variant. The brand relies on line weight a
 | Juegos de Mesa | `dice-5` |
 | Gaming | `gamepad-2` |
 | Coleccionismo | `bookmark` |
-| Airsoft & Paintball | `crosshair` |
+| Airsoft | `crosshair` |
 | Música | `music` |
 | Modelismo | `puzzle` |
 

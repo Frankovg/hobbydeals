@@ -17,9 +17,9 @@ HobbyDeals es una plataforma de chollos/ofertas vertical para hobbies. Inspirada
 | board-games | Juegos de Mesa | #7F77DD | dice-5 |
 | gaming | Gaming | #1D9E75 | gamepad-2 |
 | collectibles | Coleccionismo | #BA7517 | bookmark |
-| airsoft-paintball | Airsoft & Paintball | #D85A30 | crosshair |
+| airsoft | Airsoft | #D85A30 | crosshair |
 | music | Música | #D4537E | music |
-| modeling-miniatures | Modelismo & Miniaturas | #378ADD | puzzle |
+| modeling | Modelismo | #378ADD | puzzle |
 
 ## Principios de Diseño
 - **Moderno y simple** — UI limpia, sin ruido visual

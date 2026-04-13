@@ -151,9 +151,9 @@ admin/moderator. Public tables (categories, stores, tags) have no RLS.
 | `board-games`          | Juegos de Mesa         | #7F77DD |
 | `gaming`               | Gaming                 | #1D9E75 |
 | `collectibles`         | Coleccionismo          | #BA7517 |
-| `airsoft-paintball`    | Airsoft & Paintball    | #D85A30 |
+| `airsoft`              | Airsoft                | #D85A30 |
 | `music`                | Música                 | #D4537E |
-| `modeling-miniatures`  | Modelismo & Miniaturas | #378ADD |
+| `modeling`             | Modelismo              | #378ADD |
 
 ## Development data (seed.sql)
 
