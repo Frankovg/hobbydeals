@@ -369,6 +369,9 @@ importers:
       react-native:
         specifier: 0.83.4
         version: 0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4)
+      react-native-css:
+        specifier: 3.0.6
+        version: 3.0.6(@expo/metro-config@55.0.15)(lightningcss@1.30.1)(react-native@0.83.4)(react@19.2.4)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -7107,7 +7110,7 @@ packages:
       react-native-css: ^3.0.1
       tailwindcss: '>4.1.11'
     dependencies:
-      react-native-css: 3.0.6(@expo/metro-config@55.0.15)(lightningcss@1.30.1)(react-native@0.83.4)(react@19.2.0)
+      react-native-css: 3.0.6(@expo/metro-config@55.0.15)(lightningcss@1.30.1)(react-native@0.83.4)(react@19.2.4)
       tailwindcss: 4.2.2
       tailwindcss-safe-area: 1.3.0(tailwindcss@4.2.2)
 
@@ -7677,6 +7680,27 @@ packages:
       lightningcss: 1.30.1
       react: 19.2.0
       react-native: 0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /react-native-css@3.0.6(@expo/metro-config@55.0.15)(lightningcss@1.30.1)(react-native@0.83.4)(react@19.2.4):
+    resolution: {integrity: sha512-YhP3SGc9VRItWZ9TMt+QENor5ha2ym3z3QiyL/eRVrBmV3LCv9FyxOhw9c0SB8Ndvwc7KH0ch2XCQ7ZgZg5dNQ==}
+    peerDependencies:
+      '@expo/metro-config': '>=54'
+      lightningcss: 1.30.1
+      react: '>=19'
+      react-native: '>=0.81'
+    dependencies:
+      '@expo/metro-config': 55.0.15(expo@55.0.14)(typescript@5.9.3)
+      '@types/debug': 4.1.13
+      babel-plugin-react-compiler: 19.1.0-rc.3
+      colorjs.io: 0.6.0-alpha.1
+      comment-json: 4.6.2
+      debug: 4.4.3
+      lightningcss: 1.30.1
+      react: 19.2.4
+      react-native: 0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4)
     transitivePeerDependencies:
       - supports-color
 
