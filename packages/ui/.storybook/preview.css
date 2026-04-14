@@ -1,0 +1,5 @@
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/utilities" layer(utilities);
+@import "../../config/tailwind/theme.css";
+
+@source "../src/**/*.{ts,tsx}";

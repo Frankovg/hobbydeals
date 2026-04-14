@@ -8,15 +8,23 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --project-token=chpt_c64ba1a823570eb --exit-zero-on-changes"
   },
   "devDependencies": {
     "@hobbydeals/eslint-config": "workspace:*",
     "@hobbydeals/typescript-config": "workspace:*",
+    "@storybook/react-vite": "^10.3.5",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^25.5.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "chromatic": "^16.2.0",
     "eslint": "^9.39.4",
+    "storybook": "^10.3.5",
+    "tailwindcss": "^4.2.2",
     "typescript": "5.9.3"
   },
   "dependencies": {

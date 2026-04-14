@@ -9,7 +9,10 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "storybook": "storybook dev -p 6007",
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -29,12 +32,20 @@
   "devDependencies": {
     "@hobbydeals/eslint-config": "workspace:*",
     "@hobbydeals/typescript-config": "workspace:*",
+    "@storybook/react-vite": "^10.3.5",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/react": "19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "chromatic": "^16.2.0",
     "eslint": "^9.39.4",
     "nativewind": "^5.0.0-preview",
-    "react": "^19.2.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "react-native": "0.83.4",
     "react-native-css": "3.0.6",
+    "react-native-web": "^0.21.2",
+    "storybook": "^10.3.5",
+    "tailwindcss": "^4.2.2",
     "typescript": "5.9.3"
   }
 }
