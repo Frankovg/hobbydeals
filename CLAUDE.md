@@ -25,7 +25,8 @@ before proceeding.
 - **Error tracking**: Sentry
 - **Deal images**: Open Graph scraping as default + manual upload as fallback. Supabase Storage bucket `deal-images`. Edge Function to parse `og:image` from the deal URL
 - **UX/Design**: Pencil (.pen files) — design source of truth lives in `apps/ux/`
-- **Testing (unit/integration)**: Jest + React Testing Library (web) + Jest + `@testing-library/react-native` (mobile)
+- **Testing (UI packages)**: Vitest + `@storybook/addon-vitest` (stories as tests, browser mode with Playwright) + `@storybook/addon-a11y` (accessibility)
+- **Testing (apps)**: Jest + React Testing Library (web) + Jest + `@testing-library/react-native` (mobile)
 - **Testing (visual)**: Storybook + Chromatic for both `@hobbydeals/ui` and `@hobbydeals/ui-native`
 - **Testing (E2E web)**: Playwright (automated via MCP + Claude Code)
 - **Testing (E2E mobile)**: Maestro (YAML-based flows)
@@ -253,31 +254,42 @@ and syncs mutations with queries. Always use when combining Supabase + TanStack 
 
 ## Testing strategy
 
-### Unit & integration tests — Jest + Testing Library
+### UI packages — Vitest + Storybook addon-vitest
 
-Both UI packages and `@hobbydeals/core` use Jest for unit and integration tests.
+`@hobbydeals/ui` and `@hobbydeals/ui-native` use Vitest with `@storybook/addon-vitest` to run
+stories as component tests in a real browser (Playwright Chromium, headless). Stories double as
+tests — no separate `.test.tsx` files needed for component behavior covered by stories.
 
-| Package | Test library | Preset |
-|---------|-------------|--------|
-| `@hobbydeals/ui` | `@testing-library/react` | `ts-jest` |
-| `@hobbydeals/ui-native` | `@testing-library/react-native` | `jest-expo` |
-| `@hobbydeals/core` | `@testing-library/react` (for hooks) | `ts-jest` |
+| Package | Test runner | Browser | A11y |
+|---------|------------|---------|------|
+| `@hobbydeals/ui` | `vitest --project=storybook` | Playwright Chromium | `@storybook/addon-a11y` |
+| `@hobbydeals/ui-native` | `vitest --project=storybook` | Playwright Chromium | `@storybook/addon-a11y` |
 
 Stories and tests live next to each component:
 ```
 packages/ui/src/deal-card/
 ├── deal-card.tsx
-├── deal-card.test.tsx
-└── deal-card.stories.tsx
+├── deal-card.stories.tsx    # doubles as component test
+└── index.ts
 ```
+
+### App tests — Jest + Testing Library
+
+Apps use Jest for unit and integration tests (business logic, hooks, screens).
+
+| Package | Test library | Preset |
+|---------|-------------|--------|
+| `apps/web` | `@testing-library/react` | `ts-jest` |
+| `apps/mobile` | `@testing-library/react-native` | `jest-expo` |
+| `@hobbydeals/core` | `@testing-library/react` (for hooks) | `ts-jest` |
 
 ### Visual testing — Storybook + Chromatic
 
-Both `@hobbydeals/ui` and `@hobbydeals/ui-native` have their own Storybook setup.
-Chromatic runs against both packages for automated visual regression.
+Both `@hobbydeals/ui` and `@hobbydeals/ui-native` have their own Storybook setup
+with `@storybook/react-vite`. Chromatic runs against both packages for automated visual regression.
 
-- `@hobbydeals/ui`: standard `@storybook/react` + `@storybook/nextjs`
-- `@hobbydeals/ui-native`: `@storybook/react-native` for on-device development + `@storybook/addon-react-native-web` for Chromatic (renders RN components in browser via `react-native-web`)
+- `@hobbydeals/ui`: `@storybook/react-vite` with web viewports (mobile 390px, tablet 768px, desktop 1280px, wide 1536px)
+- `@hobbydeals/ui-native`: `@storybook/react-vite` + `react-native-web` alias, with mobile viewports (iPhone SE, iPhone 14, iPhone 14 Pro Max, Android)
 
 ### E2E tests — Playwright (web) + Maestro (mobile)
 

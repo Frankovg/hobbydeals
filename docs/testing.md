@@ -12,63 +12,85 @@ critical user flows.
         ─┼─────────┼─
         │  Visual   │  Storybook + Chromatic (ui + ui-native)
        ─┼───────────┼─
-       │ Unit/Integ  │  Jest + Testing Library (all packages)
-       └─────────────┘
+       │ Component  │  Vitest + addon-vitest (ui + ui-native)
+      ─┼────────────┼─
+      │ Unit/Integ   │  Jest + Testing Library (apps + core)
+      └──────────────┘
 ```
 
 ## Tools by layer
 
-| Layer              | Web                                  | Mobile                                                  | Shared packages          |
-| ------------------ | ------------------------------------ | ------------------------------------------------------- | ------------------------ |
-| Unit / integration | Jest + `@testing-library/react`      | Jest + `@testing-library/react-native`                  | Jest + Testing Library   |
-| Visual regression  | Storybook + Chromatic                | Storybook (RN) + `react-native-web` + Chromatic         | —                        |
-| E2E                | Playwright                           | Maestro                                                 | —                        |
+| Layer              | UI packages (`ui`, `ui-native`)                         | Apps (`web`, `mobile`)                                  | Shared packages (`core`) |
+| ------------------ | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------ |
+| Component tests    | Vitest + `@storybook/addon-vitest` (stories as tests)   | —                                                       | —                        |
+| Unit / integration | —                                                       | Jest + Testing Library                                  | Jest + Testing Library   |
+| Visual regression  | Storybook + Chromatic                                   | —                                                       | —                        |
+| Accessibility      | `@storybook/addon-a11y` (axe-core)                      | —                                                       | —                        |
+| E2E                | —                                                       | Playwright (web) / Maestro (mobile)                     | —                        |
 
 ---
 
-## Unit & integration tests
+## Component tests — Vitest + addon-vitest (UI packages)
+
+UI packages (`@hobbydeals/ui` and `@hobbydeals/ui-native`) use Vitest with
+`@storybook/addon-vitest` to run stories as component tests in a real browser
+(Playwright Chromium, headless). Stories double as tests — no separate
+`.test.tsx` files needed for component behavior covered by stories.
+
+### Setup per UI package
+
+| Package                  | Test runner                    | Browser             | A11y                     |
+| ------------------------ | ------------------------------ | ------------------- | ------------------------ |
+| `@hobbydeals/ui`         | `vitest --project=storybook`   | Playwright Chromium | `@storybook/addon-a11y`  |
+| `@hobbydeals/ui-native`  | `vitest --project=storybook`   | Playwright Chromium | `@storybook/addon-a11y`  |
+
+### File conventions
+
+Stories co-locate with the component they cover:
+
+```
+packages/ui/src/deal-card/
+├── deal-card.tsx
+├── deal-card.stories.tsx    # doubles as component test
+└── index.ts
+```
+
+### Running component tests
+
+```bash
+pnpm --filter @hobbydeals/ui test-storybook          # run all story tests
+pnpm --filter @hobbydeals/ui-native test-storybook    # run all story tests (native)
+```
+
+---
+
+## Unit & integration tests — Jest (apps + core)
+
+Apps and `@hobbydeals/core` use Jest + Testing Library for unit and integration
+tests covering business logic, hooks, and screens.
 
 ### Setup per package
 
 | Package                  | Preset       | Test library                       |
 | ------------------------ | ------------ | ---------------------------------- |
-| `@hobbydeals/ui`         | `ts-jest`    | `@testing-library/react`           |
-| `@hobbydeals/ui-native`  | `jest-expo`  | `@testing-library/react-native`    |
+| `apps/web`               | `ts-jest`    | `@testing-library/react`           |
+| `apps/mobile`            | `jest-expo`  | `@testing-library/react-native`    |
 | `@hobbydeals/core`       | `ts-jest`    | `@testing-library/react` (hooks)   |
-
-### File conventions
-
-Tests co-locate with the source file they cover:
-
-```
-packages/ui/src/deal-card/
-├── deal-card.tsx
-├── deal-card.test.tsx
-└── deal-card.stories.tsx
-```
-
-```
-packages/ui-native/src/deal-card/
-├── deal-card.tsx
-├── deal-card.test.tsx
-└── deal-card.stories.tsx
-```
 
 ### What to test
 
-- **Components**: rendering, props, interactions (press, input), conditional
-  states (loading, error, empty), accessibility labels.
 - **Hooks** (`@hobbydeals/core`): return values, state transitions, error
   handling. Use `renderHook` from Testing Library.
 - **Utils** (`@hobbydeals/core`): pure functions with straightforward
   input/output assertions.
 - **Validations**: Zod schemas with valid and invalid payloads.
+- **Screens/pages** (apps): rendering, navigation, data loading states.
 
 ### Running tests
 
 ```bash
-turbo test                          # all packages
-turbo test --filter=@hobbydeals/ui  # single package
+turbo test                            # all packages
+turbo test --filter=@hobbydeals/core  # single package
 ```
 
 ---
@@ -80,16 +102,17 @@ and Chromatic for automated visual regression on every PR.
 
 ### `@hobbydeals/ui` (web)
 
-- Framework: `@storybook/react` + `@storybook/nextjs`
+- Framework: `@storybook/react-vite`
 - Config: `packages/ui/.storybook/`
-- Stories use standard HTML rendering in Chromium
+- Addons: `@storybook/addon-a11y`, `@storybook/addon-vitest`
+- Viewports: mobile (390px), tablet (768px), desktop (1280px), wide (1536px)
 
 ### `@hobbydeals/ui-native` (mobile)
 
-- On-device development: `@storybook/react-native` (renders in simulator)
-- Chromatic / browser: `@storybook/addon-react-native-web` renders RN components
-  via `react-native-web` so Chromatic can capture browser screenshots
+- Framework: `@storybook/react-vite` + `react-native-web` alias
 - Config: `packages/ui-native/.storybook/`
+- Addons: `@storybook/addon-a11y`, `@storybook/addon-vitest`
+- Viewports: iPhone SE (375px), iPhone 14 (390px), iPhone 14 Pro Max (430px), Android (360px)
 
 ### Story conventions
 
@@ -198,9 +221,10 @@ maestro studio                           # interactive flow builder
 
 All test layers run in GitHub Actions:
 
-| Step                  | Trigger     | What runs                                               |
-| --------------------- | ----------- | ------------------------------------------------------- |
-| Unit / integration    | Every push  | `turbo test` across all packages                        |
+| Step                  | Trigger     | What runs                                                     |
+| --------------------- | ----------- | ------------------------------------------------------------- |
+| Component tests       | Every push  | `vitest run --project=storybook` in `ui` and `ui-native`     |
+| Unit / integration    | Every push  | `turbo test` across apps and core                             |
 | Storybook + Chromatic | Every PR    | Visual diff for `@hobbydeals/ui` and `@hobbydeals/ui-native` |
-| Playwright E2E        | Every PR    | Critical web flows against local Supabase               |
-| Maestro E2E           | Every PR    | Critical mobile flows against Expo dev build            |
+| Playwright E2E        | Every PR    | Critical web flows against local Supabase                     |
+| Maestro E2E           | Every PR    | Critical mobile flows against Expo dev build                  |
