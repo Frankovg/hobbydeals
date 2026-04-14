@@ -23576,7 +23576,7 @@
       "type": "color",
       "value": [
         {
-          "value": "#F0FBF0",
+          "value": "#E3F9E3",
           "theme": {
             "mode": "light"
           }
@@ -23652,7 +23652,7 @@
       "type": "color",
       "value": [
         {
-          "value": "#FDF8F0",
+          "value": "#FAEFDE",
           "theme": {
             "mode": "light"
           }
@@ -24260,7 +24260,7 @@
       "type": "color",
       "value": [
         {
-          "value": "#FDF0EF",
+          "value": "#FBE1DF",
           "theme": {
             "mode": "light"
           }

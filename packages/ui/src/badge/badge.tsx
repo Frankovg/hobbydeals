@@ -29,7 +29,7 @@ const variantIcons = {
 } as const;
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-semibold transition-colors [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0",
+  "inline-flex items-center gap-1 rounded-sm px-2.5 py-1 text-[11px] font-semibold transition-colors [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -52,17 +52,17 @@ const badgeVariants = cva(
         discount:
           "rounded-full bg-brand text-white py-[3px]",
         "board-games":
-          "bg-cat-boardgames-soft text-cat-boardgames dark:bg-cat-boardgames-light",
+          "border border-cat-boardgames text-cat-boardgames",
         gaming:
-          "bg-cat-gaming-soft text-cat-gaming dark:bg-cat-gaming-light",
+          "border border-cat-gaming text-cat-gaming",
         collectibles:
-          "bg-cat-collectibles-soft text-cat-collectibles dark:bg-cat-collectibles-light",
+          "border border-cat-collectibles text-cat-collectibles",
         airsoft:
-          "bg-cat-airsoft-soft text-cat-airsoft dark:bg-cat-airsoft-light",
+          "border border-cat-airsoft text-cat-airsoft",
         music:
-          "bg-cat-music-soft text-cat-music dark:bg-cat-music-light",
+          "border border-cat-music text-cat-music",
         modeling:
-          "bg-cat-modeling-soft text-cat-modeling dark:bg-cat-modeling-light",
+          "border border-cat-modeling text-cat-modeling",
       },
     },
     defaultVariants: {
