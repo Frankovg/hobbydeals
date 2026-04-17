@@ -6,5 +6,25 @@
     "postgrest",
     "Supabase",
     "Turborepo"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#5e9fc0",
+    "activityBar.background": "#5e9fc0",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#a03f7f",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#5e9fc0",
+    "statusBar.background": "#4286a9",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#5e9fc0",
+    "statusBarItem.remoteBackground": "#4286a9",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#4286a9",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#4286a999",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#4286a9"
 }
