@@ -1,6 +1,7 @@
 {
   "extends": "@hobbydeals/typescript-config/library.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist",
     "strictNullChecks": true
   },
