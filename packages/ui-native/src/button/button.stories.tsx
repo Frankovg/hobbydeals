@@ -5,6 +5,9 @@ import { Text } from "../text/text";
 import { Button } from "./button";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ComponentProps } from "react";
+
+type ButtonArgs = ComponentProps<typeof Button> & { label?: string };
 
 const meta = {
   title: "Components/Button",
@@ -27,50 +30,50 @@ const meta = {
     },
     disabled: { control: "boolean" },
   },
-  render: (args) => (
+  render: ({ label, ...args }) => (
     <Button {...args}>
-      <Text>{args.label ?? "Button"}</Text>
+      <Text>{label ?? "Button"}</Text>
     </Button>
   ),
-} satisfies Meta<typeof Button> & { args?: { label?: string } };
+} satisfies Meta<ButtonArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { label: "Publicar oferta" } as any,
+  args: { label: "Publicar oferta" },
 };
 
 export const Destructive: Story = {
-  args: { variant: "destructive", label: "Eliminar" } as any,
+  args: { variant: "destructive", label: "Eliminar" },
 };
 
 export const Outline: Story = {
-  args: { variant: "outline", label: "Cancelar" } as any,
+  args: { variant: "outline", label: "Cancelar" },
 };
 
 export const Secondary: Story = {
-  args: { variant: "secondary", label: "Guardar borrador" } as any,
+  args: { variant: "secondary", label: "Guardar borrador" },
 };
 
 export const Ghost: Story = {
-  args: { variant: "ghost", label: "Ver m\u00e1s" } as any,
+  args: { variant: "ghost", label: "Ver m\u00e1s" },
 };
 
 export const Link: Story = {
-  args: { variant: "link", label: "Ir a la tienda" } as any,
+  args: { variant: "link", label: "Ir a la tienda" },
 };
 
 export const Small: Story = {
-  args: { size: "sm", label: "Votar" } as any,
+  args: { size: "sm", label: "Votar" },
 };
 
 export const Large: Story = {
-  args: { size: "lg", label: "Crear cuenta" } as any,
+  args: { size: "lg", label: "Crear cuenta" },
 };
 
 export const Disabled: Story = {
-  args: { disabled: true, label: "No disponible" } as any,
+  args: { disabled: true, label: "No disponible" },
 };
 
 export const AllVariants: Story = {

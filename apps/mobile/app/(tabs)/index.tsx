@@ -1,6 +1,6 @@
-import { View } from "react-native";
 import { Button } from "@hobbydeals/ui-native/button";
 import { Text } from "@hobbydeals/ui-native/text";
+import { View } from "react-native";
 
 export default function FeedScreen() {
   return (
