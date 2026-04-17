@@ -102,10 +102,10 @@ export const Modeling: Story = {
 export const TemperatureVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
-      <Badge variant="burning">342\u00b0</Badge>
-      <Badge variant="hot">180\u00b0</Badge>
-      <Badge variant="warm">75\u00b0</Badge>
-      <Badge variant="cold">-12\u00b0</Badge>
+      <Badge variant="burning">342º</Badge>
+      <Badge variant="hot">180º</Badge>
+      <Badge variant="warm">75º</Badge>
+      <Badge variant="cold">-12º</Badge>
     </div>
   ),
 };
