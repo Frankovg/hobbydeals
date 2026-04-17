@@ -1,3 +1,5 @@
+import { expect } from "storybook/test";
+
 import { Badge } from "./badge";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -35,6 +37,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: { children: "Activo" },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Activo")).toBeInTheDocument();
+  },
 };
 
 export const Secondary: Story = {
@@ -61,6 +66,11 @@ export const Burning: Story = {
 
 export const Hot: Story = {
   args: { children: "180\u00b0", variant: "hot" },
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByText("180°")).toBeInTheDocument();
+    const icon = canvasElement.querySelector("svg");
+    await expect(icon).not.toBeNull();
+  },
 };
 
 export const Warm: Story = {
@@ -79,6 +89,11 @@ export const BoardGames: Story = {
 
 export const Gaming: Story = {
   args: { children: "Gaming", variant: "gaming" },
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByText("Gaming")).toBeInTheDocument();
+    const icon = canvasElement.querySelector("svg");
+    await expect(icon).not.toBeNull();
+  },
 };
 
 export const Collectibles: Story = {

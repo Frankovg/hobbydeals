@@ -26,5 +26,14 @@
     "titleBar.inactiveBackground": "#4286a999",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#4286a9"
+  "peacock.color": "#4286a9",
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.turbo/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/storybook-static/**": true,
+    "**/coverage/**": true
+  },
 }

@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Flame } from "lucide-react";
+import { expect, fn, userEvent } from "storybook/test";
 
 import { Button } from "./button";
+
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Components/Button",
@@ -30,7 +32,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { children: "Publicar oferta" },
+  args: { children: "Publicar oferta", onClick: fn() },
+  play: async ({ args, canvas }) => {
+    const button = canvas.getByRole("button", { name: "Publicar oferta" });
+    await expect(button).toBeInTheDocument();
+    await userEvent.click(button);
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
 };
 
 export const Destructive: Story = {
@@ -71,6 +79,10 @@ export const Icon: Story = {
 
 export const Disabled: Story = {
   args: { children: "No disponible", disabled: true },
+  play: async ({ canvas }) => {
+    const button = canvas.getByRole("button", { name: "No disponible" });
+    await expect(button).toBeDisabled();
+  },
 };
 
 export const AllVariants: Story = {
