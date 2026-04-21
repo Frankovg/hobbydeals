@@ -15,23 +15,25 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: cn(
-          "bg-primary active:bg-primary/90 shadow-sm shadow-black/5",
+          "bg-primary active:bg-primary/90",
           Platform.select({ web: "hover:bg-primary/90" })
         ),
         destructive: cn(
-          "bg-destructive active:bg-destructive/90 dark:bg-destructive/60 shadow-sm shadow-black/5",
+          "bg-destructive active:bg-destructive/90",
           Platform.select({
             web: "hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
           })
         ),
+        //TODO: ESTÁ MAL EL COLOR DE TEXTO EN DARK
+        //TODO: NO FUNCIONAN LOS ICONOS EN STORYBOOK
         outline: cn(
-          "border-border bg-background active:bg-accent dark:bg-input/30 dark:border-input dark:active:bg-input/50 border shadow-sm shadow-black/5",
+          "border border-input active:bg-accent",
           Platform.select({
-            web: "hover:bg-accent dark:hover:bg-input/50",
+            web: "hover:bg-accent hover:text-accent-foreground",
           })
         ),
         secondary: cn(
-          "bg-secondary active:bg-secondary/80 shadow-sm shadow-black/5",
+          "bg-secondary active:bg-secondary/80",
           Platform.select({ web: "hover:bg-secondary/80" })
         ),
         ghost: cn(
@@ -72,13 +74,13 @@ const buttonTextVariants = cva(
     variants: {
       variant: {
         default: "text-primary-foreground",
-        destructive: "text-white",
+        destructive: "text-destructive-foreground",
         outline: cn(
-          "group-active:text-accent-foreground",
+          "",
           Platform.select({ web: "group-hover:text-accent-foreground" })
         ),
-        secondary: "text-secondary-foreground",
-        ghost: "group-active:text-accent-foreground",
+        secondary: "text-primary-foreground",
+        ghost: "text-muted-foreground group-active:text-accent-foreground",
         link: cn(
           "text-primary group-active:underline",
           Platform.select({

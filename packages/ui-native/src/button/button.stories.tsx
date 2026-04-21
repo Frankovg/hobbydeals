@@ -45,7 +45,11 @@ export const Default: Story = {
 };
 
 export const Destructive: Story = {
-  args: { variant: "destructive", label: "Eliminar" },
+  args: {
+    variant: "destructive",
+    label: "Eliminar",
+    disabled: false
+  },
 };
 
 export const Outline: Story = {
