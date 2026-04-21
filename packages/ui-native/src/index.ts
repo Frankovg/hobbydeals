@@ -7,3 +7,5 @@ export { Text, TextClassContext, textVariants } from "./text/text";
 export type { TextVariantProps } from "./text/text";
 export { Button, buttonTextVariants, buttonVariants } from "./button/button";
 export type { ButtonProps } from "./button/button";
+export { Badge, badgeTextVariants, badgeVariants } from "./badge/badge";
+export type { BadgeProps } from "./badge/badge";

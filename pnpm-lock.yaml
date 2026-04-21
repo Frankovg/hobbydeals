@@ -431,6 +431,9 @@ importers:
       eslint:
         specifier: ^9.39.4
         version: 9.39.4
+      lucide-react:
+        specifier: ^1.8.0
+        version: 1.8.0(react@19.2.5)
       nativewind:
         specifier: ^5.0.0-preview
         version: 5.0.0-preview.3(react-native-css@3.0.6)(tailwindcss@4.2.2)
@@ -7844,7 +7847,6 @@ packages:
       react: 19.2.5
     dependencies:
       react: 19.2.5
-    dev: false
 
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
