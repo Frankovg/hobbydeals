@@ -4,3 +4,8 @@
 @import "../../config/tailwind/theme.css";
 
 @source "../src/**/*.{ts,tsx}";
+
+body {
+  background-color: var(--bg-base);
+  color: var(--foreground);
+}

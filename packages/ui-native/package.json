@@ -36,6 +36,7 @@
     "@hobbydeals/typescript-config": "workspace:*",
     "@playwright/test": "^1.59.1",
     "@storybook/addon-a11y": "^10.3.5",
+    "@storybook/addon-themes": "^10.3.5",
     "@storybook/addon-vitest": "^10.3.5",
     "@storybook/react-vite": "^10.3.5",
     "@tailwindcss/vite": "^4.2.2",

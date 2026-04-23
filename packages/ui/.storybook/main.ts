@@ -8,6 +8,7 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-a11y",
     "@storybook/addon-vitest",
+    "@storybook/addon-themes",
     "@chromatic-com/storybook"
   ],
   typescript: {
