@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@hobbydeals/config/tailwind/theme.css";
+@source "../../../packages/ui/src/**/*.{ts,tsx}";
 
 @theme {
   /* Fonts loaded via next/font in layout.tsx */

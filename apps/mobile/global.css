@@ -1,7 +1,12 @@
-@import "tailwindcss";
-@import "uniwind";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
 
 @import "@hobbydeals/config/tailwind/theme.css";
+@import "./theme-system.css";
+@source "../../packages/ui-native/src/**/*.{ts,tsx}";
 
 @theme {
   /* Fonts loaded via expo-font in _layout.tsx */

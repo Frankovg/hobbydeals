@@ -7,7 +7,6 @@
     "icon": "./assets/icon.png",
     "scheme": "hobbydeals",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -30,6 +29,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7c6dae14-a304-4ec9-85ef-d3f42331c876"
+      }
+    },
+    "owner": "frankovg"
   }
 }

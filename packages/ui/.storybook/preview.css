@@ -1,0 +1,11 @@
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+@import "../../config/tailwind/theme.css";
+
+@source "../src/**/*.{ts,tsx}";
+
+body {
+  background-color: var(--bg-base);
+  color: var(--foreground);
+}

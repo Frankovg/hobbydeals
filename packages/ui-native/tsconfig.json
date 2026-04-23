@@ -1,0 +1,14 @@
+{
+  "extends": "@hobbydeals/typescript-config/react-library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "strictNullChecks": true,
+    "lib": ["es2022"],
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "nativewind-env.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

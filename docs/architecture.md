@@ -1,89 +1,107 @@
-# Arquitectura del monorepo
+# Monorepo Architecture
 
-HobbyDeals es un monorepo gestionado con **Turborepo** y **pnpm workspaces**,
-compuesto por dos aplicaciones y cuatro paquetes compartidos.
+HobbyDeals is a monorepo managed with **Turborepo** and **pnpm workspaces**,
+composed of two applications and four shared packages.
 
-## Estructura de directorios
+## Directory structure
 
 ```
 hobbydeals/
 ├── apps/
-│   ├── web/                        # Next.js 14 + App Router + Tailwind
+│   ├── web/                        # Next.js 16 + App Router + Tailwind
 │   │   ├── app/
-│   │   │   ├── (auth)/             # login, registro, recuperar clave
-│   │   │   ├── (main)/             # feed, detalle, categorías, búsqueda
-│   │   │   ├── admin/              # dashboard, moderación, usuarios
-│   │   │   ├── perfil/             # panel usuario, ajustes, alertas
-│   │   │   └── api/                # webhooks, revalidación, afiliación
-│   │   ├── components/             # componentes web-específicos
+│   │   │   ├── (auth)/             # login, registration, password recovery
+│   │   │   ├── (main)/             # feed, detail, categories, search
+│   │   │   ├── admin/              # dashboard, moderation, users
+│   │   │   ├── profile/            # user panel, settings, alerts
+│   │   │   └── api/                # webhooks, revalidation, affiliation
+│   │   ├── components/             # web-specific components
 │   │   ├── lib/                    # supabase SSR, metadata helpers
 │   │   └── middleware.ts           # auth guard + route protection
 │   │
-│   └── mobile/                     # React Native + Expo + NativeWind
+│   └── mobile/                     # React Native + Expo + NativeWind v5
 │       ├── app/
-│       │   ├── (auth)/             # onboarding, login, registro
-│       │   ├── (tabs)/             # feed, categorías, buscar, perfil
-│       │   └── chollo/[id]/        # detalle con deep link
-│       ├── components/             # componentes native-específicos
-│       └── app.json                # config Expo + EAS
+│       │   ├── (auth)/             # onboarding, login, registration
+│       │   ├── (tabs)/             # feed, categories, search, profile
+│       │   └── deal/[id]/          # detail with deep link
+│       ├── e2e/                    # Maestro E2E flows (YAML)
+│       └── app.json                # Expo + EAS config
 │
 ├── packages/
-│   ├── ui/                         # @hobbydeals/ui
-│   │   ├── src/components/         # DealCard, CategoryBadge, VoteButton...
-│   │   └── src/theme/              # tokens, colores, tipografía
+│   ├── ui/                         # @hobbydeals/ui (web-only)
+│   │   ├── src/components/         # DealCard, CategoryBadge, VoteButton... (HTML + Tailwind)
+│   │   └── .storybook/             # Storybook config (web)
+│   │
+│   ├── ui-native/                  # @hobbydeals/ui-native (mobile-only)
+│   │   ├── src/components/         # DealCard, CategoryBadge, VoteButton... (RN + NativeWind)
+│   │   └── .storybook/             # Storybook config (RN + react-native-web)
 │   │
 │   ├── core/                       # @hobbydeals/core
-│   │   ├── src/api/                # queries Supabase tipadas
+│   │   ├── src/api/                # typed Supabase queries
 │   │   ├── src/hooks/              # useDeals, useAuth, useVote...
-│   │   ├── src/types/              # tipos globales TypeScript
+│   │   ├── src/types/              # global TypeScript types
 │   │   ├── src/utils/              # formatPrice, timeAgo, getTemp...
-│   │   └── src/validations/        # schemas Zod compartidos
+│   │   └── src/validations/        # shared Zod schemas
 │   │
 │   ├── config/                     # @hobbydeals/config
-│   │   ├── eslint/                 # configs base, next, react-native
+│   │   ├── eslint/                 # base, next, react-native configs
 │   │   ├── typescript/             # tsconfig base, next, rn
-│   │   └── tailwind/               # preset + NativeWind preset
+│   │   ├── tailwind/               # theme.css (shared design tokens)
+│   │   └── scripts/                # generate-mobile-theme.ts (theme:generate)
 │   │
 │   └── supabase/                   # @hobbydeals/supabase
 │       ├── src/client.ts           # factory: browser, server, mobile
-│       └── src/types.ts            # tipos generados (supabase gen types)
+│       └── src/types.ts            # generated types (supabase gen types)
 │
-├── supabase/                       # configuración local (Docker)
-│   ├── migrations/                 # schema SQL versionado
-│   ├── seed.sql                    # admin + users + 30 chollos de prueba
-│   └── config.toml                 # puertos, auth, smtp local
+├── supabase/                       # local config (Docker)
+│   ├── migrations/                 # versioned SQL schema
+│   ├── seed.sql                    # admin + users + 30 test deals
+│   └── config.toml                 # ports, auth, local smtp
 │
-├── turbo.json                      # pipeline build/dev/lint/test
-├── pnpm-workspace.yaml             # definición del workspace
-└── package.json                    # root workspace + scripts globales
+├── turbo.json                      # build/dev/lint/test pipeline
+├── pnpm-workspace.yaml             # workspace definition
+└── package.json                    # root workspace + global scripts
 ```
 
-## Aplicaciones
+## Applications
 
-### `apps/web` — Next.js 14
+### `apps/web` — Next.js 16
 
-Aplicación web principal con App Router. Renderizado en servidor para SEO y
-rendimiento. Consume los paquetes compartidos `@hobbydeals/ui`, `@hobbydeals/core`
-y `@hobbydeals/supabase`.
+Main web application with App Router. Server-side rendering for SEO and
+performance. Consumes shared packages `@hobbydeals/ui`, `@hobbydeals/core`,
+and `@hobbydeals/supabase`. E2E tests with Playwright in `apps/web/e2e/`.
 
 ### `apps/mobile` — React Native + Expo
 
-Aplicación móvil para iOS y Android. Usa Expo Router para navegación basada en
-archivos, NativeWind para estilos compatibles con Tailwind, y los mismos paquetes
-compartidos que la web.
+Mobile application for iOS and Android. Uses Expo Router for file-based
+navigation, NativeWind v5 for Tailwind CSS v4 compatible styles, and the same
+shared logic packages as web (core, supabase). UI components come from
+`@hobbydeals/ui-native`. E2E tests with Maestro in `apps/mobile/e2e/`.
 
-## Paquetes
+## Packages
 
-Ver [packages.md](./packages.md) para la documentación detallada de cada paquete.
+See [packages.md](./packages.md) for detailed documentation of each package.
 
-## Decisiones de arquitectura
+## Architecture decisions
 
-- **Turborepo** gestiona el pipeline: `turbo dev` arranca web, mobile y Supabase local
-  en paralelo; `turbo build` recompila solo lo que ha cambiado.
-- **NativeWind v4** es el puente de estilos: los componentes de `@hobbydeals/ui`
-  usan `className` de Tailwind y funcionan en ambas plataformas sin wrappers.
-- **Supabase Auth nativo** — no Clerk. La RLS depende de `auth.uid()` y los
-  triggers sobre `auth.users`. Sustituirlo rompería la seguridad a nivel de base
-  de datos.
-- Los paquetes en `packages/` nunca importan desde `apps/`. El flujo de
-  dependencias es siempre `apps → packages`, nunca al revés.
+- **Turborepo** manages the pipeline: `turbo dev` starts web, mobile, and local
+  Supabase in parallel; `turbo build` recompiles only what has changed.
+- **Per-platform UI packages**: web uses `@hobbydeals/ui` (HTML + Tailwind CSS),
+  mobile uses `@hobbydeals/ui-native` (RN + NativeWind v5). Both share design tokens
+  via `packages/config/tailwind/theme.css`. Never mix web and native components in the same package.
+- **Mobile theme pipeline**: `theme.css` is the single source of truth, but mobile needs
+  two derived artifacts that web does not: a JS `NAV_THEME` object for React Navigation
+  (which cannot read CSS variables) and a flattened `--color-*` stylesheet with a
+  `prefers-color-scheme: dark` block (NativeWind v5 runtime does not traverse the
+  multi-level `var()` indirection in `theme.css`). Both are generated by
+  `packages/config/scripts/generate-mobile-theme.ts` and written to
+  `apps/mobile/lib/theme.ts` and `apps/mobile/theme-system.css`. Run with
+  `pnpm theme:generate` after any change to `theme.css`. See [packages.md](./packages.md#scripts-scripts) for details.
+- **Native Supabase Auth** — no Clerk. RLS depends on `auth.uid()` and triggers
+  on `auth.users`. Replacing it would break database-level security.
+- Packages in `packages/` never import from `apps/`. The dependency flow is
+  always `apps → packages`, never the reverse.
+- **Testing pyramid**: Jest + Testing Library for unit/integration in both UI
+  packages and core. Storybook + Chromatic for visual regression in both UI
+  packages. Playwright for web E2E (`apps/web/e2e/`). Maestro for mobile E2E
+  (`apps/mobile/e2e/`).

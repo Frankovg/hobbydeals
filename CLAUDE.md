@@ -4,11 +4,18 @@ Deals platform specialized in hobbies, inspired by Chollometro but vertical:
 only leisure and hobby offers. Community-driven with a temperature system
 (hot/cold votes), personalized alerts, and editorial moderation.
 
+## Project documentation
+
+The `docs/` directory is the source of truth for architecture, packages, testing,
+roadmap, panels, and brand identity. Always read and follow `docs/` before
+implementing. If your changes conflict with what's documented there, flag it
+before proceeding.
+
 ## Stack decisions (do not change without discussion)
 
 - **Monorepo**: Turborepo + pnpm workspaces
 - **Web**: Next.js 16 App Router + Tailwind CSS
-- **Mobile**: React Native + Expo + Uniwind 1.6.1 (Tailwind v4 bindings, replaces NativeWind)
+- **Mobile**: React Native + Expo + NativeWind v5 (Tailwind v4 bindings)
 - **Backend**: Supabase (Auth, Postgres, Realtime, Storage)
 - **Auth**: Native Supabase Auth — NO Clerk (breaks RLS and triggers)
 - **Data fetching (web)**: Direct Supabase client in Server Components + Server Actions for mutations
@@ -18,6 +25,11 @@ only leisure and hobby offers. Community-driven with a temperature system
 - **Error tracking**: Sentry
 - **Deal images**: Open Graph scraping as default + manual upload as fallback. Supabase Storage bucket `deal-images`. Edge Function to parse `og:image` from the deal URL
 - **UX/Design**: Pencil (.pen files) — design source of truth lives in `apps/ux/`
+- **Testing (UI packages)**: Vitest + `@storybook/addon-vitest` (stories as tests, browser mode with Playwright) + `@storybook/addon-a11y` (accessibility)
+- **Testing (apps)**: Jest + React Testing Library (web) + Jest + `@testing-library/react-native` (mobile)
+- **Testing (visual)**: Storybook + Chromatic for `@hobbydeals/ui` (web). `@hobbydeals/ui-native` uses only Storybook + `@storybook/addon-a11y` — no visual regression yet (Chromatic renders via `react-native-web`, which doesn't match native iOS/Android output; plan is to add Maestro + screenshot diff when flows stabilize)
+- **Testing (E2E web)**: Playwright (automated via MCP + Claude Code)
+- **Testing (E2E mobile)**: Maestro (YAML-based flows)
 - **CI/CD**: GitHub Actions -> Vercel (web) + Expo EAS (mobile)
 
 ## Monorepo structure
@@ -29,7 +41,8 @@ hobbydeals/
 │   ├── mobile/       # React Native + Expo
 │   └── ux/           # Pencil design files — UX source of truth
 ├── packages/
-│   ├── ui/           # @hobbydeals/ui — cross-platform components (NativeWind)
+│   ├── ui/           # @hobbydeals/ui — web components (HTML + Tailwind CSS)
+│   ├── ui-native/    # @hobbydeals/ui-native — mobile components (RN + NativeWind v5)
 │   ├── core/         # @hobbydeals/core — hooks, API queries, utils, types, Zod schemas
 │   ├── config/       # @hobbydeals/config — eslint, tsconfig, tailwind preset
 │   └── supabase/     # @hobbydeals/supabase — client factory + generated types
@@ -43,10 +56,19 @@ hobbydeals/
 
 ### @hobbydeals/ui
 
-Components using `className` with Tailwind/NativeWind that work on web and
-mobile without wrappers. Key components: `DealCard`, `CategoryBadge`,
-`VoteButton`, `TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`,
-`EmptyState`.
+Web-only components using `className` with Tailwind CSS (HTML elements, Next.js compatible).
+Both platforms share design tokens via `packages/config/tailwind/theme.css`.
+Key web components: `DealCard`, `CategoryBadge`, `VoteButton`, `TemperatureIndicator`,
+`PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`.
+Includes Storybook for component development and Chromatic for visual regression.
+
+### @hobbydeals/ui-native
+
+Mobile components using React Native primitives (`View`, `Text`, `Pressable`) + NativeWind v5.
+Consumed by `apps/mobile/`. Shares design tokens with `@hobbydeals/ui` via `packages/config/tailwind/theme.css`.
+Key mobile components mirror web counterparts: `DealCard`, `CategoryBadge`, `VoteButton`,
+`TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`.
+Includes Storybook (`@storybook/react-vite` + `react-native-web` alias) for component development. No visual regression tool yet — see stack decisions above.
 
 ### @hobbydeals/core
 
@@ -70,8 +92,7 @@ Client factory per environment:
 
 - `eslint-config-base`, `eslint-config-next`, `eslint-config-react-native`
 - `tsconfig/base.json` (strict), `tsconfig/next.json`, `tsconfig/react-native.json`
-- `tailwind/preset.js` with temperature system color tokens
-- `tailwind/nativewind.js` for mobile
+- `tailwind/theme.css` — shared design tokens (colors, spacing, typography, temperature, categories)
 
 ## UX / Design (apps/ux/)
 
@@ -128,12 +149,12 @@ admin/moderator. Public tables (categories, stores, tags) have no RLS.
 
 | Slug                   | Name                   | Color   |
 | ---------------------- | ---------------------- | ------- |
-| `juegos-de-mesa`       | Juegos de Mesa         | #7F77DD |
+| `board-games`          | Juegos de Mesa         | #7F77DD |
 | `gaming`               | Gaming                 | #1D9E75 |
-| `coleccionismo`        | Coleccionismo          | #BA7517 |
-| `airsoft-paintball`    | Airsoft & Paintball    | #D85A30 |
-| `musica`               | Música                 | #D4537E |
-| `modelismo-miniaturas` | Modelismo & Miniaturas | #378ADD |
+| `collectibles`         | Coleccionismo          | #BA7517 |
+| `airsoft`              | Airsoft                | #D85A30 |
+| `music`                | Música                 | #D4537E |
+| `modeling`             | Modelismo              | #378ADD |
 
 ## Development data (seed.sql)
 
@@ -161,13 +182,13 @@ supabase gen types typescript --local > packages/supabase/src/types.ts
 ```
 app/
 ├── (auth)/login        # Magic link + OAuth Google
-├── (auth)/registro     # Registration + hobby selection
+├── (auth)/register     # Registration + hobby selection
 ├── (main)/             # Main feed with filters
-├── (main)/[categoria]  # Category feed
-├── (main)/chollo/[id]  # Detail with comments and votes
-├── (main)/buscar       # Full-text search (pg_trgm)
+├── (main)/[category]   # Category feed
+├── (main)/deal/[id]    # Detail with comments and votes
+├── (main)/search       # Full-text search (pg_trgm)
 ├── admin/              # Admin panel — protected role:admin|moderator
-└── perfil/             # User panel — protected auth
+└── profile/            # User panel — protected auth
 ```
 
 ### Mobile (Expo Router)
@@ -177,9 +198,9 @@ app/
 ├── (auth)/             # Onboarding + login
 └── (tabs)/
     ├── index           # Main feed
-    ├── categorias      # Category grid
-    ├── buscar          # Search
-    └── perfil          # User panel
+    ├── categories      # Category grid
+    ├── search          # Search
+    └── profile         # User panel
 ```
 
 ## Admin panel (/admin)
@@ -190,7 +211,7 @@ app/
 - Verified stores and affiliate URLs
 - Featured and sponsored management (always labeled)
 
-## User panel (/perfil)
+## User panel (/profile)
 
 - Activity and reputation overview
 - My deals (active/pending/expired)
@@ -225,8 +246,57 @@ and syncs mutations with queries. Always use when combining Supabase + TanStack 
 
 - **Code language**: All source code, comments, JSDoc, variable names, commits, and technical documentation must be **in English**. User-facing content (HTML, UI text, labels, descriptions) can be multilingual (Spanish by default for the app)
 - Strict TypeScript across the entire monorepo
-- `@hobbydeals/ui` components use `className` (NativeWind compatible)
+- `@hobbydeals/ui` is web-only (HTML + Tailwind CSS). `@hobbydeals/ui-native` is mobile-only (RN + NativeWind). Never mix web and native components in the same package
 - Never import from `apps/` inside `packages/`
 - Supabase queries always typed, never `any`
 - Zod schemas defined in `@hobbydeals/core/src/validations`, imported in both apps
 - File names: kebab-case for files, PascalCase for components
+
+## Testing strategy
+
+### UI packages — Vitest + Storybook addon-vitest
+
+`@hobbydeals/ui` and `@hobbydeals/ui-native` use Vitest with `@storybook/addon-vitest` to run
+stories as component tests in a real browser (Playwright Chromium, headless). Stories double as
+tests — no separate `.test.tsx` files needed for component behavior covered by stories.
+
+| Package | Test runner | Browser | A11y |
+|---------|------------|---------|------|
+| `@hobbydeals/ui` | `vitest --project=storybook` | Playwright Chromium | `@storybook/addon-a11y` |
+| `@hobbydeals/ui-native` | `vitest --project=storybook` | Playwright Chromium | `@storybook/addon-a11y` |
+
+Stories and tests live next to each component:
+```
+packages/ui/src/deal-card/
+├── deal-card.tsx
+├── deal-card.stories.tsx    # doubles as component test
+└── index.ts
+```
+
+### App tests — Jest + Testing Library
+
+Apps use Jest for unit and integration tests (business logic, hooks, screens).
+
+| Package | Test library | Preset |
+|---------|-------------|--------|
+| `apps/web` | `@testing-library/react` | `ts-jest` |
+| `apps/mobile` | `@testing-library/react-native` | `jest-expo` |
+| `@hobbydeals/core` | `@testing-library/react` (for hooks) | `ts-jest` |
+
+### Visual testing — Storybook
+
+Both `@hobbydeals/ui` and `@hobbydeals/ui-native` have their own Storybook setup
+with `@storybook/react-vite`.
+
+- `@hobbydeals/ui`: `@storybook/react-vite` with web viewports (mobile 390px, tablet 768px, desktop 1280px, wide 1536px). Chromatic runs on every PR for automated visual regression
+- `@hobbydeals/ui-native`: `@storybook/react-vite` + `react-native-web` alias, with mobile viewports (iPhone SE, iPhone 14, iPhone 14 Pro Max, Android). No Chromatic — `react-native-web` rendering doesn't match native iOS/Android output, so visual regression on web would be misleading. Plan is to add Maestro + screenshot diff against real simulators once mobile flows stabilize
+
+### E2E tests — Playwright (web) + Maestro (mobile)
+
+| Platform | Tool | Test location | How it runs |
+|----------|------|---------------|-------------|
+| Web | Playwright | `apps/web/e2e/` | Automated via Playwright MCP + Claude Code |
+| Mobile | Maestro | `apps/mobile/e2e/` | YAML flow files, runs against simulator/device |
+
+Playwright tests cover critical web user flows: auth, deal publishing, voting, search, admin moderation.
+Maestro flows cover the equivalent mobile flows: onboarding, feed browsing, voting, search, profile.

@@ -1,0 +1,16 @@
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/theme" layer(theme);
+/* `tailwindcss/utilities` intentionally unlayered. react-native-web injects
+ * its `.css-text-*` / `.css-view-*` rules without a CSS layer at runtime,
+ * and per the Cascade Layers spec, unlayered rules always beat any @layer.
+ * Keeping utilities unlayered too lets Tailwind classes compete on equal
+ * footing and win by source order (this file is imported after RN-Web boots). */
+@import "tailwindcss/utilities";
+@import "../../config/tailwind/theme.css";
+
+@source "../src/**/*.{ts,tsx}";
+
+body {
+  background-color: var(--bg-base);
+  color: var(--foreground);
+}

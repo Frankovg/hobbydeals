@@ -85,9 +85,9 @@ INSERT INTO public.categories (id, name, slug, description, icon, color, sort_or
     ('c0000001-0000-0000-0000-000000000000','Juegos de Mesa',        'juegos-de-mesa',      'Chollos en juegos de mesa, TCGs, RPGs y juegos de estrategia',             '🎲','#7F77DD',1),
     ('c0000002-0000-0000-0000-000000000000','Gaming',                'gaming',              'Ofertas en videojuegos, consolas, periféricos y suscripciones',            '🎮','#1D9E75',2),
     ('c0000003-0000-0000-0000-000000000000','Coleccionismo',         'coleccionismo',       'Figuras, Funko, LEGO, cartas y todo tipo de coleccionables',              '🏆','#BA7517',3),
-    ('c0000004-0000-0000-0000-000000000000','Airsoft & Paintball',   'airsoft-paintball',   'Réplicas, equipamiento táctico, protecciones y consumibles',              '🎯','#D85A30',4),
+    ('c0000004-0000-0000-0000-000000000000','Airsoft',               'airsoft',             'Réplicas, equipamiento táctico, protecciones y consumibles',              '🎯','#D85A30',4),
     ('c0000005-0000-0000-0000-000000000000','Música',                'musica',              'Instrumentos, equipos de audio, plugins y producción musical',            '🎸','#D4537E',5),
-    ('c0000006-0000-0000-0000-000000000000','Modelismo & Miniaturas','modelismo-miniaturas','Miniaturas, pinturas, aerógrafos, kits de modelismo y accesorios',         '🪆','#378ADD',6);
+    ('c0000006-0000-0000-0000-000000000000','Modelismo',             'modelismo',           'Miniaturas, pinturas, aerógrafos, kits de modelismo y accesorios',         '🪆','#378ADD',6);
 
 -- ================================================================
 -- SEED DATA — STORES

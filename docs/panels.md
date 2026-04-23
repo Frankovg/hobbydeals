@@ -1,125 +1,125 @@
-# Paneles de usuario
+# User Panels
 
-HobbyDeals tiene dos paneles protegidos: uno para administradores/moderadores
-y otro para usuarios autenticados.
+HobbyDeals has two protected panels: one for admins/moderators and one for
+authenticated users.
 
 ---
 
-## Panel de administración
+## Admin panel
 
-**Ruta**: `/admin`
-**Acceso**: `role: admin | moderator`
+**Route**: `/admin`
+**Access**: `role: admin | moderator`
 
 ### Dashboard
 
-- Chollos publicados por día (gráfico 30 días)
-- Usuarios activos y nuevos registros
-- Temperatura media de los chollos activos
-- Reportes pendientes de revisión
+- Deals published per day (30-day chart)
+- Active users and new registrations
+- Average temperature of active deals
+- Pending reports for review
 
-### Cola de moderación
+### Moderation queue
 
-- Lista de chollos en estado `pending` ordenados por fecha
-- Aprobar → cambia status a `active`
-- Rechazar → requiere motivo, notifica al autor, cambia a `rejected`
-- Vista previa del chollo antes de moderar
+- List of deals in `pending` status ordered by date
+- Approve → changes status to `active`
+- Reject → requires reason, notifies the author, changes to `rejected`
+- Deal preview before moderation
 
-### Gestión de destacados
+### Featured management
 
-- Marcar/desmarcar un chollo como `featured`
-- Marcar como `sponsored` (siempre etiquetado visiblemente en el feed)
-- Los patrocinados no afectan la temperatura ni el ranking orgánico
+- Mark/unmark a deal as `featured`
+- Mark as `sponsored` (always visibly labeled in the feed)
+- Sponsored deals do not affect temperature or organic ranking
 
-### Gestión de usuarios
+### User management
 
-- Tabla de usuarios con búsqueda por username o email
-- Ver perfil completo, historial de chollos y reputación
-- Cambiar rol: `user` → `moderator` → `admin`
-- Banear con motivo (el usuario ve el motivo al intentar iniciar sesión)
-- Ajuste manual de reputación en casos excepcionales
+- User table with search by username or email
+- View full profile, deal history, and reputation
+- Change role: `user` → `moderator` → `admin`
+- Ban with reason (user sees the reason when trying to log in)
+- Manual reputation adjustment in exceptional cases
 
-### Tiendas verificadas
+### Verified stores
 
-- Verificar un merchant: activa el badge de tienda verificada
-- Gestionar URL de plantilla de afiliación por tienda
-- Ver chollos publicados asociados a cada tienda
+- Verify a merchant: activates the verified store badge
+- Manage affiliate URL template per store
+- View deals published for each store
 
-### Revisión de reportes
+### Report review
 
-- Lista de reportes pendientes con contenido reportado inline
-- Resolver: marcar como revisado y tomar acción (eliminar, avisar, ignorar)
-- Desestimar: el contenido permanece, el reporte se cierra
+- List of pending reports with reported content inline
+- Resolve: mark as reviewed and take action (remove, warn, ignore)
+- Dismiss: content remains, report is closed
 
-### Gestión de categorías
+### Category management
 
-- Editar nombre, icono (emoji), color y descripción de cada categoría
-- Activar/desactivar categorías sin eliminar los chollos existentes
-- Reordenar categorías (sort_order)
+- Edit name, icon (emoji), color, and description for each category
+- Enable/disable categories without deleting existing deals
+- Reorder categories (sort_order)
 
-### Notificaciones push
+### Push notifications
 
-- Enviar mensaje a todos los usuarios
-- Segmentar por categorías seguidas
+- Send message to all users
+- Segment by followed categories
 
 ---
 
-## Panel de usuario
+## User panel
 
-**Ruta**: `/perfil`
-**Acceso**: usuario autenticado
+**Route**: `/perfil`
+**Access**: authenticated user
 
 ### Overview
 
-- Reputación actual y posición relativa
-- Chollos publicados (activos, pendientes, expirados)
-- Últimos comentarios recibidos
-- Actividad reciente (votos emitidos, comentarios)
+- Current reputation and relative position
+- Published deals (active, pending, expired)
+- Latest comments received
+- Recent activity (votes cast, comments)
 
-### Mis chollos
+### My deals
 
-- Lista con estado visual: activo / pendiente / expirado / rechazado
-- Editar un chollo activo (título, descripción, precio, URL)
-- Ver motivo de rechazo si aplica
-- Eliminar un chollo propio
+- List with visual status: active / pending / expired / rejected
+- Edit an active deal (title, description, price, URL)
+- View rejection reason if applicable
+- Delete own deal
 
-### Guardados
+### Saved
 
-- Chollos marcados como favoritos
-- Ordenar por fecha guardada o temperatura actual
-- Acceso rápido al detalle
+- Deals bookmarked as favorites
+- Sort by saved date or current temperature
+- Quick access to detail
 
-### Mis alertas
+### My alerts
 
-- Lista de alertas activas con keyword, categoría y precio máximo
-- Crear nueva alerta desde el panel o desde el feed
-- Activar/desactivar sin eliminar
-- Historial de última coincidencia
+- List of active alerts with keyword, category, and max price
+- Create new alert from the panel or from the feed
+- Enable/disable without deleting
+- Last match history
 
-### Hobbies favoritos
+### Favorite hobbies
 
-- Selección de categorías para personalizar el feed principal
-- Mismo selector que el onboarding, editable en cualquier momento
+- Category selection to personalize the main feed
+- Same selector as onboarding, editable at any time
 
-### Editar perfil
+### Edit profile
 
-- Username (único en la plataforma)
-- Display name y bio
-- Avatar: subir imagen (Supabase Storage) o usar iniciales generadas
-- URL de perfil público: `/u/[username]`
+- Username (unique on the platform)
+- Display name and bio
+- Avatar: upload image (Supabase Storage) or use generated initials
+- Public profile URL: `/u/[username]`
 
-### Notificaciones
+### Notifications
 
-- Activar/desactivar por tipo:
-  - Alertas de precio (cuando coincide una alerta)
-  - Respuestas a comentarios propios
-  - Votos en chollos publicados
-  - Anuncios del sistema
-- Canal: in-app / email / push (cuando esté disponible)
+- Enable/disable by type:
+  - Price alerts (when an alert matches)
+  - Replies to own comments
+  - Votes on published deals
+  - System announcements
+- Channel: in-app / email / push (when available)
 
-### Seguridad
+### Security
 
-- Cambiar email (requiere confirmación)
-- Cambiar contraseña
-- Sesiones activas: ver dispositivos conectados
-- Cerrar sesión en todos los dispositivos
-- Eliminar cuenta (soft delete con periodo de gracia de 30 días)
+- Change email (requires confirmation)
+- Change password
+- Active sessions: view connected devices
+- Log out from all devices
+- Delete account (soft delete with 30-day grace period)

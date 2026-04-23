@@ -26,6 +26,9 @@ coverage
 out/
 build
 dist
+storybook-static
+build-storybook.log
+chromatic-results/
 
 
 # Debug
@@ -33,6 +36,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Claude Code — only track root CLAUDE.md
+**/CLAUDE.md
+!/CLAUDE.md
+.claude/settings.local.json
+
 # Misc
 .DS_Store
 *.pem
+cspell.config.yaml

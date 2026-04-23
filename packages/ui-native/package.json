@@ -1,0 +1,59 @@
+{
+  "name": "@hobbydeals/ui-native",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./*": "./src/*/index.ts",
+    "./lib/*": "./src/lib/*.ts",
+    "./lib/icons": "./src/lib/icons.tsx"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "storybook": "storybook dev -p 6007",
+    "build-storybook": "storybook build",
+    "test-storybook": "vitest --project=storybook",
+    "test-storybook:ci": "vitest run --project=storybook --reporter=junit --outputFile=test-results.xml"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "peerDependencies": {
+    "@rn-primitives/portal": ">=1.0.0",
+    "@rn-primitives/slot": ">=1.0.0",
+    "@rn-primitives/types": ">=1.0.0",
+    "lucide-react-native": ">=1.0.0",
+    "nativewind": ">=5.0.0-preview",
+    "react": ">=19.0.0",
+    "react-native": ">=0.76.0",
+    "react-native-svg": ">=15.0.0"
+  },
+  "devDependencies": {
+    "@hobbydeals/eslint-config": "workspace:*",
+    "@hobbydeals/typescript-config": "workspace:*",
+    "@playwright/test": "^1.59.1",
+    "@storybook/addon-a11y": "^10.3.5",
+    "@storybook/addon-themes": "^10.3.5",
+    "@storybook/addon-vitest": "^10.3.5",
+    "@storybook/react-vite": "^10.3.5",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/browser": "^4.1.4",
+    "@vitest/browser-playwright": "^4.1.4",
+    "eslint": "^9.39.4",
+    "lucide-react": "^1.8.0",
+    "nativewind": "^5.0.0-preview",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-native": "0.83.4",
+    "react-native-css": "3.0.6",
+    "react-native-web": "^0.21.2",
+    "storybook": "^10.3.5",
+    "tailwindcss": "^4.2.2",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.4"
+  }
+}

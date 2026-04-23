@@ -4,6 +4,10 @@
 
    Naming: 1:1 con variables del .pen file
    Dark mode: class-based (.dark en <html>)
+
+   Architecture:
+   1. :root / .dark  → single source of truth (HEX values)
+   2. @theme          → Tailwind utility generation (var refs only)
    ============================================ */
 
 /* -----------------------------------------
@@ -12,128 +16,241 @@
 
 :root {
   /* Backgrounds */
-  --bg-base: #F5F4F0;
-  --bg-page: #FFFFFF;
-  --bg-subtle: #ECEAE5;
-  --bg-card: #F9F8F5;
-  --bg-card-hover: #F0F1F3;
-  --bg-surface: #F9FAFB;
-  --bg-surface-raised: #FFFFFF;
-  --bg-elevated: #EDECEA;
-  --bg-sidebar: #1A1A1A;
-  --bg-sidebar-active: #2E2E33;
+  --bg-base: #f5f4f0;
+  --bg-page: #ffffff;
+  --bg-subtle: #eceae5;
+  --bg-card: #f9f8f5;
+  --bg-card-hover: #f0f1f3;
+  --bg-surface: #f9fafb;
+  --bg-surface-raised: #ffffff;
+  --bg-surface-medium: #f5f5f5;
+  --bg-elevated: #edecea;
+  --bg-highlight: #fffbeb;
+  --bg-sidebar: #1a1a1a;
+  --bg-sidebar-active: #2e2e33;
 
   /* Text */
   --text-primary: #111111;
-  --text-secondary: #6B6B6B;
-  --text-tertiary: #9E9E9E;
-  --text-inverse: #FFFFFF;
+  --text-secondary: #6b6b6b;
+  --text-tertiary: #9e9e9e;
+  --text-inverse: #ffffff;
+  --text-disabled: #d1d5db;
+  --text-on-accent: #ffffff;
+  --text-on-dark: #f5f5f5;
+  --text-on-primary: #ffffff;
 
   /* Borders */
-  --border-light: #EDEAE4;
-  --border-subtle: #E5E5E5;
-  --border: #DDD9D3;
-  --border-default: #D0D0D0;
-  --border-strong: #D1D5DB;
+  --border-light: #edeae4;
+  --border-subtle: #e5e5e5;
+  --border-base: #ddd9d3;
+  --border-default: #d0d0d0;
+  --border-strong: #d1d5db;
 
-  /* Semantic (themed) */
-  --success: #4CAF50;
-  --error: #CC3B30;
-  --info: #4A82C4;
-  --success-bg: #F0FBF0;
-  --error-bg: #FDF0EF;
-  --info-bg: #F0F5FD;
-  --warning-bg: #FDF8F0;
+  /* Brand */
+  --brand: #c45b3c;
+  --brand-light: #fff3ed;
+  --brand-muted: #a07a65;
+  --brand-soft: #f2e0d6;
+  --coral-primary: #ff6b6b;
+  --coral-light: #fff0f0;
+  --brand-primary: #8ab830;
+  --brand-secondary: #c4872a;
 
-  /* Accent soft */
-  --accent-soft: #F2E0D6;
+  /* shadcn compatibility — maps to our tokens */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-page);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--brand-primary);
+  --primary-foreground: var(--text-inverse);
+  --secondary: var(--brand-secondary);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-surface-medium);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--bg-elevated);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--negative-soft);
+  --destructive-foreground: var(--error);
+  --border: var(--border-default);
+  --input: var(--border-subtle);
+  --ring: var(--brand);
+  --radius: 8px;
 
-  /* Semantic soft */
-  --negative-soft: #F4E0E0;
-  --positive-soft: #DFF0E6;
+  /* Semantic */
+  --success: #4caf50;
+  --error: #cc3b30;
+  --warning: #d4952a;
+  --info: #4a82c4;
+  --success-bg: #e3f9e3;
+  --error-bg: #fbe1df;
+  --warning-bg: #faefde;
+  --info-bg: #f0f5fd;
+  --negative: #b05454;
+  --negative-soft: #f4e0e0;
+  --positive: #4a8c6f;
+  --positive-soft: #dff0e6;
 
-  /* Categories (themed) */
-  --cat-boardgames: #7F77DD;
-  --cat-gaming: #1D9E75;
-  --cat-collectibles: #BA7517;
-  --cat-airsoft: #D85A30;
-  --cat-music: #D4537E;
-  --cat-modeling: #378ADD;
+  /* Additional semantic */
+  --primary-hover: #ff5252;
+  --primary-light: #fff0f0;
+  --danger: #ef4444;
+  --danger-light: #fef2f2;
+  --success-green: #22c55e;
+  --success-light: #f0fdf4;
+  --info-indigo: #6366f1;
+  --info-light: #eef2ff;
+  --warning-light: #fffbeb;
+  --warning-yellow: #fcd34d;
+
+  /* Temperature */
+  --temp-cold: #4a82c4;
+  --temp-warm: #c4872a;
+  --temp-hot: #cc5500;
+  --temp-burning: #d92b2b;
+  --temp-fire: #ef4444;
+  --temp-neutral: #8a9490;
+
+  /* Categories */
+  --cat-boardgames: #7f77dd;
+  --cat-gaming: #1d9e75;
+  --cat-collectibles: #ba7517;
+  --cat-airsoft: #d85a30;
+  --cat-music: #d4537e;
+  --cat-modeling: #378add;
 
   /* Category soft backgrounds */
-  --cat-boardgames-soft: #EDE8F5;
-  --cat-gaming-soft: #DFF0E6;
-  --cat-collectibles-soft: #F5ECDA;
-  --cat-airsoft-soft: #F5E0D8;
-  --cat-music-soft: #F2E0E8;
-  --cat-modeling-soft: #DDE8F2;
+  --cat-boardgames-soft: #ede8f5;
+  --cat-gaming-soft: #dff0e6;
+  --cat-collectibles-soft: #f5ecda;
+  --cat-airsoft-soft: #f5e0d8;
+  --cat-music-soft: #f2e0e8;
+  --cat-modeling-soft: #dde8f2;
+
+  /* Category light backgrounds */
+  --cat-boardgames-light: #eeedfa;
+  --cat-gaming-light: #e6f7f0;
+  --cat-collectibles-light: #fdf4e6;
+  --cat-airsoft-light: #fdf0eb;
+  --cat-music-light: #fceef3;
+  --cat-modeling-light: #ebf3fc;
 }
 
 .dark {
   /* Backgrounds */
-  --bg-base: #0A0A0B;
+  --bg-base: #0a0a0b;
   --bg-page: #161618;
   --bg-subtle: #222226;
-  --bg-card: #2E2E34;
-  --bg-card-hover: #50505A;
-  --bg-surface: #3A3A40;
-  --bg-surface-raised: #52525C;
-  --bg-elevated: #46464E;
+  --bg-card: #2e2e34;
+  --bg-card-hover: #50505a;
+  --bg-surface: #3a3a40;
+  --bg-surface-raised: #52525c;
+  --bg-surface-medium: #3a3a40;
+  --bg-elevated: #46464e;
+  --bg-highlight: #2e2518;
   --bg-sidebar: #060608;
-  --bg-sidebar-active: #2A2A34;
+  --bg-sidebar-active: #2a2a34;
 
   /* Text */
-  --text-primary: #F5F5F5;
-  --text-secondary: #8C8C8C;
-  --text-tertiary: #5C5C5C;
-  --text-inverse: #0D0D0D;
+  --text-primary: #f5f5f5;
+  --text-secondary: #8c8c8c;
+  --text-tertiary: #5c5c5c;
+  --text-inverse: #0d0d0d;
+  --text-disabled: #5c5c5c;
 
   /* Borders */
-  --border-light: #3C3C46;
-  --border-subtle: #50505A;
-  --border: #64646E;
+  --border-light: #3c3c46;
+  --border-subtle: #50505a;
+  --border-base: #64646e;
   --border-default: #787882;
-  --border-strong: #8C8C96;
+  --border-strong: #8c8c96;
 
-  /* Semantic (themed) */
-  --success: #5EC562;
-  --error: #E05048;
-  --info: #5B95D9;
-  --success-bg: #0F1F0F;
-  --error-bg: #200A08;
-  --info-bg: #0A1220;
-  --warning-bg: #1F150A;
+  /* Brand */
+  --brand: #e86b40;
+  --brand-light: #2e1e18;
+  --brand-muted: #a07a65;
+  --brand-soft: #3a2520;
+  --coral-primary: #ff8a8a;
+  --coral-light: #2e1a1a;
+  --brand-primary: #a0d040;
+  --brand-secondary: #d4872a;
 
-  /* Accent soft */
-  --accent-soft: #3A2520;
+  /* shadcn compatibility — maps to our tokens */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-page);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--brand-primary);
+  --primary-foreground: var(--text-inverse);
+  --secondary: var(--brand-secondary);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-surface-medium);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--bg-elevated);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--negative-soft);
+  --destructive-foreground: var(--error);
+  --border: var(--border-default);
+  --input: var(--border-subtle);
+  --ring: var(--brand);
 
-  /* Semantic soft */
-  --negative-soft: #2E1A1A;
-  --positive-soft: #1A2E22;
+  /* Semantic */
+  --success: #5ec562;
+  --error: #e05048;
+  --warning: #d4952a;
+  --info: #5b95d9;
+  --success-bg: #0f1f0f;
+  --error-bg: #200a08;
+  --warning-bg: #1f150a;
+  --info-bg: #0a1220;
+  --negative: #c06060;
+  --negative-soft: #2e1a1a;
+  --positive: #5aac7f;
+  --positive-soft: #1a2e22;
 
-  /* Categories (themed) */
-  --cat-boardgames: #9B94E8;
-  --cat-gaming: #28C491;
-  --cat-collectibles: #D4872A;
-  --cat-airsoft: #E86B40;
-  --cat-music: #E06490;
-  --cat-modeling: #4A96EE;
+  /* Temperature */
+  --temp-cold: #4a82c4;
+  --temp-warm: #c4872a;
+  --temp-hot: #cc5500;
+  --temp-burning: #d92b2b;
+  --temp-fire: #ef4444;
+  --temp-neutral: #8a9490;
+
+  /* Categories */
+  --cat-boardgames: #9b94e8;
+  --cat-gaming: #28c491;
+  --cat-collectibles: #d4872a;
+  --cat-airsoft: #e86b40;
+  --cat-music: #e06490;
+  --cat-modeling: #4a96ee;
 
   /* Category soft backgrounds */
-  --cat-boardgames-soft: #221E2E;
-  --cat-gaming-soft: #1A2E22;
-  --cat-collectibles-soft: #2E2518;
-  --cat-airsoft-soft: #2E1E18;
-  --cat-music-soft: #2E1A22;
-  --cat-modeling-soft: #1A222E;
+  --cat-boardgames-soft: #221e2e;
+  --cat-gaming-soft: #1a2e22;
+  --cat-collectibles-soft: #2e2518;
+  --cat-airsoft-soft: #2e1e18;
+  --cat-music-soft: #2e1a22;
+  --cat-modeling-soft: #1a222e;
+
+  /* Category light backgrounds */
+  --cat-boardgames-light: #1e1a2e;
+  --cat-gaming-light: #142e1e;
+  --cat-collectibles-light: #2e2214;
+  --cat-airsoft-light: #2e1814;
+  --cat-music-light: #2e141e;
+  --cat-modeling-light: #141e2e;
 }
 
 /* -----------------------------------------
    Tailwind v4 @theme — Utility Generation
+   All values reference CSS vars above. No HEX here.
    ----------------------------------------- */
 
 @theme {
-  /* ---- Colors: Backgrounds (themed via CSS vars) ---- */
+  /* ---- Colors: Backgrounds ---- */
   --color-bg-base: var(--bg-base);
   --color-bg-page: var(--bg-page);
   --color-bg-subtle: var(--bg-subtle);
@@ -141,99 +258,119 @@
   --color-bg-card-hover: var(--bg-card-hover);
   --color-bg-surface: var(--bg-surface);
   --color-bg-surface-raised: var(--bg-surface-raised);
+  --color-bg-surface-medium: var(--bg-surface-medium);
   --color-bg-elevated: var(--bg-elevated);
+  --color-bg-highlight: var(--bg-highlight);
   --color-bg-sidebar: var(--bg-sidebar);
   --color-bg-sidebar-active: var(--bg-sidebar-active);
-  --color-bg-highlight: #FFFBEB;
-  --color-bg-surface-medium: #F5F5F5;
 
-  /* ---- Colors: Text (themed via CSS vars) ---- */
+  /* ---- Colors: Text ---- */
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
   --color-text-inverse: var(--text-inverse);
-  --color-text-on-accent: #FFFFFF;
-  --color-text-on-dark: #F5F5F5;
-  --color-text-on-primary: #FFFFFF;
-  --color-text-disabled: #D1D5DB;
+  --color-text-disabled: var(--text-disabled);
+  --color-text-on-accent: var(--text-on-accent);
+  --color-text-on-dark: var(--text-on-dark);
+  --color-text-on-primary: var(--text-on-primary);
 
-  /* ---- Colors: Borders (themed via CSS vars) ---- */
+  /* ---- Colors: Borders ---- */
   --color-border-light: var(--border-light);
   --color-border-subtle: var(--border-subtle);
-  --color-border: var(--border);
+  --color-border-base: var(--border-base);
   --color-border-default: var(--border-default);
   --color-border-strong: var(--border-strong);
 
-  /* ---- Colors: Accent & Brand ---- */
-  --color-accent: #C45B3C;
-  --color-accent-light: #FFF3ED;
-  --color-accent-muted: #A07A65;
-  --color-accent-soft: var(--accent-soft);
-  --color-primary: #FF6B6B;
-  --color-primary-hover: #FF5252;
-  --color-primary-light: #FFF0F0;
-  --color-coral-primary: #FF6B6B;
-  --color-coral-light: #FFF0F0;
-  --color-brand-primary: #8AB830;
-  --color-brand-secondary: #C4872A;
+  /* ---- Colors: Brand ---- */
+  --color-brand: var(--brand);
+  --color-brand-light: var(--brand-light);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-soft: var(--brand-soft);
+  --color-coral-primary: var(--coral-primary);
+  --color-coral-light: var(--coral-light);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
 
-  /* ---- Colors: Semantic (themed via CSS vars) ---- */
+  /* ---- Colors: shadcn ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* ---- Colors: Semantic ---- */
   --color-success: var(--success);
   --color-error: var(--error);
-  --color-warning: #D4952A;
+  --color-warning: var(--warning);
   --color-info: var(--info);
   --color-success-bg: var(--success-bg);
   --color-error-bg: var(--error-bg);
   --color-warning-bg: var(--warning-bg);
   --color-info-bg: var(--info-bg);
-  --color-success-green: #22C55E;
-  --color-success-light: #F0FDF4;
-  --color-danger: #EF4444;
-  --color-danger-light: #FEF2F2;
-  --color-warning-light: #FFFBEB;
-  --color-warning-yellow: #FCD34D;
-  --color-info-indigo: #6366F1;
-  --color-info-light: #EEF2FF;
-  --color-negative: #B05454;
+  --color-negative: var(--negative);
   --color-negative-soft: var(--negative-soft);
-  --color-positive: #4A8C6F;
+  --color-positive: var(--positive);
   --color-positive-soft: var(--positive-soft);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-danger: var(--danger);
+  --color-danger-light: var(--danger-light);
+  --color-success-green: var(--success-green);
+  --color-success-light: var(--success-light);
+  --color-info-indigo: var(--info-indigo);
+  --color-info-light: var(--info-light);
+  --color-warning-light: var(--warning-light);
+  --color-warning-yellow: var(--warning-yellow);
 
-  /* ---- Colors: Temperature (4 niveles activos) ---- */
-  --color-temp-cold: #4A82C4;
-  --color-temp-warm: #C4872A;
-  --color-temp-hot: #CC5500;
-  --color-temp-burning: #D92B2B;
-  --color-temp-fire: #EF4444;
-  --color-temp-neutral: #8A9490;
+  /* ---- Colors: Temperature ---- */
+  --color-temp-cold: var(--temp-cold);
+  --color-temp-warm: var(--temp-warm);
+  --color-temp-hot: var(--temp-hot);
+  --color-temp-burning: var(--temp-burning);
+  --color-temp-fire: var(--temp-fire);
+  --color-temp-neutral: var(--temp-neutral);
 
-  /* ---- Colors: Categories (themed via CSS vars) ---- */
+  /* ---- Colors: Categories ---- */
   --color-cat-boardgames: var(--cat-boardgames);
   --color-cat-gaming: var(--cat-gaming);
   --color-cat-collectibles: var(--cat-collectibles);
   --color-cat-airsoft: var(--cat-airsoft);
   --color-cat-music: var(--cat-music);
   --color-cat-modeling: var(--cat-modeling);
-
-  /* Category light (static) */
-  --color-cat-boardgames-light: #EEEDFA;
-  --color-cat-gaming-light: #E6F7F0;
-  --color-cat-collectibles-light: #FDF4E6;
-  --color-cat-airsoft-light: #FDF0EB;
-  --color-cat-music-light: #FCEEF3;
-  --color-cat-modeling-light: #EBF3FC;
-
-  /* Category soft (themed via CSS vars) */
   --color-cat-boardgames-soft: var(--cat-boardgames-soft);
   --color-cat-gaming-soft: var(--cat-gaming-soft);
   --color-cat-collectibles-soft: var(--cat-collectibles-soft);
   --color-cat-airsoft-soft: var(--cat-airsoft-soft);
   --color-cat-music-soft: var(--cat-music-soft);
   --color-cat-modeling-soft: var(--cat-modeling-soft);
+  --color-cat-boardgames-light: var(--cat-boardgames-light);
+  --color-cat-gaming-light: var(--cat-gaming-light);
+  --color-cat-collectibles-light: var(--cat-collectibles-light);
+  --color-cat-airsoft-light: var(--cat-airsoft-light);
+  --color-cat-music-light: var(--cat-music-light);
+  --color-cat-modeling-light: var(--cat-modeling-light);
 
   /* ---- Typography ---- */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
 
   /* Font sizes */
   --text-badge: 12px;
@@ -252,11 +389,9 @@
   --spacing-6: 32px;
   --spacing-8: 48px;
   --spacing-10: 64px;
+  --spacing-20: 20px;
+  --spacing-40: 40px;
 
-  /* ---- Border Radius ---- */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  /* ---- Border Radius (extra) ---- */
   --radius-pill: 26px;
 }

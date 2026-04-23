@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    // main.ts uses `import.meta.url` (ESM-only). The base config inherits
+    // `module: "NodeNext"` which would treat these .ts files as CJS (the
+    // package has no `"type": "module"`). Override to ESNext so Storybook's
+    // config files resolve as ESM.
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", "../nativewind-env.d.ts"]
+}
