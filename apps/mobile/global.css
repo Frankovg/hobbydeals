@@ -5,6 +5,7 @@
 @import "nativewind/theme";
 
 @import "@hobbydeals/config/tailwind/theme.css";
+@import "./theme-system.css";
 @source "../../packages/ui-native/src/**/*.{ts,tsx}";
 
 @theme {

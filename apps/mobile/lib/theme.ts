@@ -1,6 +1,6 @@
 // AUTO-GENERATED — do not edit manually.
 // Source of truth: packages/config/tailwind/theme.css
-// Regenerate:      node packages/config/scripts/generate-mobile-theme.js
+// Regenerate:      pnpm theme:generate
 
 import { DarkTheme, DefaultTheme, type Theme } from "@react-navigation/native";
 
@@ -21,7 +21,7 @@ export const THEME = {
     accent: "#edecea",
     accentForeground: "#111111",
     destructive: "#f4e0e0",
-    destructiveForeground: "#e05048",
+    destructiveForeground: "#cc3b30",
     border: "#d0d0d0",
     input: "#e5e5e5",
     ring: "#c45b3c",

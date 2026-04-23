@@ -10,11 +10,14 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "db:types": "supabase gen types typescript --local > packages/supabase/src/types.ts"
+    "db:types": "supabase gen types typescript --local > packages/supabase/src/types.ts",
+    "theme:generate": "tsx packages/config/scripts/generate-mobile-theme.ts"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "prettier": "^3.8.1",
     "supabase": "^2.83.0",
+    "tsx": "^4.21.0",
     "turbo": "^2.8.20",
     "typescript": "5.9.3"
   },
