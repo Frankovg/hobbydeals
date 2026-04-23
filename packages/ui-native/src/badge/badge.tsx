@@ -33,21 +33,21 @@ const variantIcons = {
 } as const;
 
 const iconClassByVariant: Record<keyof typeof variantIcons, string> = {
-  burning: "size-3.5 text-temp-burning",
-  hot: "size-3.5 text-temp-hot",
-  warm: "size-3.5 text-temp-warm",
-  cold: "size-3.5 text-temp-cold",
-  "board-games": "size-3.5 text-cat-boardgames",
-  gaming: "size-3.5 text-cat-gaming",
-  collectibles: "size-3.5 text-cat-collectibles",
-  airsoft: "size-3.5 text-cat-airsoft",
-  music: "size-3.5 text-cat-music",
-  modeling: "size-3.5 text-cat-modeling",
+  burning: "size-3.5 shrink-0 text-temp-burning",
+  hot: "size-3.5 shrink-0 text-temp-hot",
+  warm: "size-3.5 shrink-0 text-temp-warm",
+  cold: "size-3.5 shrink-0 text-temp-cold",
+  "board-games": "size-3.5 shrink-0 text-cat-boardgames",
+  gaming: "size-3.5 shrink-0 text-cat-gaming",
+  collectibles: "size-3.5 shrink-0 text-cat-collectibles",
+  airsoft: "size-3.5 shrink-0 text-cat-airsoft",
+  music: "size-3.5 shrink-0 text-cat-music",
+  modeling: "size-3.5 shrink-0 text-cat-modeling",
 };
 
 const badgeVariants = cva(
   cn(
-    "shrink-0 flex-row items-center justify-center gap-1 rounded-sm px-2.5 py-1",
+    "shrink-0 flex-row items-center gap-1 rounded-sm px-2.5 py-1",
     Platform.select({
       web: "inline-flex whitespace-nowrap transition-colors",
     })

@@ -24,8 +24,6 @@ const buttonVariants = cva(
             web: "hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
           })
         ),
-        //TODO: ESTÁ MAL EL COLOR DE TEXTO EN DARK
-        //TODO: NO FUNCIONAN LOS ICONOS EN STORYBOOK
         outline: cn(
           "border border-input active:bg-accent",
           Platform.select({
@@ -44,15 +42,15 @@ const buttonVariants = cva(
       },
       size: {
         default: cn(
-          "h-10 px-4 py-2 sm:h-9",
+          "h-min px-5 py-3 sm:h-9",
           Platform.select({ web: "has-[>svg]:px-3" })
         ),
         sm: cn(
-          "h-9 gap-1.5 rounded-md px-3 sm:h-8",
+          "h-min px-3 sm:h-8",
           Platform.select({ web: "has-[>svg]:px-2.5" })
         ),
         lg: cn(
-          "h-11 rounded-md px-6 sm:h-10",
+          "h-11 px-8 sm:h-10",
           Platform.select({ web: "has-[>svg]:px-4" })
         ),
         icon: "h-10 w-10 sm:h-9 sm:w-9",
@@ -67,7 +65,7 @@ const buttonVariants = cva(
 
 const buttonTextVariants = cva(
   cn(
-    "text-foreground text-sm font-medium",
+    "text-foreground text-sm font-semibold",
     Platform.select({ web: "pointer-events-none transition-colors" })
   ),
   {
@@ -76,7 +74,7 @@ const buttonTextVariants = cva(
         default: "text-primary-foreground",
         destructive: "text-destructive-foreground",
         outline: cn(
-          "",
+          "text-foreground",
           Platform.select({ web: "group-hover:text-accent-foreground" })
         ),
         secondary: "text-primary-foreground",
