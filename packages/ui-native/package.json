@@ -13,8 +13,7 @@
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
     "test-storybook": "vitest --project=storybook",
-    "test-storybook:ci": "vitest run --project=storybook --reporter=junit --outputFile=test-results.xml",
-    "chromatic": "chromatic --exit-zero-on-changes"
+    "test-storybook:ci": "vitest run --project=storybook --reporter=junit --outputFile=test-results.xml"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -44,7 +43,6 @@
     "@types/react-dom": "^19.2.3",
     "@vitest/browser": "^4.1.4",
     "@vitest/browser-playwright": "^4.1.4",
-    "chromatic": "^16.2.0",
     "eslint": "^9.39.4",
     "lucide-react": "^1.8.0",
     "nativewind": "^5.0.0-preview",

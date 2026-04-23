@@ -437,9 +437,6 @@ importers:
       '@vitest/browser-playwright':
         specifier: ^4.1.4
         version: 4.1.4(playwright@1.59.1)(vite@8.0.8)(vitest@4.1.4)
-      chromatic:
-        specifier: ^16.2.0
-        version: 16.2.0
       eslint:
         specifier: ^9.39.4
         version: 9.39.4

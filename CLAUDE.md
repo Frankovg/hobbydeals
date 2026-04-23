@@ -27,7 +27,7 @@ before proceeding.
 - **UX/Design**: Pencil (.pen files) — design source of truth lives in `apps/ux/`
 - **Testing (UI packages)**: Vitest + `@storybook/addon-vitest` (stories as tests, browser mode with Playwright) + `@storybook/addon-a11y` (accessibility)
 - **Testing (apps)**: Jest + React Testing Library (web) + Jest + `@testing-library/react-native` (mobile)
-- **Testing (visual)**: Storybook + Chromatic for both `@hobbydeals/ui` and `@hobbydeals/ui-native`
+- **Testing (visual)**: Storybook + Chromatic for `@hobbydeals/ui` (web). `@hobbydeals/ui-native` uses only Storybook + `@storybook/addon-a11y` — no visual regression yet (Chromatic renders via `react-native-web`, which doesn't match native iOS/Android output; plan is to add Maestro + screenshot diff when flows stabilize)
 - **Testing (E2E web)**: Playwright (automated via MCP + Claude Code)
 - **Testing (E2E mobile)**: Maestro (YAML-based flows)
 - **CI/CD**: GitHub Actions -> Vercel (web) + Expo EAS (mobile)
@@ -68,7 +68,7 @@ Mobile components using React Native primitives (`View`, `Text`, `Pressable`) + 
 Consumed by `apps/mobile/`. Shares design tokens with `@hobbydeals/ui` via `packages/config/tailwind/theme.css`.
 Key mobile components mirror web counterparts: `DealCard`, `CategoryBadge`, `VoteButton`,
 `TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`.
-Includes Storybook (`@storybook/react-native` + `react-native-web` for Chromatic) for component development and visual regression.
+Includes Storybook (`@storybook/react-vite` + `react-native-web` alias) for component development. No visual regression tool yet — see stack decisions above.
 
 ### @hobbydeals/core
 
@@ -283,13 +283,13 @@ Apps use Jest for unit and integration tests (business logic, hooks, screens).
 | `apps/mobile` | `@testing-library/react-native` | `jest-expo` |
 | `@hobbydeals/core` | `@testing-library/react` (for hooks) | `ts-jest` |
 
-### Visual testing — Storybook + Chromatic
+### Visual testing — Storybook
 
 Both `@hobbydeals/ui` and `@hobbydeals/ui-native` have their own Storybook setup
-with `@storybook/react-vite`. Chromatic runs against both packages for automated visual regression.
+with `@storybook/react-vite`.
 
-- `@hobbydeals/ui`: `@storybook/react-vite` with web viewports (mobile 390px, tablet 768px, desktop 1280px, wide 1536px)
-- `@hobbydeals/ui-native`: `@storybook/react-vite` + `react-native-web` alias, with mobile viewports (iPhone SE, iPhone 14, iPhone 14 Pro Max, Android)
+- `@hobbydeals/ui`: `@storybook/react-vite` with web viewports (mobile 390px, tablet 768px, desktop 1280px, wide 1536px). Chromatic runs on every PR for automated visual regression
+- `@hobbydeals/ui-native`: `@storybook/react-vite` + `react-native-web` alias, with mobile viewports (iPhone SE, iPhone 14, iPhone 14 Pro Max, Android). No Chromatic — `react-native-web` rendering doesn't match native iOS/Android output, so visual regression on web would be misleading. Plan is to add Maestro + screenshot diff against real simulators once mobile flows stabilize
 
 ### E2E tests — Playwright (web) + Maestro (mobile)
 

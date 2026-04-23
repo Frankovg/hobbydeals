@@ -10,7 +10,7 @@ critical user flows.
          ┌─────────┐
          │   E2E   │  Playwright (web) + Maestro (mobile)
         ─┼─────────┼─
-        │  Visual   │  Storybook + Chromatic (ui + ui-native)
+        │  Visual   │  Storybook + Chromatic (ui only)
        ─┼───────────┼─
        │ Component  │  Vitest + addon-vitest (ui + ui-native)
       ─┼────────────┼─
@@ -24,7 +24,7 @@ critical user flows.
 | ------------------ | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------ |
 | Component tests    | Vitest + `@storybook/addon-vitest` (stories as tests)   | —                                                       | —                        |
 | Unit / integration | —                                                       | Jest + Testing Library                                  | Jest + Testing Library   |
-| Visual regression  | Storybook + Chromatic                                   | —                                                       | —                        |
+| Visual regression  | Storybook + Chromatic (`ui` only)                       | —                                                       | —                        |
 | Accessibility      | `@storybook/addon-a11y` (axe-core)                      | —                                                       | —                        |
 | E2E                | —                                                       | Playwright (web) / Maestro (mobile)                     | —                        |
 
@@ -95,10 +95,16 @@ turbo test --filter=@hobbydeals/core  # single package
 
 ---
 
-## Visual testing — Storybook + Chromatic
+## Visual testing — Storybook (+ Chromatic for web only)
 
-Both UI packages have their own Storybook instance for component development
-and Chromatic for automated visual regression on every PR.
+Both UI packages have their own Storybook instance for component development.
+Chromatic runs visual regression **only on `@hobbydeals/ui`** (web).
+
+`@hobbydeals/ui-native` does **not** use Chromatic: Storybook renders native
+components via `react-native-web`, which is a web translation of RN primitives
+and doesn't match the pixel output of real iOS/Android. Running visual
+regression on the web rendering would give false signal. The plan is to add
+Maestro + screenshot diff against real simulators once mobile flows stabilize.
 
 ### `@hobbydeals/ui` (web)
 
@@ -106,6 +112,7 @@ and Chromatic for automated visual regression on every PR.
 - Config: `packages/ui/.storybook/`
 - Addons: `@storybook/addon-a11y`, `@storybook/addon-vitest`
 - Viewports: mobile (390px), tablet (768px), desktop (1280px), wide (1536px)
+- Visual regression: Chromatic on every PR
 
 ### `@hobbydeals/ui-native` (mobile)
 
@@ -113,6 +120,7 @@ and Chromatic for automated visual regression on every PR.
 - Config: `packages/ui-native/.storybook/`
 - Addons: `@storybook/addon-a11y`, `@storybook/addon-vitest`
 - Viewports: iPhone SE (375px), iPhone 14 (390px), iPhone 14 Pro Max (430px), Android (360px)
+- Visual regression: none yet (see note above)
 
 ### Story conventions
 
@@ -130,9 +138,8 @@ cd packages/ui && pnpm storybook
 # Mobile (on-device)
 cd packages/ui-native && pnpm storybook
 
-# Chromatic (CI — requires CHROMATIC_PROJECT_TOKEN)
+# Chromatic — web only (CI — requires CHROMATIC_PROJECT_TOKEN)
 cd packages/ui && pnpm chromatic
-cd packages/ui-native && pnpm chromatic
 ```
 
 ---
@@ -225,6 +232,6 @@ All test layers run in GitHub Actions:
 | --------------------- | ----------- | ------------------------------------------------------------- |
 | Component tests       | Every push  | `vitest run --project=storybook` in `ui` and `ui-native`     |
 | Unit / integration    | Every push  | `turbo test` across apps and core                             |
-| Storybook + Chromatic | Every PR    | Visual diff for `@hobbydeals/ui` and `@hobbydeals/ui-native` |
+| Storybook + Chromatic | Every PR    | Visual diff for `@hobbydeals/ui` (web) only                   |
 | Playwright E2E        | Every PR    | Critical web flows against local Supabase                     |
 | Maestro E2E           | Every PR    | Critical mobile flows against Expo dev build                  |

@@ -146,6 +146,28 @@ TypeScript, or Tailwind rules from scratch — they always extend from here.
 | ----------- | ------------------------------------------------------------------------------- |
 | `theme.css` | Shared design tokens (CSS vars + Tailwind v4 `@theme`). Single source of truth for both web (Tailwind CSS) and mobile (NativeWind v5). Each app imports it via `@import "@hobbydeals/config/tailwind/theme.css"` and overrides fonts locally |
 
+### Scripts (`scripts/`)
+
+| File                         | Description                                                                                                                                                                                                     |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate-mobile-theme.ts`   | Reads `tailwind/theme.css` and emits the two files mobile needs: `apps/mobile/lib/theme.ts` (`THEME` + `NAV_THEME` for React Navigation) and `apps/mobile/theme-system.css` (flattened `--color-*` tokens). Run with `pnpm theme:generate` from the repo root. |
+
+Why two outputs:
+
+- **React Navigation** expects a plain JS `Theme` object with resolved HEX values (it cannot read CSS variables), so the script resolves the shadcn-style tokens (`--background`, `--foreground`, `--primary`, `--border`, etc.) chain for both light and `.dark` blocks and writes them as camelCase keys in `THEME.light` / `THEME.dark`, then builds `NAV_THEME.light` / `NAV_THEME.dark` extending `DefaultTheme` / `DarkTheme`.
+- **NativeWind v5** runtime does not traverse multi-level `var()` indirection in `theme.css`, so the script flattens every `--color-*` entry from the `@theme` block to final HEX and emits them in `:root` and inside `@media (prefers-color-scheme: dark) { :root { ... } }`. This makes NativeWind switch color scheme automatically on system appearance change, without any JS wiring.
+
+Both output files are auto-generated and marked as such — do not edit manually, edit `tailwind/theme.css` and re-run `pnpm theme:generate`.
+
+Mobile wires the generated CSS via `apps/mobile/global.css`:
+
+```css
+@import "@hobbydeals/config/tailwind/theme.css";
+@import "./theme-system.css";
+```
+
+The root-level script lives in `package.json` as `"theme:generate": "tsx packages/config/scripts/generate-mobile-theme.ts"` and uses `tsx` + `@types/node` as root devDependencies.
+
 ---
 
 ## `@hobbydeals/supabase`
