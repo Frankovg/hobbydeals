@@ -29,6 +29,14 @@ type ResolvePluginLike = {
   resolveId(source: string, importer: string | undefined): string | null;
 };
 
+type RolldownOptionsLike = {
+  moduleTypes?: Record<string, string>;
+  plugins?: ResolvePluginLike[];
+};
+
+type BuildWithRolldown = { rolldownOptions?: RolldownOptionsLike };
+type OptimizeDepsWithRolldown = { rolldownOptions?: RolldownOptionsLike };
+
 const reactNativeWebBridge = (): ResolvePluginLike => ({
   name: "hobbydeals:rn-web-bridge",
   enforce: "pre",
@@ -80,7 +88,7 @@ const config: StorybookConfig = {
     config.build = {
       ...config.build,
       rolldownOptions: {
-        ...(config.build as any)?.rolldownOptions,
+        ...(config.build as BuildWithRolldown | undefined)?.rolldownOptions,
         moduleTypes: { ".mjs": "jsx" },
       },
     };
@@ -88,7 +96,8 @@ const config: StorybookConfig = {
     // Vite plugins registered on `config.plugins`. Register the bridge and
     // .mjs loader here too so deps like @rn-primitives/portal (which imports
     // from `react-native` transitively) resolve correctly during pre-bundling.
-    const existingOptimizeDeps = (config.optimizeDeps as any) ?? {};
+    const existingOptimizeDeps =
+      (config.optimizeDeps as OptimizeDepsWithRolldown | undefined) ?? {};
     const existingRolldown = existingOptimizeDeps.rolldownOptions ?? {};
     config.optimizeDeps = {
       ...existingOptimizeDeps,
