@@ -553,7 +553,7 @@
                               "fill": {
                                 "type": "image",
                                 "enabled": true,
-                                "url": "./images/generated-1774548807348.png",
+                                "url": "images/generated-1774548807348.png",
                                 "mode": "fill"
                               },
                               "x": 16,
@@ -630,7 +630,7 @@
                               "fill": {
                                 "type": "image",
                                 "enabled": true,
-                                "url": "./images/generated-1774548838809.png",
+                                "url": "images/generated-1774548838809.png",
                                 "mode": "fill"
                               },
                               "x": 16,
@@ -712,7 +712,7 @@
                               "fill": {
                                 "type": "image",
                                 "enabled": true,
-                                "url": "./images/generated-1774548864140.png",
+                                "url": "images/generated-1774548864140.png",
                                 "mode": "fill"
                               },
                               "x": 16,
@@ -794,7 +794,7 @@
                               "fill": {
                                 "type": "image",
                                 "enabled": true,
-                                "url": "./images/generated-1774548912317.png",
+                                "url": "images/generated-1774548912317.png",
                                 "mode": "fill"
                               },
                               "x": 16,
@@ -876,7 +876,7 @@
                               "fill": {
                                 "type": "image",
                                 "enabled": true,
-                                "url": "./images/generated-1774548940900.png",
+                                "url": "images/generated-1774548940900.png",
                                 "mode": "fill"
                               },
                               "x": 16,
@@ -1857,7 +1857,7 @@
                       "fill": {
                         "type": "image",
                         "enabled": true,
-                        "url": "./images/generated-1774548433613.png",
+                        "url": "images/generated-1774548433613.png",
                         "mode": "fill"
                       },
                       "cornerRadius": 12
