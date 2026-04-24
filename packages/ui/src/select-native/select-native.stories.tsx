@@ -156,7 +156,7 @@ export const ErrorState: Story = {
 
 export const AllStates: Story = {
   render: () => (
-    <div className="grid w-[26rem] gap-5">
+    <div className="grid w-104 gap-5">
       <div className="flex flex-col gap-1.5">
         <label
           htmlFor="all-label"

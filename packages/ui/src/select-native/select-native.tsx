@@ -18,7 +18,7 @@ function SelectNative({
       <select
         data-slot="select-native"
         className={cn(
-          "h-11 w-full min-w-0 appearance-none [-webkit-appearance:none] [-moz-appearance:none] [background-image:none] [&::-ms-expand]:hidden rounded-md border border-border bg-card px-20 py-3 text-sm text-foreground",
+          "h-11 w-full min-w-0 appearance-none [-webkit-appearance:none] [-moz-appearance:none] bg-none [&::-ms-expand]:hidden rounded-md border border-border bg-card px-20 py-3 text-sm text-foreground",
           "transition-colors outline-none",
           "placeholder:text-text-tertiary focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40",
           "disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60",
