@@ -31,6 +31,8 @@
     "react-native-svg": ">=15.0.0"
   },
   "devDependencies": {
+    "@fontsource/inter": "^5.2.5",
+    "@fontsource/space-grotesk": "^5.2.5",
     "@hobbydeals/eslint-config": "workspace:*",
     "@hobbydeals/typescript-config": "workspace:*",
     "@playwright/test": "^1.59.1",

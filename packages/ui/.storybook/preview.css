@@ -3,9 +3,18 @@
 @import "tailwindcss/utilities" layer(utilities);
 @import "../../config/tailwind/theme.css";
 
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+
 @source "../src/**/*.{ts,tsx}";
 
 body {
   background-color: var(--bg-base);
   color: var(--foreground);
+  font-family: var(--font-body);
 }
