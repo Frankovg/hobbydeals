@@ -1,5 +1,8 @@
 import { Badge } from "@hobbydeals/ui/badge";
 import { Button } from "@hobbydeals/ui/button";
+import { Input } from "@hobbydeals/ui/input";
+import { SelectNative, SelectNativeOption } from "@hobbydeals/ui/select-native";
+import { Textarea } from "@hobbydeals/ui/textarea";
 
 import { ThemeToggle } from "./theme-toggle";
 
@@ -57,6 +60,47 @@ export default function Home(): React.JSX.Element {
             <Badge variant="discount">-43%</Badge>
             <Badge variant="discount">-20%</Badge>
             <Badge variant="discount">-75%</Badge>
+          </div>
+        </div>
+
+        <div className="mt-12 space-y-6">
+          <h2 className="text-center font-display text-lg font-semibold">Form fields</h2>
+
+          <div className="flex justify-between gap-3 w-full mx-auto">
+            <div className="space-y-2 w-full">
+              <label className="text-sm font-medium" htmlFor="example-input">
+                Título de la oferta
+              </label>
+              <Input id="example-input" placeholder="Ej: Catan a mitad de precio" type="text" />
+            </div>
+
+            <div className="space-y-2 w-full">
+              <label className="text-sm font-medium" htmlFor="example-textarea">
+                Descripción
+              </label>
+              <Textarea
+                id="example-textarea"
+                placeholder="Contá los detalles de la oferta…"
+                rows={4}
+              />
+            </div>
+
+            <div className="space-y-2 w-full">
+              <label className="text-sm font-medium" htmlFor="example-select">
+                Categoría
+              </label>
+              <SelectNative defaultValue="" id="example-select">
+                <SelectNativeOption disabled value="">
+                  Elegí una categoría
+                </SelectNativeOption>
+                <SelectNativeOption value="board-games">Juegos de Mesa</SelectNativeOption>
+                <SelectNativeOption value="gaming">Gaming</SelectNativeOption>
+                <SelectNativeOption value="collectibles">Coleccionismo</SelectNativeOption>
+                <SelectNativeOption value="airsoft">Airsoft</SelectNativeOption>
+                <SelectNativeOption value="music">Música</SelectNativeOption>
+                <SelectNativeOption value="modeling">Modelismo</SelectNativeOption>
+              </SelectNative>
+            </div>
           </div>
         </div>
 
