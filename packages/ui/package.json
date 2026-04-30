@@ -22,10 +22,10 @@
     "@hobbydeals/eslint-config": "workspace:*",
     "@hobbydeals/typescript-config": "workspace:*",
     "@playwright/test": "^1.59.1",
-    "@storybook/addon-a11y": "^10.3.5",
-    "@storybook/addon-themes": "^10.3.5",
-    "@storybook/addon-vitest": "^10.3.5",
-    "@storybook/react-vite": "^10.3.5",
+    "@storybook/addon-a11y": "^10.3.6",
+    "@storybook/addon-themes": "^10.3.6",
+    "@storybook/addon-vitest": "^10.3.6",
+    "@storybook/react-vite": "^10.3.6",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^25.5.0",
     "@types/react": "19.2.14",
@@ -34,10 +34,11 @@
     "@vitest/browser-playwright": "^4.1.4",
     "chromatic": "^16.2.0",
     "eslint": "^9.39.4",
-    "storybook": "^10.3.5",
+    "storybook": "^10.3.6",
     "tailwindcss": "^4.2.2",
     "typescript": "5.9.3",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.4",
+    "eslint-plugin-storybook": "10.3.6"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
