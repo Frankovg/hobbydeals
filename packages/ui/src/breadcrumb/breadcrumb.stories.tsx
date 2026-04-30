@@ -55,7 +55,10 @@ export const TwoLevels: Story = {
     ],
   },
   play: async ({ canvas, canvasElement }) => {
-    await expect(canvas.getAllByRole("link")).toHaveLength(1);
+    const links = canvasElement.querySelectorAll(
+      '[data-slot="breadcrumb-link"]'
+    );
+    await expect(links).toHaveLength(1);
     await expect(canvas.getByText("Gaming")).toHaveAttribute(
       "aria-current",
       "page"
@@ -76,8 +79,11 @@ export const DealDetail: Story = {
       { label: "G&G CM16 Raider 2.0E" },
     ],
   },
-  play: async ({ canvas }) => {
-    await expect(canvas.getAllByRole("link")).toHaveLength(3);
+  play: async ({ canvas, canvasElement }) => {
+    const links = canvasElement.querySelectorAll(
+      '[data-slot="breadcrumb-link"]'
+    );
+    await expect(links).toHaveLength(3);
     await expect(canvas.getByText("G&G CM16 Raider 2.0E")).toHaveAttribute(
       "aria-current",
       "page"
