@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { expect, fn, userEvent } from "storybook/test";
 
-import { Input } from "./input";
+import { Input } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

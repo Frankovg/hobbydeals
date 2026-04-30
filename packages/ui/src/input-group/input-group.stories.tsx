@@ -18,7 +18,7 @@ import {
   InputGroupInput,
   InputGroupText,
   InputGroupTextarea,
-} from "./input-group";
+} from ".";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

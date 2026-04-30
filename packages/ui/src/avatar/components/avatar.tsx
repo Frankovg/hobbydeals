@@ -3,14 +3,16 @@
 import { Avatar as AvatarPrimitive } from "radix-ui"
 import * as React from "react"
 
-import { cn } from "../lib/utils"
+import { cn } from "../../lib/utils"
 
-function Avatar({
+type AvatarSize = "sm" | "default" | "lg"
+
+function AvatarRoot({
   className,
   size = "default",
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Root> & {
-  size?: "default" | "sm" | "lg"
+  size?: AvatarSize
 }) {
   return (
     <AvatarPrimitive.Root
@@ -71,7 +73,7 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
-function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
+function AvatarGroupRoot({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="avatar-group"
@@ -102,10 +104,11 @@ function AvatarGroupCount({
 }
 
 export {
-  Avatar,
+  AvatarRoot,
   AvatarImage,
   AvatarFallback,
   AvatarBadge,
-  AvatarGroup,
+  AvatarGroupRoot,
   AvatarGroupCount,
 }
+export type { AvatarSize }

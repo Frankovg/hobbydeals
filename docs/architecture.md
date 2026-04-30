@@ -1,7 +1,8 @@
 # Monorepo Architecture
 
 HobbyDeals is a monorepo managed with **Turborepo** and **pnpm workspaces**,
-composed of two applications and four shared packages.
+composed of two applications and a set of shared packages (UI, core, supabase,
+plus shared tooling configs).
 
 ## Directory structure
 
@@ -29,7 +30,11 @@ hobbydeals/
 │
 ├── packages/
 │   ├── ui/                         # @hobbydeals/ui (web-only)
-│   │   ├── src/components/         # DealCard, CategoryBadge, VoteButton... (HTML + Tailwind)
+│   │   ├── src/<component>/        # one dir per component, public API in index.tsx
+│   │   │   ├── index.tsx           # exported entry (package exports "./*" → "./src/*/index.tsx")
+│   │   │   ├── <component>.stories.tsx
+│   │   │   └── components/         # optional: primitives split (e.g. avatar/, alert/)
+│   │   ├── src/lib/utils.ts        # shared cn() helper
 │   │   └── .storybook/             # Storybook config (web)
 │   │
 │   ├── ui-native/                  # @hobbydeals/ui-native (mobile-only)
@@ -40,14 +45,30 @@ hobbydeals/
 │   │   ├── src/api/                # typed Supabase queries
 │   │   ├── src/hooks/              # useDeals, useAuth, useVote...
 │   │   ├── src/types/              # global TypeScript types
-│   │   ├── src/utils/              # formatPrice, timeAgo, getTemp...
-│   │   └── src/validations/        # shared Zod schemas
+│   │   ├── src/utils/              # formatPrice, timeAgo, getTemp, getInitials...
+│   │   ├── src/utils/test/         # *.test.ts — Jest tests for utils
+│   │   ├── src/validations/        # shared Zod schemas
+│   │   └── jest.config.cjs         # re-exports @hobbydeals/jest-config/base
 │   │
-│   ├── config/                     # @hobbydeals/config
-│   │   ├── eslint/                 # base, next, react-native configs
-│   │   ├── typescript/             # tsconfig base, next, rn
-│   │   ├── tailwind/               # theme.css (shared design tokens)
+│   ├── config/                     # @hobbydeals/config (Tailwind theme + scripts)
+│   │   ├── tailwind/theme.css      # shared design tokens (single source of truth)
 │   │   └── scripts/                # generate-mobile-theme.ts (theme:generate)
+│   │
+│   ├── eslint-config/              # @hobbydeals/eslint-config
+│   │   ├── base.js                 # common flat-config rules
+│   │   ├── next.js                 # base + Next.js plugin
+│   │   └── react-internal.js       # base + React rules (shared component packages)
+│   │
+│   ├── typescript-config/          # @hobbydeals/typescript-config
+│   │   ├── base.json               # strict baseline
+│   │   ├── library.json            # shared package defaults
+│   │   ├── react-library.json      # library + React JSX
+│   │   ├── nextjs.json             # Next.js App Router
+│   │   └── tests-react.json        # react-library + jest / node / jest-dom types
+│   │
+│   ├── jest-config/                # @hobbydeals/jest-config
+│   │   ├── base.cjs                # ts-jest preset, Node env (apps + core)
+│   │   └── react.cjs               # base + jsdom + @testing-library/jest-dom
 │   │
 │   └── supabase/                   # @hobbydeals/supabase
 │       ├── src/client.ts           # factory: browser, server, mobile
@@ -101,7 +122,13 @@ See [packages.md](./packages.md) for detailed documentation of each package.
   on `auth.users`. Replacing it would break database-level security.
 - Packages in `packages/` never import from `apps/`. The dependency flow is
   always `apps → packages`, never the reverse.
-- **Testing pyramid**: Jest + Testing Library for unit/integration in both UI
-  packages and core. Storybook + Chromatic for visual regression in both UI
-  packages. Playwright for web E2E (`apps/web/e2e/`). Maestro for mobile E2E
-  (`apps/mobile/e2e/`).
+- **Tooling configs are split per concern**: `@hobbydeals/eslint-config`,
+  `@hobbydeals/typescript-config`, and `@hobbydeals/jest-config` are independent
+  packages so each one only pulls its own deps. `@hobbydeals/config` is reserved
+  for the shared Tailwind theme + theme generation script.
+- **Testing pyramid**: Vitest + `@storybook/addon-vitest` runs stories as
+  component tests in both UI packages (no separate `*.test.tsx` files for what
+  stories already cover). Jest + Testing Library covers unit/integration in apps
+  and `@hobbydeals/core` (using `@hobbydeals/jest-config/base`). Chromatic runs
+  visual regression on `@hobbydeals/ui` only. Playwright covers web E2E
+  (`apps/web/e2e/`). Maestro covers mobile E2E (`apps/mobile/e2e/`).

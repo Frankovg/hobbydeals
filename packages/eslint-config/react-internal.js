@@ -36,4 +36,10 @@ export const config = [
       "react/react-in-jsx-scope": "off",
     },
   },
+  {
+    files: ["**/*.cjs", "**/*.config.js", "**/*.config.cjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ];

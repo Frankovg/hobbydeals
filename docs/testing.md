@@ -71,11 +71,21 @@ tests covering business logic, hooks, and screens.
 
 ### Setup per package
 
-| Package                  | Preset       | Test library                       |
-| ------------------------ | ------------ | ---------------------------------- |
-| `apps/web`               | `ts-jest`    | `@testing-library/react`           |
-| `apps/mobile`            | `jest-expo`  | `@testing-library/react-native`    |
-| `@hobbydeals/core`       | `ts-jest`    | `@testing-library/react` (hooks)   |
+| Package                  | Preset                                       | Test library                       |
+| ------------------------ | -------------------------------------------- | ---------------------------------- |
+| `apps/web`               | `@hobbydeals/jest-config/react` (`ts-jest` + jsdom) | `@testing-library/react`           |
+| `apps/mobile`            | `jest-expo`                                  | `@testing-library/react-native`    |
+| `@hobbydeals/core`       | `@hobbydeals/jest-config/base` (`ts-jest`, Node env) | `@testing-library/react` (hooks)   |
+
+Each consumer just re-exports the shared preset from `jest.config.cjs`:
+
+```js
+// packages/core/jest.config.cjs
+module.exports = require("@hobbydeals/jest-config/base");
+```
+
+Tests for `@hobbydeals/core` utils live in `src/<area>/test/*.test.ts` (e.g.
+`src/utils/test/get-initials.test.ts`).
 
 ### What to test
 

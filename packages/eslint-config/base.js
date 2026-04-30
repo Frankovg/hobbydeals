@@ -4,6 +4,7 @@ import importPlugin from "eslint-plugin-import";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
 import onlyWarn from "eslint-plugin-only-warn";
+import globals from "globals";
 
 /**
  * A shared ESLint configuration for the repository.
@@ -55,6 +56,16 @@ export const config = [
   {
     plugins: {
       onlyWarn,
+    },
+  },
+  {
+    files: ["**/*.cjs", "**/*.config.js", "**/*.config.cjs"],
+    languageOptions: {
+      sourceType: "commonjs",
+      globals: globals.node,
+    },
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
   {

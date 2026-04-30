@@ -1,6 +1,6 @@
 import { expect, fn, userEvent } from "storybook/test";
 
-import { Textarea } from "./textarea";
+import { Textarea } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

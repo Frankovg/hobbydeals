@@ -1,15 +1,7 @@
-import {
-  Avatar,
-  AvatarBadge,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarGroupCount,
-  AvatarImage,
-} from "@hobbydeals/ui/avatar";
 import { Badge } from "@hobbydeals/ui/badge";
 import { Button } from "@hobbydeals/ui/button";
 import { Input } from "@hobbydeals/ui/input";
-import { SelectNative, SelectNativeOption } from "@hobbydeals/ui/select-native";
+import { SelectNative } from "@hobbydeals/ui/select-native";
 import { Textarea } from "@hobbydeals/ui/textarea";
 
 import { ThemeToggle } from "./theme-toggle";
@@ -72,53 +64,6 @@ export default function Home(): React.JSX.Element {
         </div>
 
         <div className="mt-12 space-y-6">
-          <h2 className="text-center font-display text-lg font-semibold">Avatars</h2>
-
-          <div className="flex flex-wrap items-end gap-4 justify-center">
-            <Avatar size="sm">
-              <AvatarFallback>SM</AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarFallback>MD</AvatarFallback>
-            </Avatar>
-            <Avatar size="lg">
-              <AvatarFallback>LG</AvatarFallback>
-            </Avatar>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4 justify-center">
-            <Avatar size="lg">
-              <AvatarImage alt="" src="/avatars/avatar-1.jpg" />
-              <AvatarFallback>AC</AvatarFallback>
-            </Avatar>
-            <Avatar size="lg">
-              <AvatarImage alt="" src="/avatars/avatar-2.jpg" />
-              <AvatarFallback>EF</AvatarFallback>
-              <AvatarBadge className="bg-success" />
-            </Avatar>
-            <Avatar size="lg">
-              <AvatarFallback className="bg-cat-boardgames text-white">MC</AvatarFallback>
-              <AvatarBadge className="bg-success" />
-            </Avatar>
-          </div>
-
-          <div className="flex justify-center">
-            <AvatarGroup>
-              <Avatar>
-                <AvatarFallback className="bg-brand-primary text-white">FA</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarFallback className="bg-brand-secondary text-white">JD</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarFallback className="bg-info text-white">M</AvatarFallback>
-              </Avatar>
-              <AvatarGroupCount>+3</AvatarGroupCount>
-            </AvatarGroup>
-          </div>
-        </div>
-
-        <div className="mt-12 space-y-6">
           <h2 className="text-center font-display text-lg font-semibold">Form fields</h2>
 
           <div className="flex justify-between gap-3 w-full mx-auto">
@@ -140,21 +85,21 @@ export default function Home(): React.JSX.Element {
               />
             </div>
 
-            <div className="space-y-2 w-full">
-              <label className="text-sm font-medium" htmlFor="example-select">
-                Categoría
-              </label>
-              <SelectNative defaultValue="" id="example-select">
-                <SelectNativeOption disabled value="">
-                  Elegí una categoría
-                </SelectNativeOption>
-                <SelectNativeOption value="board-games">Juegos de Mesa</SelectNativeOption>
-                <SelectNativeOption value="gaming">Gaming</SelectNativeOption>
-                <SelectNativeOption value="collectibles">Coleccionismo</SelectNativeOption>
-                <SelectNativeOption value="airsoft">Airsoft</SelectNativeOption>
-                <SelectNativeOption value="music">Música</SelectNativeOption>
-                <SelectNativeOption value="modeling">Modelismo</SelectNativeOption>
-              </SelectNative>
+            <div className="w-full">
+              <SelectNative
+                id="example-select"
+                label="Categoría"
+                defaultValue=""
+                placeholder="Elegí una categoría"
+                options={[
+                  { value: "board-games", label: "Juegos de Mesa" },
+                  { value: "gaming", label: "Gaming" },
+                  { value: "collectibles", label: "Coleccionismo" },
+                  { value: "airsoft", label: "Airsoft" },
+                  { value: "music", label: "Música" },
+                  { value: "modeling", label: "Modelismo" },
+                ]}
+              />
             </div>
           </div>
         </div>

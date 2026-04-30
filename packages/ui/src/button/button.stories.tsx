@@ -1,7 +1,7 @@
 import { Flame } from "lucide-react";
 import { expect, fn, userEvent } from "storybook/test";
 
-import { Button } from "./button";
+import { Button } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

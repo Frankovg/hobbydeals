@@ -1,6 +1,6 @@
 import { expect } from "storybook/test";
 
-import { Badge } from "./badge";
+import { Badge } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 

@@ -1,9 +1,9 @@
 import { ChevronDownIcon } from "lucide-react"
 import * as React from "react"
 
-import { cn } from "../lib/utils"
+import { cn } from "../../lib/utils"
 
-function SelectNative({
+function SelectNativeRoot({
   className,
   ...props
 }: React.ComponentProps<"select">) {
@@ -61,4 +61,4 @@ function SelectNativeOptGroup({
   )
 }
 
-export { SelectNative, SelectNativeOptGroup, SelectNativeOption }
+export { SelectNativeRoot, SelectNativeOptGroup, SelectNativeOption }

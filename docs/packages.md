@@ -11,19 +11,44 @@ Web-only component library. Uses `className` with Tailwind CSS on standard HTML
 elements (Next.js compatible). Mobile has its own package `@hobbydeals/ui-native`.
 Both platforms share design tokens via `packages/config/tailwind/theme.css`.
 
+### File layout
+
+One directory per component. The package only exposes the directory entry —
+`exports` map is `"./*": "./src/*/index.tsx"`, so consumers import as
+`@hobbydeals/ui/<component>`.
+
+```
+src/<component>/
+├── index.tsx                    # public API (exported)
+├── <component>.stories.tsx      # Storybook + addon-vitest test target
+└── components/                  # optional — primitives, only when split
+    ├── <component>.tsx          # Root / Image / Fallback / ... primitives
+    └── index.ts
+```
+
+When a component has multiple primitives (e.g. Radix-backed `Avatar`,
+`AlertDialog`, `Alert`), they live in `components/` and `index.tsx` exposes a
+higher-level convenience API on top of them. Stories always import from `.`.
+
 ### Components
 
-| Component              | Description                                                         |
-| ---------------------- | ------------------------------------------------------------------- |
-| `DealCard`             | Deal card with visual temperature, price, discount, and votes       |
-| `CategoryBadge`        | Badge with icon and hobby color                                     |
-| `VoteButton`           | Hot/cold button with animation and optimistic state                 |
-| `TemperatureIndicator` | Visual heat scale for the deal (cold → hot)                         |
-| `PriceDisplay`         | Current price + original strikethrough + % discount                 |
-| `UserAvatar`           | Avatar with image or initials fallback                              |
-| `SearchBar`            | Web search bar                                                      |
-| `EmptyState`           | Illustrated empty state with message and optional action            |
-| `Toast` / `Alert`      | Temporary notifications and error messages                          |
+Generic UI primitives shipped so far:
+
+| Component                     | Notes                                                              |
+| ----------------------------- | ------------------------------------------------------------------ |
+| `Button`                      | CVA variants (default, destructive, outline, secondary, ghost, link) + sizes |
+| `Badge`                       | Variants for temperature, category, discount                       |
+| `Input`, `Textarea`           | Form fields aligned to the design system                           |
+| `SelectNative`                | Native `<select>` styled to match `Input`                          |
+| `InputGroup`                  | Composable input + addon slots                                     |
+| `Item`, `Separator`, `Card`   | Layout primitives                                                  |
+| `Avatar`, `AvatarGroup`       | Radix-backed; `fallback` + optional `src` / `badge` props          |
+| `Alert`                       | Variants: success / destructive / warning / info, automatic icon mapping |
+| `AlertDialog`                 | Radix-backed modal confirmation primitives                         |
+
+Domain components on top of these primitives are planned: `DealCard`,
+`CategoryBadge`, `VoteButton`, `TemperatureIndicator`, `PriceDisplay`,
+`UserAvatar`, `SearchBar`, `EmptyState`, `Toast`.
 
 ### Theme
 
@@ -34,15 +59,10 @@ same token file — no JS preset needed (Tailwind v4 CSS-first approach).
 
 ### Testing
 
-- **Unit/integration**: Jest + `@testing-library/react`. Tests co-locate with components (`*.test.tsx`).
-- **Visual**: Storybook (`@storybook/react` + `@storybook/nextjs`) + Chromatic for visual regression. Stories co-locate with components (`*.stories.tsx`).
-
-```
-src/deal-card/
-├── deal-card.tsx
-├── deal-card.test.tsx
-└── deal-card.stories.tsx
-```
+- **Component**: Vitest with `@storybook/addon-vitest` runs every `*.stories.tsx`
+  as a component test in Playwright Chromium. No separate `*.test.tsx` is added
+  for behavior already covered by stories.
+- **Visual**: Storybook (`@storybook/react-vite`) + Chromatic for visual regression.
 
 ---
 
@@ -90,11 +110,16 @@ TypeScript types, and validation schemas.
 
 ### Utilities (`src/utils/`)
 
-| Function                        | Description                                                              |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| `formatPrice(amount, currency)` | Formats prices with i18n (ES locale by default)                          |
-| `getTemperatureLabel(n)`        | Returns label by temperature: cold / warm / hot / burning                |
-| `timeAgo(date)`                 | Relative date in Spanish: "hace 3 horas", "ayer"...                      |
+| Function                                | Description                                                              |
+| --------------------------------------- | ------------------------------------------------------------------------ |
+| `formatPrice(amount, currency)`         | Formats prices with i18n (ES locale by default)                          |
+| `getTemperatureLabel(n)`                | Returns label by temperature: cold / warm / hot / burning                |
+| `getTemperatureColor(n)`                | Returns the matching color token for a temperature                       |
+| `timeAgo(date)`                         | Relative date in Spanish: "hace 3 horas", "ayer"...                      |
+| `getInitials(firstName?, lastName?)`    | Uppercased initials, trims whitespace, preserves diacritics              |
+
+Utility tests live in `src/utils/test/*.test.ts` and run with Jest via
+`@hobbydeals/jest-config/base` (`pnpm --filter @hobbydeals/core test`).
 
 ### Validations (`src/validations/`)
 
@@ -121,24 +146,9 @@ and client-side (browser client).
 
 ## `@hobbydeals/config`
 
-Shared toolchain configurations. No app or package defines its own ESLint,
-TypeScript, or Tailwind rules from scratch — they always extend from here.
-
-### ESLint (`eslint/`)
-
-| Config                       | Extends                                   |
-| ---------------------------- | ----------------------------------------- |
-| `eslint-config-base`         | Common rules for the entire monorepo      |
-| `eslint-config-next`         | Base + Next.js specific rules             |
-| `eslint-config-react-native` | Base + React Native specific rules        |
-
-### TypeScript (`typescript/`)
-
-| Config              | Description                                                      |
-| ------------------- | ---------------------------------------------------------------- |
-| `base.json`         | Strict TypeScript (`strict: true`, `noUncheckedIndexedAccess`)   |
-| `next.json`         | Extends base with Next.js paths and plugins                      |
-| `react-native.json` | Extends base with React Native and Expo types                    |
+Shared Tailwind theme + the script that derives the mobile theme artifacts.
+Toolchain configs (ESLint, TypeScript, Jest) live in their own packages, see
+below.
 
 ### Tailwind (`tailwind/`)
 
@@ -167,6 +177,58 @@ Mobile wires the generated CSS via `apps/mobile/global.css`:
 ```
 
 The root-level script lives in `package.json` as `"theme:generate": "tsx packages/config/scripts/generate-mobile-theme.ts"` and uses `tsx` + `@types/node` as root devDependencies.
+
+---
+
+## `@hobbydeals/eslint-config`
+
+Flat-config ESLint presets used by every workspace. No package defines its own
+rules from scratch — they always extend from here.
+
+| Config             | Description                                                                     |
+| ------------------ | ------------------------------------------------------------------------------- |
+| `./base`           | Common rules: TypeScript, imports, react-hooks, turbo, prettier compatibility   |
+| `./next-js`        | Base + `@next/eslint-plugin-next`                                                |
+| `./react-internal` | Base + React rules for shared component packages (also handles `.cjs` files)    |
+
+Consumers add it via `devDependencies` and reference it from `eslint.config.js`.
+
+---
+
+## `@hobbydeals/typescript-config`
+
+Strict TypeScript configurations. Every `tsconfig.json` in the monorepo extends
+one of these — never define `compilerOptions` from scratch.
+
+| Config                  | Description                                                                |
+| ----------------------- | -------------------------------------------------------------------------- |
+| `base.json`             | Strict baseline (`strict`, `noUncheckedIndexedAccess`, etc.)               |
+| `library.json`          | Defaults for shared TS packages                                             |
+| `react-library.json`    | Library + React JSX                                                         |
+| `nextjs.json`           | Next.js App Router defaults                                                 |
+| `tests-react.json`      | `react-library` + `jest`, `node`, `@testing-library/jest-dom` types         |
+
+---
+
+## `@hobbydeals/jest-config`
+
+Shared Jest presets (CommonJS — Jest config files are `.cjs`). Apps and
+`@hobbydeals/core` consume these instead of redefining a Jest config.
+
+| Preset    | Description                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------- |
+| `./base`  | `ts-jest` preset, Node environment, matches `src/**/*.test.{ts,tsx}`                          |
+| `./react` | Extends `base` with `jest-environment-jsdom` + `@testing-library/jest-dom` setup              |
+
+Usage in a package:
+
+```js
+// jest.config.cjs
+module.exports = require("@hobbydeals/jest-config/base");
+```
+
+`@hobbydeals/core` is the first consumer; web and core hooks tests will move to
+this preset as Jest coverage grows.
 
 ---
 

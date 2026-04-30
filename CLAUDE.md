@@ -41,11 +41,14 @@ hobbydeals/
 │   ├── mobile/       # React Native + Expo
 │   └── ux/           # Pencil design files — UX source of truth
 ├── packages/
-│   ├── ui/           # @hobbydeals/ui — web components (HTML + Tailwind CSS)
-│   ├── ui-native/    # @hobbydeals/ui-native — mobile components (RN + NativeWind v5)
-│   ├── core/         # @hobbydeals/core — hooks, API queries, utils, types, Zod schemas
-│   ├── config/       # @hobbydeals/config — eslint, tsconfig, tailwind preset
-│   └── supabase/     # @hobbydeals/supabase — client factory + generated types
+│   ├── ui/                 # @hobbydeals/ui — web components (HTML + Tailwind CSS)
+│   ├── ui-native/          # @hobbydeals/ui-native — mobile components (RN + NativeWind v5)
+│   ├── core/               # @hobbydeals/core — hooks, API queries, utils, types, Zod schemas
+│   ├── config/             # @hobbydeals/config — shared Tailwind theme + theme:generate script
+│   ├── eslint-config/      # @hobbydeals/eslint-config — base / next-js / react-internal presets
+│   ├── typescript-config/  # @hobbydeals/typescript-config — base, library, nextjs, react-library, tests-react
+│   ├── jest-config/        # @hobbydeals/jest-config — shared Jest base + react presets (apps + core)
+│   └── supabase/           # @hobbydeals/supabase — client factory + generated types
 └── supabase/
     ├── migrations/   # versioned SQL schema
     ├── seed.sql      # development data (see below)
@@ -58,8 +61,20 @@ hobbydeals/
 
 Web-only components using `className` with Tailwind CSS (HTML elements, Next.js compatible).
 Both platforms share design tokens via `packages/config/tailwind/theme.css`.
-Key web components: `DealCard`, `CategoryBadge`, `VoteButton`, `TemperatureIndicator`,
-`PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`.
+
+Components are organized one directory per component, with the public API in
+`<component>/index.tsx` (the package exports `./*` → `./src/*/index.tsx`). When a
+component has multiple primitives (e.g. `Avatar` + `AvatarRoot`/`Image`/`Fallback`/
+`Badge`/`Group`), the primitives live in `<component>/components/` and `index.tsx`
+re-exports a higher-level convenience API on top of them. Stories co-locate as
+`<component>/<component>.stories.tsx` and import from `.`.
+
+Generic UI primitives shipped so far: `Button`, `Badge`, `Input`, `Textarea`,
+`SelectNative`, `InputGroup`, `Item`, `Separator`, `Card`, `Avatar` / `AvatarGroup`,
+`Alert`, `AlertDialog`. Domain components (`DealCard`, `CategoryBadge`, `VoteButton`,
+`TemperatureIndicator`, `PriceDisplay`, `UserAvatar`, `SearchBar`, `EmptyState`) are
+planned on top of these primitives.
+
 Includes Storybook for component development and Chromatic for visual regression.
 
 ### @hobbydeals/ui-native
@@ -75,9 +90,10 @@ Includes Storybook (`@storybook/react-vite` + `react-native-web` alias) for comp
 All shared business logic:
 
 - Hooks: `useDeals(filters)`, `useDeal(id)`, `useVote()`, `useAuth()`, `useAlerts()`
-- Utils: `formatPrice()`, `getTemperatureLabel()`, `timeAgo()` (ES locale)
+- Utils: `formatPrice()`, `getTemperatureLabel()`, `getTemperatureColor()`, `timeAgo()` (ES locale), `getInitials()`
 - Zod schemas for forms (publish deal, registration, alert)
 - Typed Supabase queries
+- Tests: Jest + `ts-jest` via `@hobbydeals/jest-config/base`. Tests live in `src/<area>/test/*.test.ts`
 
 ### @hobbydeals/supabase
 
@@ -90,9 +106,35 @@ Client factory per environment:
 
 ### @hobbydeals/config
 
-- `eslint-config-base`, `eslint-config-next`, `eslint-config-react-native`
-- `tsconfig/base.json` (strict), `tsconfig/next.json`, `tsconfig/react-native.json`
-- `tailwind/theme.css` — shared design tokens (colors, spacing, typography, temperature, categories)
+- `tailwind/theme.css` — shared design tokens (colors, spacing, typography, temperature, categories). Single source of truth for both web (Tailwind v4 CSS-first) and mobile (NativeWind v5)
+- `scripts/generate-mobile-theme.ts` — emits `apps/mobile/lib/theme.ts` (`THEME` + `NAV_THEME`) and `apps/mobile/theme-system.css` from `theme.css`. Run with `pnpm theme:generate`
+
+### @hobbydeals/eslint-config
+
+Flat-config presets used by every workspace. Exports:
+
+- `./base` — common rules for the monorepo (TS, imports, react-hooks, turbo, prettier)
+- `./next-js` — base + Next.js plugin
+- `./react-internal` — base + React rules for shared component packages (also handles `.cjs` files)
+
+### @hobbydeals/typescript-config
+
+Strict TS configs extended by every package:
+
+- `base.json` — strict baseline (`strict`, `noUncheckedIndexedAccess`)
+- `library.json` / `react-library.json` — for shared packages
+- `nextjs.json` — App Router defaults
+- `tests-react.json` — extends `react-library.json` with `jest`, `node`, `@testing-library/jest-dom` types
+
+### @hobbydeals/jest-config
+
+Shared Jest presets (CommonJS, since Jest config files are `.cjs`):
+
+- `./base` — `ts-jest` preset, Node environment, `src/**/*.test.{ts,tsx}` match
+- `./react` — extends base with `jest-environment-jsdom` + `@testing-library/jest-dom`
+
+Consumed by `@hobbydeals/core` (and apps/web going forward) via `jest.config.cjs`:
+`module.exports = require("@hobbydeals/jest-config/base");`
 
 ## UX / Design (apps/ux/)
 
