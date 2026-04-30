@@ -1,103 +1,89 @@
 import * as React from "react"
 
-import { cn } from "../lib/utils"
+import { Button } from "../button"
+
+import {
+  Card as CardRoot,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardImage,
+  CardImagePlaceholder,
+  CardTitle,
+  type CardSize,
+} from "./components"
+
+export interface CardProps
+  extends Omit<React.ComponentProps<"div">, "title" | "content"> {
+  title: React.ReactNode
+  description?: React.ReactNode
+  /** Image URL. Falls back to a neutral placeholder when omitted. */
+  image?: string
+  imageAlt?: string
+  /** When true and `image` is omitted, renders the placeholder block. */
+  showImagePlaceholder?: boolean
+  /** Extra content rendered between description and footer. */
+  content?: React.ReactNode
+  /** Custom footer node. Takes precedence over `actionLabel`. */
+  footer?: React.ReactNode
+  /** Quick action button shown in the footer. */
+  actionLabel?: React.ReactNode
+  onAction?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  size?: CardSize
+}
 
 function Card({
-  className,
+  title,
+  description,
+  image,
+  imageAlt,
+  showImagePlaceholder = false,
+  content,
+  footer,
+  actionLabel,
+  onAction,
   size = "default",
-  ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+  ...rest
+}: CardProps) {
+  const hasMedia = Boolean(image) || showImagePlaceholder
+  const resolvedFooter =
+    footer ??
+    (actionLabel != null ? (
+      <Button type="button" size="md" onClick={onAction}>
+        {actionLabel}
+      </Button>
+    ) : null)
+
   return (
-    <div
-      data-slot="card"
-      data-size={size}
-      className={cn(
-        "group/card flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-sm text-card-foreground ring-1 ring-foreground/10 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
-        className
-      )}
-      {...props}
-    />
+    <CardRoot size={size} {...rest}>
+      {hasMedia ? (
+        image ? (
+          <CardImage src={image} alt={imageAlt ?? ""} />
+        ) : (
+          <CardImagePlaceholder />
+        )
+      ) : null}
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        {description ? <CardDescription>{description}</CardDescription> : null}
+      </CardHeader>
+      {content ? <CardContent>{content}</CardContent> : null}
+      {resolvedFooter ? <CardFooter>{resolvedFooter}</CardFooter> : null}
+    </CardRoot>
   )
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-header"
-      className={cn(
-        "group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-4 group-data-[size=sm]/card:px-3 has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-4 group-data-[size=sm]/card:[.border-b]:pb-3",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-title"
-      className={cn(
-        "cn-font-heading text-base leading-snug font-medium group-data-[size=sm]/card:text-sm",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  )
-}
-
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-4 group-data-[size=sm]/card:px-3", className)}
-      {...props}
-    />
-  )
-}
-
-function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn(
-        "flex items-center rounded-b-xl border-t bg-muted/50 p-4 group-data-[size=sm]/card:p-3",
-        className
-      )}
-      {...props}
-    />
-  )
-}
+export { Card }
 
 export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
+  Card as CardRoot,
   CardContent,
-}
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardImage,
+  CardImagePlaceholder,
+  CardTitle,
+} from "./components"
+export type { CardSize } from "./components"

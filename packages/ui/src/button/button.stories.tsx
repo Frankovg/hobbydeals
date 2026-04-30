@@ -22,7 +22,7 @@ const meta = {
     },
     size: {
       control: "select",
-      options: ["default", "sm", "lg", "icon"],
+      options: ["default", "sm", "md", "lg", "icon"],
     },
     disabled: { control: "boolean" },
   },
@@ -63,6 +63,10 @@ export const Link: Story = {
 
 export const Small: Story = {
   args: { children: "Votar", size: "sm" },
+};
+
+export const Medium: Story = {
+  args: { children: "Ver oferta", size: "md" },
 };
 
 export const Large: Story = {
